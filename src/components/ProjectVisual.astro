@@ -22,9 +22,10 @@ interface Props {
   alt: string;
   caption: string;
   evidenceIds?: string[];
+  preview?: boolean;
 }
 
-const { id, diagram, alt, caption, evidenceIds = [] } = Astro.props;
+const { id, diagram, alt, caption, evidenceIds = [], preview = false } = Astro.props;
 const safeId =
   id
     .trim()
@@ -92,7 +93,11 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 ---
 
 {diagram !== 'none' && (
-  <figure class="project-visual__root" id={figureId} data-diagram={diagram}>
+  <figure
+    class={`project-visual__root${preview ? ' project-visual__root--preview' : ''}`}
+    id={figureId}
+    data-diagram={diagram}
+  >
     <svg
       class={`project-visual__svg project-visual__svg--${diagram}`}
       viewBox={viewBoxes[diagram]}
@@ -861,7 +866,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
     <figcaption class="project-visual__caption">
       <span class="project-visual__caption-text">{caption}</span>
-      <span class="project-visual__rights">Original portfolio schematic</span>
+      {!preview && <span class="project-visual__rights">Original portfolio schematic</span>}
       {evidenceIds.length > 0 && (
         <span class="project-visual__evidence">Evidence rows: {evidenceIds.join(' · ')}</span>
       )}

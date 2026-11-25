@@ -26,7 +26,7 @@ const routes = [
 test('home orients the visitor and shows exactly three selected projects', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Leelansh Kharbanda/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('inspectable systems');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('I make small systems');
   await expect(page.locator('#selected-work .project-card')).toHaveCount(3);
   await expect(page.getByRole('link', { name: 'Résumé', exact: true }).first()).toBeVisible();
   await expect(page.locator('a[href^="mailto:leelansh24319@iiitd.ac.in"]').first()).toBeVisible();

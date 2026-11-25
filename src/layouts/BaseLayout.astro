@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/playground.css';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../data/site';
@@ -66,14 +67,18 @@ const structuredData = {
     <a class="skip-link" href="#main-content">
       Skip to content
     </a>
+    <div class="playground-cursor" aria-hidden="true"></div>
     <div class="datum-rail" aria-hidden="true">
       <span>LEELANSH KHARBANDA</span>
-      <span>EVIDENCE / 2026</span>
+      <span>PROJECT PLAYGROUND / 2026</span>
     </div>
     <Header />
     <main id="main-content" tabindex="-1">
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/playground';
+    </script>
   </body>
 </html>
