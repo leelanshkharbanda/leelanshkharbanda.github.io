@@ -1,47 +1,48 @@
-# Handoff — personal portfolio
+# Handoff — personal portfolio (v2)
 
 Live site: https://leelanshkharbanda.github.io/
 Source: https://github.com/leelanshkharbanda/leelanshkharbanda.github.io (branch `main`, root published via GitHub Pages)
 
 ## What is here
 
-- `index.html` — single-page portfolio: hero with an interactive QPSK/AWGN "tune the channel" monitor, three case studies (Chronos-DSP, Modulation Studio, MoE Memory Wall), a short thinking note, a four-project index, about, and contact.
-- `css/style.css` — token-driven CSS: two neutrals plus one signal accent, light/dark themes, fluid type, 12-column grid, reduced-motion and no-JS paths. No downloaded fonts, no framework.
-- `js/main.js` — one dependency-free ES module (2,361 bytes), deterministic seeded waveform/constellation. Adds `.js` only after successful init, so a failed load leaves working static content.
-- `404.html` — branded 404 with the same tokens and navigation.
+- `index.html` — single-page portfolio in the council-approved "instrument stage" art direction: hook-first hero with an original oversized signal glyph, a real Chronos-DSP ray-path artifact (LoS / image-source reflection / knife-edge diffraction), a live QPSK/AWGN readout, a real-value measurement rail, three project datasheets (Chronos-DSP, Modulation Studio, MoE Memory Wall), four-item index, about and contact.
+- `css/style.css` — surface-bound tokens (paper/stage ink, muted, signal, stage-signal, decorative/UI rules), light/dark themes, system sans + mono + one serif-italic accent on "trace.", reduced-motion/no-JS final frame, forced-colors support. No downloaded fonts, no framework.
+- `js/main.js` — one dependency-free ES module (3,907 B raw / ~1.68 KB gzip): deterministic seeded signal render on trusted input, DPR-capped IO-gated decorative canvas. Adds `.js` only after successful init.
+- `404.html` — branded on-brand 404 with the same glyph and navigation.
 - `.nojekyll` — serves the static files directly.
-- `research/` — sourced research and the council-approved design brief (development record).
+- `research/` — sourced GitHub identity study, Awwwards/source-level pattern studies, v1 brief, v2 elevation sources/visual/technical notes, and the signed-off `elevation-brief.md`.
 - `docs/agents/` — engineering-skills configuration (issue tracker, triage labels, domain docs).
 
 ## Build → review → refine record
 
-- Wayfinder map: issue #1, with eight decision tickets (#2–#9). All resolved.
-- Research: verified GitHub identity (profile README + all original repos), real HTML/CSS/JS source study of eight Awwwards/engineering portfolios, and primary-source WCAG/Core Web Vitals/GitHub Pages rules.
-- Prototype council: first pass approved by frontend and visitor; art director and accessibility findings fixed and re-verified to unanimous approval.
-- Build council, round 1: art director and accessibility withheld findings (sparse later chapters, bare local 404, text-spacing overflow); frontend withheld on the same 404; visitor gave two low-severity copy notes.
-- Build council, round 2: all four seats approve. Every finding was fixed and re-verified with its exact repro. The visitor's last voice note was applied afterwards ("which I coordinate").
+- Wayfinder v1 map: issues #1 and #2–#9, all resolved. v2 elevation map: #10 with research #11–#13 and brief #14, all resolved.
+- v1 shipped and council-approved, then the baseline council scored it 6–7/10 and demanded a structural leap rather than a tidy refinement.
+- 18 new award-site sources were decoded from real HTML/CSS/JS and screenshots; lineage: matvoyce (glyph-as-landscape), cydstumpel (two-ink system + real-value marquee), kernsociety/CRL (dark field + numeric state), robinpayot (one pinned-stage moment). Loader veils are explicit anti-goals.
+- v2 brief took four council seats three rounds to sign off: surface-bound color tokens, decoupled glyph scale, accessible ray-path SVG, no-JS control semantics, final-frame base rule, and exclusion of dev-only instrumentation.
+- Prototype council: first pass withheld by art director and accessibility; six visual + three accessibility fixes applied, re-captured, and unanimously approved.
+- Full build council: three seats requested fixes (marquee fade, About headline, rail label, footer target size); all fixed and re-verified before deployment.
+- Production council: final live-site verification by all four seats.
 
-## Measured gates (local lab, 2026-11-25)
+## Measured gates (2026-11-25)
 
-- First paint at 1280x800: FCP/LCP 376 ms, LCP element = `h1`; at 360x740: 52 ms. CTA and contact links above the fold at both sizes. These are local lab numbers, not field CrUX data.
-- Transfer: ~28 KB total (HTML 14,578 B, CSS 10,165 B, JS 2,361 B encoded). Zero off-site runtime requests.
-- Contrast verified numerically in both themes: light ink 15.86:1, muted 6.46:1, signal 5.70:1, borders 4.37:1; dark ink 15.70:1, muted 9.38:1, signal 7.37:1, borders 7.26:1. Signal is never used as text on ink.
-- Keyboard, touch, screen-reader readout, no-JS, reduced motion, 404 route (`/nope` → 404 with the branded page), reflow at 320/360/640/1280, and the WCAG text-spacing override all passed independent re-verification.
-- JS size 2,361 B (budget 15 KB); no external scripts, fonts, CDN assets or analytics.
+- Live: `/` 200 with v2 HTML (18,018 B), CSS 15,753 B, JS 3,901 B; `/nope` HTTP 404 serving the branded page; three `article.case` datasheets; zero off-site runtime requests; zero console errors.
+- Local DCL/load 55 ms; no web fonts; no horizontal scroll at 320/390/1280; slider keyboard-verified; no-JS and reduced-motion paths verified; dev instrumentation absent from shipped JS.
+- Contrast verified numerically in both themes: ink/paper 15.93, muted/paper 4.76, signal/paper 4.73, stage-ink 16.81, stage-muted 7.94, stage-signal 6.22. Accent tokens are surface-bound; no single red clears 4.5:1 on both surfaces.
+- All interactive targets >=44px at 320px (including footer); mono labels >=14px; 320px WCAG text-spacing override passes; four meaningful SVGs with `role="img"` + title/desc and adjacent text; decorative layers `aria-hidden`.
+- Field Core Web Vitals remain unmeasured until real traffic; local lab numbers are proxies.
 
 ## Ship-then-veto defaults (you were absent; these are the decisions I made for you)
 
-1. Published the email and LinkedIn from your own public profile README. LinkedIn returned HTTP 200 on 2026-11-25. Say the word and I will remove either.
-2. Used `leelanshkharbanda.github.io`, not a custom domain.
-3. No photo or avatar — the identity is typographic/code-native, as the brief specified. If you want a portrait, send one and I will add it.
-4. Hero case studies: Chronos-DSP, Modulation Studio, MoE Memory Wall, chosen for verifiable technical detail and a working demo. RISC-V, HPC_Boost, Life OS and Tasveer sit in the compact index.
+1. Published the email and LinkedIn from your own public profile README, as in v1. Say the word and I will remove either.
+2. Kept `leelanshkharbanda.github.io` with no custom domain.
+3. No photo or avatar — the identity is a quiet typographic lockup, not the headline.
+4. Kept the conservative claim set: Chronos-DSP is a simulator, MoE numbers are simulation from a group course project, Modulation Studio scheme counts are not asserted, no employer/job title/graduation year, forks excluded.
 5. Did **not** create `AGENTS.md` or `CLAUDE.md`: writing those protected files needs your explicit approval. Their configuration already lives in `docs/agents/*.md`.
 
 ## Residual risk / what only you can judge
 
-- The aesthetic verdict is council-based; your own visual judgement outranks it. Screenshots are at `.scratch/prototype-shots/` and `.scratch/refs/` in the working directory (not published).
-- Field Core Web Vitals are unmeasured until real traffic arrives; local lab numbers are proxies.
-- Claims are deliberately conservative: no employer, job title, completed degree, graduation year, forks as your work, simulation as real hardware measurement, or unpublished-app user claims. If any of those are now true and you want them on the site, tell me with a source.
+- The aesthetic verdict is council-based (final scores 9–10/10); your own visual judgement outranks it. Screenshots are in `.scratch/elevation-shots/v2build/` and `.scratch/elevation-shots/v2live/` (not published).
+- The 320px simulation caption begins at the fold; it is not clipped, and CTA/links are fully visible. Optional future polish: trim hero top padding at <=360px.
 - `research/` is served by Pages as static files. It contains only source-cited public notes, no private data or internal council splits.
 
 ## Editing locally
