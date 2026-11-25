@@ -1,0 +1,65 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="site-footer">
+  <div class="page-shell site-footer__inner">
+    <div class="site-footer__top">
+      <div>
+        <p class="eyebrow">Evidence checked {site.evidenceChecked}</p>
+        <p class="site-footer__statement">Built to be read, inspected, and verified.</p>
+      </div>
+      <a href={`mailto:${site.email}?subject=Portfolio%20inquiry`}>{site.email}</a>
+    </div>
+    <div class="site-footer__bottom">
+      <p>© 2026 {site.name}</p>
+      <div class="site-footer__links">
+        <a href={site.github} target="_blank" rel="noreferrer noopener">
+          GitHub ↗
+        </a>
+        <a href={site.linkedin} target="_blank" rel="noreferrer noopener">
+          LinkedIn ↗
+        </a>
+        <a href="/resume/">Résumé</a>
+      </div>
+      <button class="text-button motion-toggle" type="button" hidden>
+        Reduce motion
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const motionToggle = document.querySelector<HTMLButtonElement>('.motion-toggle');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const syncMotionControl = () => {
+    if (!motionToggle) return;
+    const reduced = reducedMotion.matches || document.documentElement.dataset.motion === 'reduced';
+    motionToggle.hidden = reduced;
+    motionToggle.textContent = 'Reduce motion';
+  };
+
+  if (motionToggle) {
+    motionToggle.addEventListener('click', () => {
+      document.documentElement.dataset.motion = 'reduced';
+      try {
+        localStorage.setItem('portfolio-motion', 'reduced');
+      } catch {
+        // Session-only preference is sufficient when storage is unavailable.
+      }
+      syncMotionControl();
+    });
+  }
+
+  try {
+    if (localStorage.getItem('portfolio-motion') === 'reduced') {
+      document.documentElement.dataset.motion = 'reduced';
+    }
+  } catch {
+    // The OS preference and in-memory control still work without storage.
+  }
+
+  reducedMotion.addEventListener('change', syncMotionControl);
+  syncMotionControl();
+</script>

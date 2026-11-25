@@ -1,0 +1,3 @@
+# Static-first Astro with a bounded React island
+
+The portfolio is primarily an evidence archive with one stateful signal-path explainer, so it uses Astro to generate complete static HTML and reserves React for the Chronos-DSP Trace Inspector. A Vite React SPA was rejected because it would make navigation, project evidence, résumé, and contact depend on client rendering; vanilla HTML was rejected because typed content schemas and consistent multipage layouts would otherwise be hand-maintained. The tradeoff is Astro build tooling in exchange for resilient deep links, zero framework runtime on content routes, and isolated interaction failure.

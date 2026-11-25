@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The requested page could not be found. Return to Leelansh Kharbanda's selected work or home page."
+  noindex={true}
+>
+  <section class="not-found page-shell" aria-labelledby="not-found-title">
+    <p class="eyebrow">404 · Record not found</p>
+    <h1 id="not-found-title">This path does not resolve.</h1>
+    <p>The page may have moved, or the record may not exist.</p>
+    <div class="hero__actions">
+      <a class="button button--primary" href="/">
+        Return home
+      </a>
+      <a class="button button--secondary" href="/work/">
+        Browse work
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,46 @@
+{
+  "name": "leelansh-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Leelansh Kharbanda's evidence-led software and hardware engineering portfolio.",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run check && npm test && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:e2e": "npm run build && playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "npm run format:check && npm run build && node scripts/check-budgets.mjs && npx html-validate dist && npx playwright test"
+  },
+  "dependencies": {
+    "@astrojs/react": "7.1.9",
+    "@astrojs/sitemap": "3.7.6",
+    "astro": "7.4.13",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@axe-core/playwright": "4.14.1",
+    "@fontsource-variable/bricolage-grotesque": "5.3.0",
+    "@fontsource-variable/source-sans-3": "5.3.1",
+    "@playwright/test": "1.65.1",
+    "@types/node": "26.6.10",
+    "@types/react": "19.3.2",
+    "@types/react-dom": "19.3.0",
+    "html-validate": "11.22.1",
+    "pdf-lib": "1.17.1",
+    "prettier": "3.10.1",
+    "prettier-plugin-astro": "1.1.2",
+    "sharp": "0.35.5",
+    "typescript": "6.0.3",
+    "vitest": "5.1.2",
+    "zod": "4.6.7"
+  }
+}

@@ -1,0 +1,18 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  intro?: string;
+  headingId?: string;
+}
+
+const { id, title, intro, headingId } = Astro.props;
+---
+
+<header class="section-heading">
+  <p class="datum-label">{id}</p>
+  <div>
+    <h2 id={headingId}>{title}</h2>
+    {intro && <p class="section-heading__intro">{intro}</p>}
+  </div>
+</header>

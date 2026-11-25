@@ -1,0 +1,871 @@
+---
+import {
+  SIMULATION_LABEL,
+  generateConstellationPoints,
+  projectConstellationPoint,
+  type ConstellationPoint,
+  type SignalStageId,
+} from '../lib/signal-model';
+
+export type ProjectDiagram =
+  | 'signal-path'
+  | 'local-system'
+  | 'constellation'
+  | 'counter-ledger'
+  | 'memory-grid'
+  | 'instruction-trace'
+  | 'none';
+
+interface Props {
+  id: string;
+  diagram: ProjectDiagram;
+  alt: string;
+  caption: string;
+  evidenceIds?: string[];
+}
+
+const { id, diagram, alt, caption, evidenceIds = [] } = Astro.props;
+const safeId =
+  id
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'project';
+const figureId = `project-visual-${safeId}`;
+const titleId = `${figureId}-title`;
+const descriptionId = `${figureId}-description`;
+const arrowId = `${figureId}-arrow`;
+const traceArrowId = `${figureId}-trace-arrow`;
+
+const descriptions: Record<ProjectDiagram, string> = {
+  'signal-path':
+    'Original four-stage schematic connecting scene geometry and a seeded QPSK source to a multipath channel, receiver decisions, and simulated IQ and BER outputs. All values are illustrative, not hardware measurements.',
+  'local-system':
+    'Original desktop-boundary schematic connecting React, Tauri IPC, Rust commands, SQLite, ONNX inference, LanceDB memory, and contextual recommendations. Required model provisioning and optional network integrations remain outside the local core.',
+  constellation:
+    'Original three-panel QPSK schematic comparing ideal source symbols, an illustrative impaired channel view, and recovered decisions from a fixed seed. The points are simulated, not measured.',
+  'counter-ledger':
+    'Original experiment ledger connecting grouped PMU traces, a four-event candidate budget, training-only subset selection, held-out binary evaluation, and the negative per-binary conditioning decision.',
+  'memory-grid':
+    'Original memory-system schematic connecting off-chip experts, a predictor, one copy link, a bounded HBM cache, demand priority, and exposed decode stalls. It describes a simulation boundary, not measured GPU performance.',
+  'instruction-trace':
+    'Original functional execution trace connecting RV32I-subset assembly, instruction fields, program-counter updates, register state, and memory output. It does not represent cycle timing or complete ISA conformance.',
+  none: 'No visual is rendered.',
+};
+
+const viewBoxes: Record<Exclude<ProjectDiagram, 'none'>, string> = {
+  'signal-path': '0 0 960 430',
+  'local-system': '0 0 960 460',
+  constellation: '0 0 960 370',
+  'counter-ledger': '0 0 960 400',
+  'memory-grid': '0 0 960 430',
+  'instruction-trace': '0 0 960 430',
+};
+
+const constellationPlots: {
+  id: SignalStageId;
+  label: string;
+  x: number;
+  points: readonly ConstellationPoint[];
+}[] = [
+  {
+    id: 'source',
+    label: 'SOURCE / QPSK',
+    x: 40,
+    points: generateConstellationPoints('source', { count: 32 }),
+  },
+  {
+    id: 'channel',
+    label: 'CHANNEL / IMPAIRED',
+    x: 360,
+    points: generateConstellationPoints('channel', { count: 32 }),
+  },
+  {
+    id: 'receiver',
+    label: 'RECEIVER / DECISIONS',
+    x: 680,
+    points: generateConstellationPoints('receiver', { count: 32 }),
+  },
+];
+
+const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation';
+---
+
+{diagram !== 'none' && (
+  <figure class="project-visual__root" id={figureId} data-diagram={diagram}>
+    <svg
+      class={`project-visual__svg project-visual__svg--${diagram}`}
+      viewBox={viewBoxes[diagram]}
+      width="960"
+      height={
+        diagram === 'local-system'
+          ? 460
+          : diagram === 'constellation'
+            ? 370
+            : diagram === 'counter-ledger'
+              ? 400
+              : 430
+      }
+      role="img"
+      aria-labelledby={`${titleId} ${descriptionId}`}
+      focusable="false"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id={titleId}>{alt}</title>
+      <desc id={descriptionId}>{descriptions[diagram]}</desc>
+      <defs>
+        <marker
+          id={arrowId}
+          class="project-visual__arrow"
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path class="project-visual__arrow-path" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <marker
+          id={traceArrowId}
+          class="project-visual__arrow project-visual__arrow--trace"
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path class="project-visual__arrow-path" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+      </defs>
+
+      {diagram === 'signal-path' && (
+        <g class="project-visual__signal-path">
+          <rect class="project-visual__panel" x="24" y="24" width="912" height="156" rx="2" />
+          <text class="project-visual__eyebrow" x="44" y="52">
+            01 / SCENE GEOMETRY
+          </text>
+          <text class="project-visual__micro" x="916" y="52" text-anchor="end">
+            ILLUSTRATIVE / SEEDED
+          </text>
+
+          <circle class="project-visual__node-fill" cx="92" cy="122" r="15" />
+          <text class="project-visual__node-label" x="92" y="127" text-anchor="middle">
+            TX
+          </text>
+          <text class="project-visual__micro" x="92" y="158" text-anchor="end">
+            SOURCE
+          </text>
+
+          <path class="project-visual__wall" d="M 196 76 L 196 166 M 352 84 L 352 158" />
+          <text class="project-visual__micro" x="208" y="92">
+            WALL A
+          </text>
+          <text class="project-visual__micro" x="364" y="100">
+            WALL B
+          </text>
+
+          <path
+            class="project-visual__path"
+            d="M 110 116 L 294 116"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <path
+            class="project-visual__path project-visual__path--dashed"
+            d="M 110 122 L 196 78 L 352 88 L 294 122"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <path
+            class="project-visual__path project-visual__path--dotted"
+            d="M 110 128 L 246 166 L 352 150 L 294 128"
+            marker-end={`url(#${traceArrowId})`}
+          />
+
+          <circle class="project-visual__node-fill" cx="310" cy="122" r="15" />
+          <text class="project-visual__node-label" x="310" y="127" text-anchor="middle">
+            RX
+          </text>
+          <text class="project-visual__micro" x="310" y="158" text-anchor="end">
+            RECEIVER POSITION
+          </text>
+
+          <path
+            class="project-visual__connector"
+            d="M 410 102 L 520 102"
+            marker-end={`url(#${arrowId})`}
+          />
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="540"
+            y="70"
+            width="366"
+            height="70"
+            rx="2"
+          />
+          <text class="project-visual__eyebrow" x="560" y="96">
+            CANDIDATE PATHS
+          </text>
+          <text class="project-visual__body" x="560" y="120">
+            line of sight · reflection · transmission
+          </text>
+          <text class="project-visual__micro" x="886" y="96" text-anchor="end">
+            BOUNDED SCENE
+          </text>
+
+          <path
+            class="project-visual__connector"
+            d="M 106 218 L 106 254 L 126 254"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 286 218 L 286 254 L 306 254"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 466 218 L 466 254 L 486 254"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 646 218 L 646 254 L 666 254"
+            marker-end={`url(#${arrowId})`}
+          />
+
+          {[
+            { x: 40, datum: 'TS-01', label: 'SOURCE', detail: 'QPSK + seed' },
+            { x: 260, datum: 'TS-02', label: 'CHANNEL', detail: 'paths + impairment' },
+            { x: 480, datum: 'TS-03', label: 'RECEIVER', detail: 'decisions + phase' },
+            { x: 700, datum: 'TS-04', label: 'OUTPUT', detail: 'IQ + BER' },
+          ].map((stage) => (
+            <g class="project-visual__stage" data-stage={stage.datum}>
+              <rect
+                class="project-visual__stage-box"
+                x={stage.x}
+                y="270"
+                width="172"
+                height="104"
+                rx="2"
+              />
+              <text class="project-visual__datum" x={stage.x + 16} y="294">
+                {stage.datum}
+              </text>
+              <text class="project-visual__stage-label" x={stage.x + 16} y="326">
+                {stage.label}
+              </text>
+              <text class="project-visual__micro" x={stage.x + 16} y="352">
+                {stage.detail}
+              </text>
+            </g>
+          ))}
+
+          <path
+            class="project-visual__connector"
+            d="M 212 322 L 244 322"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 432 322 L 464 322"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 652 322 L 684 322"
+            marker-end={`url(#${arrowId})`}
+          />
+
+          <polyline
+            class="project-visual__wave"
+            points="720,402 736,402 744,388 752,416 760,374 768,430 776,390 784,414 792,402 812,402 828,402 836,390 844,414 852,378 860,426 868,394 876,410 884,402 904,402"
+          />
+          <text class="project-visual__micro" x="40" y="408">
+            MODEL BOUNDARY / NOT A RADIO CAPTURE
+          </text>
+        </g>
+      )}
+
+      {diagram === 'local-system' && (
+        <g class="project-visual__local-system">
+          <rect class="project-visual__boundary" x="36" y="36" width="654" height="388" rx="4" />
+          <text class="project-visual__eyebrow" x="58" y="66">
+            LOCAL DESKTOP CORE
+          </text>
+          <text class="project-visual__micro" x="668" y="66" text-anchor="end">
+            TAURI 2 BOUNDARY
+          </text>
+
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="64"
+            y="92"
+            width="160"
+            height="76"
+            rx="2"
+          />
+          <text class="project-visual__stage-label" x="84" y="124">
+            REACT UI
+          </text>
+          <text class="project-visual__micro" x="84" y="148">
+            views + commands
+          </text>
+
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="274"
+            y="92"
+            width="160"
+            height="76"
+            rx="2"
+          />
+          <text class="project-visual__stage-label" x="294" y="124">
+            TAURI IPC
+          </text>
+          <text class="project-visual__micro" x="294" y="148">
+            typed boundary
+          </text>
+
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="484"
+            y="92"
+            width="174"
+            height="76"
+            rx="2"
+          />
+          <text class="project-visual__stage-label" x="504" y="124">
+            RUST COMMANDS
+          </text>
+          <text class="project-visual__micro" x="504" y="148">
+            orchestration
+          </text>
+
+          <path
+            class="project-visual__connector"
+            d="M 224 130 L 258 130"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 434 130 L 468 130"
+            marker-end={`url(#${arrowId})`}
+          />
+
+          <rect class="project-visual__panel" x="64" y="226" width="160" height="82" rx="2" />
+          <text class="project-visual__stage-label" x="84" y="258">
+            SQLITE
+          </text>
+          <text class="project-visual__micro" x="84" y="282">
+            local records
+          </text>
+
+          <rect class="project-visual__panel" x="274" y="226" width="160" height="82" rx="2" />
+          <text class="project-visual__stage-label" x="294" y="258">
+            ONNX
+          </text>
+          <text class="project-visual__micro" x="294" y="282">
+            local embeddings
+          </text>
+
+          <rect class="project-visual__panel" x="484" y="226" width="174" height="82" rx="2" />
+          <text class="project-visual__stage-label" x="504" y="258">
+            LANCEDB
+          </text>
+          <text class="project-visual__micro" x="504" y="282">
+            semantic memory
+          </text>
+
+          <path
+            class="project-visual__path"
+            d="M 526 168 L 526 202 L 144 202 L 144 214"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <path
+            class="project-visual__path"
+            d="M 526 168 L 526 214"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <path
+            class="project-visual__path"
+            d="M 548 168 L 548 202 L 354 202 L 354 214"
+            marker-end={`url(#${traceArrowId})`}
+          />
+
+          <rect
+            class="project-visual__panel project-visual__panel--accent"
+            x="246"
+            y="352"
+            width="230"
+            height="58"
+            rx="2"
+          />
+          <text class="project-visual__stage-label" x="266" y="378">
+            CONTEXT + BANDIT
+          </text>
+          <text class="project-visual__micro" x="266" y="398">
+            recommendation + explanation
+          </text>
+
+          <path
+            class="project-visual__path"
+            d="M 144 308 L 144 334 L 326 334 L 326 340"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <path
+            class="project-visual__path"
+            d="M 354 308 L 354 340"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <path
+            class="project-visual__path"
+            d="M 571 308 L 571 334 L 396 334 L 396 340"
+            marker-end={`url(#${traceArrowId})`}
+          />
+
+          <rect
+            class="project-visual__boundary project-visual__boundary--optional"
+            x="734"
+            y="92"
+            width="190"
+            height="318"
+            rx="4"
+          />
+          <text class="project-visual__eyebrow" x="754" y="122">
+            SETUP / NETWORK
+          </text>
+          <text class="project-visual__micro" x="754" y="148">
+            required model setup + optional integrations
+          </text>
+          <text class="project-visual__body" x="754" y="196">
+            model provisioning
+          </text>
+          <text class="project-visual__body" x="754" y="238">
+            exercise lookup (optional)
+          </text>
+          <text class="project-visual__body" x="754" y="280">
+            calendar sync (optional)
+          </text>
+          <text class="project-visual__micro" x="754" y="330">
+            NOT FULLY OFFLINE
+          </text>
+          <path
+            class="project-visual__connector project-visual__connector--dashed"
+            d="M 690 246 L 720 246"
+            marker-end={`url(#${arrowId})`}
+          />
+        </g>
+      )}
+
+      {diagram === 'constellation' && (
+        <g class="project-visual__constellation">
+          {constellationPlots.map((plot) => (
+            <g
+              class="project-visual__plot"
+              data-stage={plot.id}
+              transform={`translate(${plot.x} 76)`}
+            >
+              <text class="project-visual__eyebrow" x="0" y="-20">
+                {plot.label}
+              </text>
+              <rect
+                class="project-visual__plot-frame"
+                x="0"
+                y="0"
+                width="240"
+                height="240"
+                rx="2"
+              />
+              <path class="project-visual__axis" d="M 120 12 L 120 228 M 12 120 L 228 120" />
+              <path class="project-visual__decision" d="M 120 12 L 120 228 M 12 120 L 228 120" />
+              <text class="project-visual__micro" x="228" y="112" text-anchor="end">
+                I
+              </text>
+              <text class="project-visual__micro" x="128" y="20">
+                Q
+              </text>
+              {plot.points.map((point) => {
+                const projected = projectConstellationPoint(point, 240);
+                return (
+                  <circle
+                    class={`project-visual__point project-visual__point--${plot.id}`}
+                    cx={projected.x}
+                    cy={projected.y}
+                    r="4.5"
+                  />
+                );
+              })}
+              <text class="project-visual__micro" x="0" y="264">
+                FIXED SEED / 32 POINTS
+              </text>
+            </g>
+          ))}
+          <path
+            class="project-visual__connector"
+            d="M 292 196 L 344 196"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 612 196 L 664 196"
+            marker-end={`url(#${arrowId})`}
+          />
+          <text class="project-visual__micro" x="40" y="352">
+            CONCEPTUAL SIGNAL VIEWS / NOT CHRONOS-DSP RECORDED OUTPUT
+          </text>
+        </g>
+      )}
+
+      {diagram === 'counter-ledger' && (
+        <g class="project-visual__counter-ledger">
+          <text class="project-visual__eyebrow" x="40" y="44">
+            V2 / FIXED-SUBSET EXPERIMENT LEDGER
+          </text>
+          <text class="project-visual__micro" x="920" y="44" text-anchor="end">
+            GROUP BY BINARY
+          </text>
+
+          {[
+            { x: 40, datum: '01', label: 'PMU TRACES', detail: 'repeated runs' },
+            { x: 224, datum: '02', label: 'EVENT GROUPS', detail: '≤ 4 at once' },
+            { x: 408, datum: '03', label: 'SUBSETS', detail: 'training only' },
+            { x: 592, datum: '04', label: 'FIXED SET', detail: 'one selector' },
+            { x: 776, datum: '05', label: 'HELD OUT', detail: 'whole binaries' },
+          ].map((row) => (
+            <g class="project-visual__ledger-row">
+              <rect
+                class="project-visual__stage-box"
+                x={row.x}
+                y="76"
+                width="144"
+                height="102"
+                rx="2"
+              />
+              <text class="project-visual__datum" x={row.x + 14} y="102">
+                {row.datum}
+              </text>
+              <text class="project-visual__stage-label" x={row.x + 14} y="134">
+                {row.label}
+              </text>
+              <text class="project-visual__micro" x={row.x + 14} y="158">
+                {row.detail}
+              </text>
+            </g>
+          ))}
+
+          <path
+            class="project-visual__connector"
+            d="M 184 127 L 208 127"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 368 127 L 392 127"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 552 127 L 576 127"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 736 127 L 760 127"
+            marker-end={`url(#${arrowId})`}
+          />
+
+          <rect class="project-visual__panel" x="40" y="222" width="420" height="126" rx="2" />
+          <text class="project-visual__eyebrow" x="60" y="252">
+            SELECTION BOUNDARY
+          </text>
+          <text class="project-visual__body" x="60" y="282">
+            candidate events → inner validation → threshold
+          </text>
+          <text class="project-visual__body" x="60" y="312">
+            held-out binaries never choose the subset
+          </text>
+          <text class="project-visual__micro" x="60" y="334">
+            NO RUN-LEVEL LEAKAGE
+          </text>
+
+          <path
+            class="project-visual__connector"
+            d="M 664 178 L 664 204 L 250 204 L 250 214"
+            marker-end={`url(#${arrowId})`}
+          />
+          <path
+            class="project-visual__connector"
+            d="M 848 178 L 848 214"
+            marker-end={`url(#${arrowId})`}
+          />
+
+          <rect
+            class="project-visual__panel project-visual__panel--negative"
+            x="500"
+            y="222"
+            width="420"
+            height="126"
+            rx="2"
+          />
+          <text class="project-visual__eyebrow" x="520" y="252">
+            PER-BINARY ORACLE GATE
+          </text>
+          <text class="project-visual__stage-label" x="520" y="286">
+            NEGATIVE CONDITIONING RESULT
+          </text>
+          <text class="project-visual__body" x="520" y="316">
+            do not add a learned routing layer
+          </text>
+          <text class="project-visual__micro" x="520" y="338">
+            CORPUS-SPECIFIC DECISION
+          </text>
+        </g>
+      )}
+
+      {diagram === 'memory-grid' && (
+        <g class="project-visual__memory-grid">
+          <text class="project-visual__eyebrow" x="40" y="44">
+            SIMULATED EXPERT-WEIGHT PATH
+          </text>
+          <text class="project-visual__micro" x="920" y="44" text-anchor="end">
+            BATCH-1 DECODE BOUNDARY
+          </text>
+
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="54"
+            y="70"
+            width="250"
+            height="66"
+            rx="2"
+          />
+          <text class="project-visual__stage-label" x="74" y="98">
+            NEXT-LAYER PREDICTOR
+          </text>
+          <text class="project-visual__micro" x="74" y="120">
+            causal · training-free · bounded
+          </text>
+          <path
+            class="project-visual__path project-visual__connector--dashed"
+            d="M 179 136 L 179 164 L 500 164 L 500 196"
+            marker-end={`url(#${traceArrowId})`}
+          />
+
+          <text class="project-visual__eyebrow" x="54" y="196">
+            OFF-CHIP EXPERTS
+          </text>
+          <g class="project-visual__expert-grid">
+            {Array.from({ length: 16 }, (_, index) => (
+              <rect
+                class={`project-visual__expert-cell ${index % 5 === 0 ? 'project-visual__expert-cell--predicted' : ''}`}
+                x={54 + (index % 4) * 62}
+                y={210 + Math.floor(index / 4) * 42}
+                width="52"
+                height="32"
+                rx="1"
+              />
+            ))}
+          </g>
+          <text class="project-visual__micro" x="54" y="396">
+            RESIDENT WEIGHTS / ONE COPY LINK
+          </text>
+
+          <path
+            class="project-visual__path"
+            d="M 304 294 L 414 294"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <text class="project-visual__micro" x="310" y="278">
+            PREFETCH
+          </text>
+          <text class="project-visual__micro" x="310" y="322">
+            DEMAND PRIORITY
+          </text>
+
+          <rect class="project-visual__boundary" x="430" y="196" width="300" height="190" rx="3" />
+          <text class="project-visual__eyebrow" x="450" y="224">
+            BOUNDED HBM CACHE
+          </text>
+          <text class="project-visual__micro" x="710" y="224" text-anchor="end">
+            CAPACITY C
+          </text>
+          <g class="project-visual__cache-grid">
+            {Array.from({ length: 16 }, (_, index) => (
+              <rect
+                class={`project-visual__cache-cell ${index < 4 ? 'project-visual__cache-cell--predicted' : index < 10 ? 'project-visual__cache-cell--resident' : ''}`}
+                x={450 + (index % 4) * 64}
+                y={242 + Math.floor(index / 4) * 32}
+                width="54"
+                height="24"
+                rx="1"
+              />
+            ))}
+          </g>
+          <text class="project-visual__micro" x="450" y="374">
+            LRU + PREDICTED COPIES
+          </text>
+
+          <path
+            class="project-visual__path"
+            d="M 730 294 L 794 294"
+            marker-end={`url(#${traceArrowId})`}
+          />
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="810"
+            y="226"
+            width="110"
+            height="136"
+            rx="2"
+          />
+          <text class="project-visual__stage-label" x="826" y="258">
+            DECODE
+          </text>
+          <text class="project-visual__micro" x="826" y="284">
+            expert
+          </text>
+          <text class="project-visual__micro" x="826" y="304">
+            request
+          </text>
+          <path class="project-visual__stall" d="M 826 328 L 902 328" />
+          <text class="project-visual__micro" x="826" y="350">
+            STALL
+          </text>
+
+          <text class="project-visual__micro" x="430" y="414">
+            TRAFFIC + LATENCY + ENERGY ARE MODEL OUTPUTS
+          </text>
+        </g>
+      )}
+
+      {diagram === 'instruction-trace' && (
+        <g class="project-visual__instruction-trace">
+          <text class="project-visual__eyebrow" x="40" y="44">
+            RV32I SUBSET / FUNCTIONAL TRACE
+          </text>
+          <text class="project-visual__micro" x="920" y="44" text-anchor="end">
+            NOT CYCLE-ACCURATE
+          </text>
+
+          <rect class="project-visual__panel" x="40" y="72" width="230" height="304" rx="2" />
+          <text class="project-visual__eyebrow" x="60" y="102">
+            ASSEMBLY
+          </text>
+          <text class="project-visual__trace-code" x="60" y="142">
+            addi x1, x0, 5
+          </text>
+          <text class="project-visual__trace-code" x="60" y="178">
+            addi x2, x0, 7
+          </text>
+          <text class="project-visual__trace-code" x="60" y="214">
+            add x3, x1, x2
+          </text>
+          <text class="project-visual__trace-code" x="60" y="250">
+            sw x3, 0(x0)
+          </text>
+          <text class="project-visual__micro" x="60" y="304">
+            LABELS → ADDRESSES
+          </text>
+          <text class="project-visual__micro" x="60" y="326">
+            SUPPORTED TYPES
+          </text>
+          <text class="project-visual__micro" x="60" y="348">
+            R · I · S · B · J
+          </text>
+
+          <path
+            class="project-visual__connector"
+            d="M 270 218 L 302 218"
+            marker-end={`url(#${arrowId})`}
+          />
+          <rect
+            class="project-visual__panel project-visual__panel--raised"
+            x="318"
+            y="72"
+            width="602"
+            height="118"
+            rx="2"
+          />
+          <text class="project-visual__eyebrow" x="338" y="102">
+            INSTRUCTION FIELDS / ADDI EXAMPLE
+          </text>
+          <text class="project-visual__trace-code" x="338" y="138">
+            imm[11:0] | rs1=0 | funct3=000 | rd=1 | opcode=0010011
+          </text>
+          <text class="project-visual__micro" x="338" y="166">
+            ENCODING → FETCH → DECODE → EXECUTE
+          </text>
+
+          <path
+            class="project-visual__connector"
+            d="M 620 190 L 620 220"
+            marker-end={`url(#${arrowId})`}
+          />
+          <rect class="project-visual__panel" x="318" y="236" width="602" height="188" rx="2" />
+          <text class="project-visual__eyebrow" x="338" y="266">
+            STATE AFTER EACH INSTRUCTION
+          </text>
+
+          <path
+            class="project-visual__rule"
+            d="M 338 282 L 900 282 M 338 316 L 900 316 M 338 350 L 900 350 M 338 384 L 900 384"
+          />
+          <path
+            class="project-visual__rule"
+            d="M 410 282 L 410 384 M 610 282 L 610 384 M 770 282 L 770 384"
+          />
+          <text class="project-visual__micro" x="338" y="304">
+            PC
+          </text>
+          <text class="project-visual__micro" x="430" y="304">
+            INSTRUCTION
+          </text>
+          <text class="project-visual__micro" x="630" y="304">
+            REGISTERS
+          </text>
+          <text class="project-visual__micro" x="790" y="304">
+            MEMORY
+          </text>
+          <text class="project-visual__trace-code" x="338" y="338">
+            0x08
+          </text>
+          <text class="project-visual__trace-code" x="430" y="338">
+            ADD
+          </text>
+          <text class="project-visual__trace-code" x="630" y="338">
+            x3 = 12
+          </text>
+          <text class="project-visual__trace-code" x="790" y="338">
+            —
+          </text>
+          <text class="project-visual__trace-code" x="338" y="372">
+            0x0C
+          </text>
+          <text class="project-visual__trace-code" x="430" y="372">
+            SW
+          </text>
+          <text class="project-visual__trace-code" x="630" y="372">
+            x3 = 12
+          </text>
+          <text class="project-visual__trace-code" x="790" y="372">
+            mem[0] = 12
+          </text>
+
+          <text class="project-visual__micro" x="40" y="414">
+            32 REGISTERS / BYTE-ADDRESSED MEMORY / 64 KB MODEL
+          </text>
+        </g>
+      )}
+    </svg>
+
+    <figcaption class="project-visual__caption">
+      <span class="project-visual__caption-text">{caption}</span>
+      <span class="project-visual__rights">Original portfolio schematic</span>
+      {evidenceIds.length > 0 && (
+        <span class="project-visual__evidence">Evidence rows: {evidenceIds.join(' · ')}</span>
+      )}
+      {isSignalDiagram && <span class="project-visual__evidence">{SIMULATION_LABEL}</span>}
+    </figcaption>
+  </figure>
+)}

@@ -1,0 +1,82 @@
+---
+import { getEntry } from 'astro:content';
+import ProjectCard from '../../components/ProjectCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { archiveProjects, featuredProjects } from '../../data/curation';
+import { requireProjectEntries } from '../../data/projects';
+import { site } from '../../data/site';
+
+async function resolveProjects(slugs: readonly string[]) {
+  const entries = await Promise.all(slugs.map((slug) => getEntry('projects', slug)));
+  return requireProjectEntries(slugs, entries);
+}
+
+const featured = await resolveProjects(featuredProjects);
+const archive = await resolveProjects(archiveProjects);
+const description =
+  'Selected engineering work by Leelansh Kharbanda: wireless-channel simulation, local-first software, browser DSP, hardware-counter research, and memory-system simulation.';
+---
+
+<BaseLayout title="Work" description={description}>
+  <section class="page-hero page-shell" aria-labelledby="page-title">
+    <p class="eyebrow">Work index · 5 case studies + 3 archive records</p>
+    <h1 id="page-title">Evidence before spectacle.</h1>
+    <p class="page-hero__intro">
+      Each project is presented as an argument: the question, constraints, mechanism, contribution,
+      artifact, result type, and limits. Team credit and simulation boundaries stay visible.
+    </p>
+  </section>
+
+  <section class="work-section page-shell" aria-labelledby="featured-title">
+    <SectionHeading
+      id="W-01"
+      headingId="featured-title"
+      title="Case studies"
+      intro="The five projects with the strongest evidence and narrative range."
+    />
+    <div class="project-list">
+      {featured.map((project, index) => (
+        <ProjectCard
+          project={project}
+          index={index}
+          variant={index === 0 ? 'lead' : 'standard'}
+          showVisual={true}
+        />
+      ))}
+    </div>
+  </section>
+
+  <section class="archive-section" aria-labelledby="archive-title">
+    <div class="page-shell">
+      <SectionHeading
+        id="W-02"
+        headingId="archive-title"
+        title="Archive"
+        intro="Smaller or earlier team work, kept compact and explicitly credited."
+      />
+      <div class="archive-grid">
+        {archive.map((project, index) => (
+          <ProjectCard
+            project={project}
+            index={index + featured.length}
+            variant="archive"
+            showVisual={false}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="work-contact page-shell" aria-labelledby="work-contact-title">
+    <SectionHeading
+      id="W-03"
+      headingId="work-contact-title"
+      title="Want to inspect the source?"
+      intro={`The public GitHub profile is the index for the original repositories behind these records.`}
+    />
+    <a class="button button--primary" href={site.github} target="_blank" rel="noreferrer noopener">
+      Open GitHub <span aria-hidden="true">↗</span>
+    </a>
+  </section>
+</BaseLayout>

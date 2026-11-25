@@ -1,0 +1,131 @@
+---
+import ContactBlock from '../components/ContactBlock.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { toolkit } from '../data/toolkit';
+
+const description =
+  'About Leelansh Kharbanda: ECE undergraduate at IIIT Delhi working across signal processing, computer architecture, hardware telemetry, and local-first software.';
+---
+
+<BaseLayout title="About" description={description}>
+  <section class="page-hero page-shell" aria-labelledby="page-title">
+    <p class="eyebrow">{site.education}</p>
+    <h1 id="page-title">I like systems that can explain themselves.</h1>
+    <p class="page-hero__intro">
+      My work sits between software and hardware: not because every project is a physical device,
+      but because signals, memory, instructions, and telemetry all become more useful when their
+      behavior can be inspected.
+    </p>
+  </section>
+
+  <section class="about-story page-shell" aria-labelledby="story-title">
+    <SectionHeading
+      id="A-01"
+      headingId="story-title"
+      title="A recurring set of questions"
+      intro="The projects change; the discipline of making evidence visible stays the same."
+    />
+    <div class="about-story__grid">
+      <div class="prose">
+        <p>
+          I am Leelansh Kharbanda, a B.Tech ECE undergraduate at IIIT Delhi. My projects range from
+          geometric wireless-channel simulation and browser DSP to computer-architecture
+          experiments, hardware-counter research, and a local-first desktop prototype.
+        </p>
+        <p>
+          The common thread is not a single stack. It is the question of how a hidden process
+          becomes understandable. A signal path can be traced from geometry to received symbols. A
+          memory system can be modeled as expert movement under a budget. An instruction can be
+          followed through register and memory state. A recommendation can expose its context,
+          uncertainty, and feedback.
+        </p>
+        <p>
+          I care about the boundary around a claim as much as the claim itself. A simulation is not
+          a hardware measurement. A team artifact is not sole authorship. A live URL is not proof of
+          adoption. This portfolio keeps those distinctions visible and links each project back to
+          source, tests, releases, reports, or demos wherever the evidence exists.
+        </p>
+      </div>
+      <aside class="about-principles" aria-label="Working principles">
+        <p class="datum-label">WORKING PRINCIPLES</p>
+        <ol>
+          <li>
+            <strong>Model the system.</strong> Make assumptions and boundaries explicit.
+          </li>
+          <li>
+            <strong>Expose the state.</strong> Let people inspect what changes and why.
+          </li>
+          <li>
+            <strong>Show the evidence.</strong> Keep source, tests, and limits close.
+          </li>
+          <li>
+            <strong>Credit the work.</strong> Separate individual, team, and upstream contributions.
+          </li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <section class="toolkit-section" aria-labelledby="toolkit-title">
+    <div class="page-shell">
+      <SectionHeading
+        id="A-02"
+        headingId="toolkit-title"
+        title="Toolkit"
+        intro="Tools grouped by how they appear in the project record—not by proficiency score."
+      />
+      <div class="toolkit-grid">
+        {toolkit.map((group) => (
+          <div class="toolkit-group">
+            <h3>{group.label}</h3>
+            <ul>
+              {group.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="leadership-section page-shell" aria-labelledby="leadership-title">
+    <SectionHeading
+      id="A-03"
+      headingId="leadership-title"
+      title="Beyond the repository"
+      intro="Editorial coordination is another way to make complex work legible."
+    />
+    <div class="leadership-card">
+      <div>
+        <p class="eyebrow">Tasveer · IIIT Delhi</p>
+        <h3>Coordinating a campus media archive</h3>
+      </div>
+      <p>
+        I coordinate Tasveer, IIIT Delhi's media society. The team's editorial site brings together
+        photo essays, event coverage, and the people behind the work. It is shared creative and web
+        work; this portfolio links to the live site without republishing society photography.
+      </p>
+      <a
+        class="arrow-link"
+        href="https://leelanshkharbanda.github.io/tasveer/"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        Visit Tasveer <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section page-shell" aria-labelledby="contact-title">
+    <SectionHeading
+      id="A-04"
+      headingId="contact-title"
+      title="Start with the problem, not the pitch."
+      intro="Email about a relevant role, research question, or project collaboration."
+    />
+    <ContactBlock />
+  </section>
+</BaseLayout>

@@ -1,0 +1,42 @@
+---
+import { site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isWork = path.startsWith('/work');
+const links = [
+  { href: '/work/', label: 'Work', current: isWork },
+  { href: '/about/', label: 'About', current: path === '/about/' },
+  { href: '/resume/', label: 'Résumé', current: path === '/resume/' },
+  { href: '/#contact', label: 'Contact', current: false },
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner page-shell">
+    <a class="identity-link" href="/" title="Home">
+      <span class="identity-link__mark" aria-hidden="true">
+        LK
+      </span>
+      <span class="identity-link__name">{site.name}</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {links.map((link) => (
+        <a href={link.href} aria-current={link.current ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <details class="mobile-nav">
+      <summary>Menu</summary>
+      <nav aria-label="Mobile navigation">
+        {links.map((link) => (
+          <a href={link.href} aria-current={link.current ? 'page' : undefined}>
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </details>
+  </div>
+</header>

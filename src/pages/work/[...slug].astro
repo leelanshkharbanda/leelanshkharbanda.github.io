@@ -1,0 +1,240 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
+import ProjectVisual from '../../components/ProjectVisual.astro';
+import TraceInspector from '../../components/react/TraceInspector.tsx';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { archiveProjects, featuredProjects } from '../../data/curation';
+import { SIGNAL_STAGES, formatSignalMetric } from '../../lib/signal-model';
+import { evidenceLabels, roleLabels, statusLabels } from '../../data/site';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const order = [...featuredProjects, ...archiveProjects];
+const currentIndex = order.indexOf(project.id as (typeof order)[number]);
+const nextSlug = order[(currentIndex + 1) % order.length];
+const nextProject = await getEntry('projects', nextSlug);
+const credit = data.creditLabel
+  ? data.creditLabel
+  : data.teamSize
+    ? `${roleLabels[data.role]} · ${data.teamSize} people`
+    : roleLabels[data.role];
+const description = data.metaDescription;
+const pageTitle = data.title.includes(':') ? data.title.split(':')[0] : data.title;
+const projectDatum = `P-${String(Math.max(0, currentIndex) + 1).padStart(2, '0')}`;
+const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padStart(2, '0')}`);
+---
+
+<BaseLayout title={pageTitle} description={description}>
+  <article class={`case-study case-study--${data.depth}`}>
+    <header class="case-hero page-shell">
+      <a class="back-link" href="/work/">
+        ← Back to work
+      </a>
+      <p class="eyebrow">
+        Project record {projectDatum} · {statusLabels[data.status]}
+      </p>
+      <h1>{data.title}</h1>
+      <p class="case-hero__question">{data.question}</p>
+      <p class="case-hero__summary">{data.summary}</p>
+
+      <dl class="case-facts">
+        <div>
+          <dt>Role</dt>
+          <dd>{credit}</dd>
+        </div>
+        <div>
+          <dt>Evidence class</dt>
+          <dd>{evidenceLabels[data.evidenceClass]}</dd>
+        </div>
+        <div>
+          <dt>Checked</dt>
+          <dd>{data.checkedOn}</dd>
+        </div>
+        <div>
+          <dt>Stack</dt>
+          <dd>{data.stack.join(' · ')}</dd>
+        </div>
+      </dl>
+
+      {data.statusNote && <p class="case-status-note">{data.statusNote}</p>}
+
+      <div class="case-links">
+        {data.links.map((link) => (
+          <a
+            class="button button--secondary"
+            href={link.url}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {link.label} <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </header>
+
+    <div class="page-shell case-body">
+      <aside class="case-summary" aria-label="Recruiter summary">
+        <p class="datum-label">SUMMARY</p>
+        <p>{data.recruiterSummary}</p>
+        {data.creditNote && <p class="case-summary__credit">{data.creditNote}</p>}
+      </aside>
+
+      {data.diagram !== 'none' && (
+        <ProjectVisual
+          id={`case-${project.id}`}
+          diagram={data.diagram}
+          alt={data.diagramAlt}
+          caption={data.diagramCaption}
+          evidenceIds={evidenceIds}
+        />
+      )}
+
+      {project.id === 'chronos-dsp' && (
+        <section class="trace-section" aria-labelledby="trace-title">
+          <div class="trace-section__heading">
+            <p class="datum-label">INTERACTIVE EVIDENCE</p>
+            <h2 id="trace-title">Inspect the signal path</h2>
+            <p>
+              Move through four stages of an illustrative signal path. The controls change the view,
+              not a live Chronos-DSP session.
+            </p>
+          </div>
+          <TraceInspector client:visible />
+          <ol class="trace-summary">
+            <li>
+              <strong>Source:</strong> a deterministic QPSK symbol stream.
+            </li>
+            <li>
+              <strong>Channel:</strong> illustrative multipath delay, attenuation, and noise.
+            </li>
+            <li>
+              <strong>Receiver:</strong> hard QPSK symbol decisions from simulated IQ; the portfolio
+              fixture’s phase correction is illustrative, not a Chronos synchronizer.
+            </li>
+            <li>
+              <strong>Output:</strong> constellation and bit-error observations.
+            </li>
+          </ol>
+          <details class="trace-static-details">
+            <summary>Static stage ledger</summary>
+            <div class="table-scroll" tabindex="0" aria-label="Static signal-stage ledger">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Stage</th>
+                    <th scope="col">What changes</th>
+                    <th scope="col">Illustrative metrics</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SIGNAL_STAGES.map((stage) => (
+                    <tr>
+                      <th scope="row">
+                        {stage.datum} · {stage.label}
+                      </th>
+                      <td>{stage.change}</td>
+                      <td>
+                        {stage.metrics.map((metric) => (
+                          <span class="trace-static-metric">
+                            {metric.label}: {formatSignalMetric(metric)}
+                            {metric.unit ? ` ${metric.unit}` : ''}
+                          </span>
+                        ))}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <p class="trace-disclaimer">
+            Illustrative simulation · geometric channel concept · not hardware-measured.
+          </p>
+        </section>
+      )}
+
+      {data.results.length > 0 && (
+        <section class="evidence-ledger" aria-labelledby="ledger-title">
+          <div class="evidence-ledger__heading">
+            <p class="datum-label">EVIDENCE LEDGER</p>
+            <h2 id="ledger-title">Claims, conditions, and sources</h2>
+          </div>
+          <section class="table-scroll" tabindex="0" aria-label="Project evidence ledger">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Claim</th>
+                  <th scope="col">Value or observation</th>
+                  <th scope="col">Evidence class</th>
+                  <th scope="col">Method and conditions</th>
+                  <th scope="col">Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.results.map((result, index) => (
+                  <tr>
+                    <th scope="row">
+                      <span class="evidence-id">{evidenceIds[index]}</span>
+                      {result.claim}
+                    </th>
+                    <td>{result.value}</td>
+                    <td>{evidenceLabels[result.evidenceClass]}</td>
+                    <td>{result.method}</td>
+                    <td>
+                      <a href={result.source} target="_blank" rel="noreferrer noopener">
+                        {evidenceIds[index]} · Open source <span aria-hidden="true">↗</span>
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        </section>
+      )}
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <section class="case-limits" aria-labelledby="limits-title">
+        <p class="datum-label">BOUNDARY CONDITIONS</p>
+        <h2 id="limits-title">Boundary conditions</h2>
+        <ul>
+          {data.limits.map((limit) => (
+            <li>{limit}</li>
+          ))}
+        </ul>
+        <p class="case-next">
+          <strong>Next useful step:</strong> {data.nextStep}
+        </p>
+      </section>
+    </div>
+
+    {nextProject && (
+      <nav class="next-project" aria-label="Next project">
+        <div class="page-shell next-project__inner">
+          <p class="datum-label">NEXT RECORD</p>
+          <a href={`/work/${nextProject.id}/`}>
+            <span>{nextProject.data.title}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </nav>
+    )}
+  </article>
+</BaseLayout>

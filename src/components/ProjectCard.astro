@@ -1,0 +1,69 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { evidenceLabels, roleLabels, statusLabels } from '../data/site';
+import ProjectVisual from './ProjectVisual.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index: number;
+  variant?: 'lead' | 'standard' | 'archive';
+  showVisual?: boolean;
+}
+
+const { project, index, variant = 'standard', showVisual = true } = Astro.props;
+const data = project.data;
+const datum = `P-${String(index + 1).padStart(2, '0')}`;
+const credit = data.creditLabel
+  ? data.creditLabel
+  : data.teamSize
+    ? `${roleLabels[data.role]} · ${data.teamSize} people`
+    : roleLabels[data.role];
+const primaryLink = data.links.find((link) => link.kind === 'source');
+---
+
+<article class={`project-card project-card--${variant}`}>
+  <div class="project-card__datum">
+    <span class="sr-only">Project record </span>
+    {datum}
+  </div>
+  <div class="project-card__content">
+    <div class="project-card__meta">
+      <span>{statusLabels[data.status]}</span>
+      <span>{credit}</span>
+      <span>{evidenceLabels[data.evidenceClass]}</span>
+    </div>
+    <h3>
+      <a href={`/work/${project.id}/`}>{data.title}</a>
+    </h3>
+    {data.statusNote && <p class="project-card__status-note">{data.statusNote}</p>}
+    <p class="project-card__question">{data.question}</p>
+    <p class="project-card__summary">{data.summary}</p>
+    <ul class="tag-list" aria-label="Technologies used">
+      {data.stack.slice(0, 4).map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+    <p class="project-card__limit">
+      <strong>Limit:</strong> {data.limits[0]}
+    </p>
+    <div class="project-card__actions">
+      <a class="arrow-link" href={`/work/${project.id}/`}>
+        Read case study <span aria-hidden="true">→</span>
+      </a>
+      {primaryLink && (
+        <a class="quiet-link" href={primaryLink.url} target="_blank" rel="noreferrer noopener">
+          Source <span aria-hidden="true">↗</span>
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      )}
+    </div>
+  </div>
+  {showVisual && data.diagram !== 'none' && (
+    <ProjectVisual
+      id={`card-${project.id}`}
+      diagram={data.diagram}
+      alt={data.diagramAlt}
+      caption={data.diagramCaption}
+    />
+  )}
+</article>

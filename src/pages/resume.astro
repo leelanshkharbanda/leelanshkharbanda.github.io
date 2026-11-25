@@ -1,0 +1,124 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { featuredProjects } from '../data/curation';
+import { requireProjectEntries } from '../data/projects';
+import { evidenceLabels, roleLabels, site, statusLabels } from '../data/site';
+import { toolkit } from '../data/toolkit';
+
+const entries = await Promise.all(featuredProjects.map((slug) => getEntry('projects', slug)));
+const projects = requireProjectEntries(featuredProjects, entries);
+const description =
+  'Print-friendly résumé for Leelansh Kharbanda, B.Tech ECE student at IIIT Delhi, with selected software and hardware engineering projects.';
+---
+
+<BaseLayout title="Résumé" description={description}>
+  <div class="resume-page page-shell">
+    <div class="resume-actions">
+      <a class="back-link" href="/">
+        ← Home
+      </a>
+      <button class="button button--secondary print-button" type="button" hidden>
+        Print / Save as PDF
+      </button>
+    </div>
+
+    <header class="resume-header">
+      <div>
+        <p class="eyebrow">Résumé · Evidence checked {site.evidenceChecked}</p>
+        <h1>{site.name}</h1>
+        <p class="resume-header__positioning">{site.positioning}</p>
+        <p>{site.education}</p>
+      </div>
+      <address>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={site.github} target="_blank" rel="noreferrer noopener">
+          GitHub ↗
+        </a>
+        <a href={site.linkedin} target="_blank" rel="noreferrer noopener">
+          LinkedIn ↗
+        </a>
+      </address>
+    </header>
+
+    <section class="resume-section" aria-labelledby="resume-profile-title">
+      <h2 id="resume-profile-title">Profile</h2>
+      <p>
+        ECE undergraduate working across signal processing, computer architecture, hardware-counter
+        telemetry, and local-first software. I build systems and simulations that make technical
+        behavior inspectable, with explicit constraints, source-linked evidence, collaboration
+        credit, and limits.
+      </p>
+    </section>
+
+    <section class="resume-section" aria-labelledby="resume-education-title">
+      <h2 id="resume-education-title">Education</h2>
+      <div class="resume-entry">
+        <div>
+          <h3>Indraprastha Institute of Information Technology, Delhi</h3>
+          <p>B.Tech · Electronics and Communication Engineering</p>
+        </div>
+        <p>2024–present</p>
+      </div>
+    </section>
+
+    <section class="resume-section" aria-labelledby="resume-projects-title">
+      <h2 id="resume-projects-title">Selected projects</h2>
+      {projects.map((project) => {
+        const credit = project.data.creditLabel
+          ? project.data.creditLabel
+          : project.data.teamSize
+            ? `${roleLabels[project.data.role]} · ${project.data.teamSize} people`
+            : roleLabels[project.data.role];
+
+        return (
+          <article class="resume-project">
+            <div class="resume-project__heading">
+              <h3>{project.data.title}</h3>
+              <p>
+                {statusLabels[project.data.status]} · {evidenceLabels[project.data.evidenceClass]}
+              </p>
+            </div>
+            <p class="resume-project__role">{credit}</p>
+            {project.data.statusNote && (
+              <p class="resume-project__note">{project.data.statusNote}</p>
+            )}
+            <p>{project.data.question}</p>
+            <p class="resume-project__stack">{project.data.stack.join(' · ')}</p>
+            <a href={`/work/${project.id}/`}>Case study and evidence →</a>
+          </article>
+        );
+      })}
+    </section>
+
+    <section class="resume-section" aria-labelledby="resume-toolkit-title">
+      <h2 id="resume-toolkit-title">Toolkit</h2>
+      <div class="resume-toolkit">
+        {toolkit.slice(0, 3).map((group) => (
+          <div>
+            <h3>{group.label}</h3>
+            <p>{group.items.join(' · ')}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="resume-section" aria-labelledby="resume-leadership-title">
+      <h2 id="resume-leadership-title">Leadership</h2>
+      <div class="resume-entry">
+        <div>
+          <h3>Tasveer — The Media Society of IIIT Delhi</h3>
+          <p>Event lead and coordinator; shared editorial, coverage, and web work.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const printButton = document.querySelector<HTMLButtonElement>('.print-button');
+  if (printButton) {
+    printButton.hidden = false;
+    printButton.addEventListener('click', () => window.print());
+  }
+</script>

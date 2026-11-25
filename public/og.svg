@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f4f1ea"/>
+  <rect x="0" y="0" width="72" height="630" fill="#171917"/>
+  <rect x="72" y="0" width="8" height="630" fill="#c33b1b"/>
+  <g fill="#555a55" font-family="monospace" font-size="18" letter-spacing="3">
+    <text x="132" y="86">LEELANSH KHARBANDA / EVIDENCE 2026</text>
+    <text x="132" y="530">B.TECH ECE · IIIT DELHI</text>
+  </g>
+  <g fill="#171917" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="-4">
+    <text x="126" y="224" font-size="82">Inspectable systems</text>
+    <text x="126" y="318" font-size="82">across software</text>
+    <text x="126" y="412" font-size="82">and hardware.</text>
+  </g>
+  <g fill="none" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M790 458h70l24-92 46 174 36-128 28 46h106" stroke="#c33b1b" stroke-width="10"/>
+    <path d="M790 500h310" stroke="#116c73" stroke-width="4"/>
+  </g>
+  <g fill="#116c73" font-family="monospace" font-size="16" letter-spacing="2">
+    <text x="790" y="544">SIGNAL / SYSTEM / EVIDENCE</text>
+  </g>
+</svg>

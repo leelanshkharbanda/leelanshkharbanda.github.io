@@ -1,0 +1,53 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class={`contact-block${compact ? ' contact-block--compact' : ''}`}>
+  <div class="contact-block__main">
+    <p class="eyebrow">Start a conversation</p>
+    <a class="contact-block__email" href={`mailto:${site.email}?subject=Portfolio%20inquiry`}>
+      {site.email}
+    </a>
+    <button class="text-button copy-email" type="button" data-copy-email={site.email} hidden>
+      Copy email
+    </button>
+    <span class="copy-status" role="status" aria-live="polite"></span>
+  </div>
+  <div class="contact-block__links">
+    <a href={site.github} target="_blank" rel="noreferrer noopener">
+      GitHub <span aria-hidden="true">↗</span>
+      <span class="sr-only"> (opens in a new tab)</span>
+    </a>
+    <a href={site.linkedin} target="_blank" rel="noreferrer noopener">
+      LinkedIn <span aria-hidden="true">↗</span>
+      <span class="sr-only"> (opens in a new tab)</span>
+    </a>
+    <a href="/resume/">Résumé</a>
+  </div>
+</div>
+
+<script>
+  const copyButtons = document.querySelectorAll<HTMLButtonElement>('[data-copy-email]');
+
+  for (const button of copyButtons) {
+    const status = button.parentElement?.querySelector<HTMLElement>('.copy-status');
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      const email = button.dataset.copyEmail;
+      if (!email) return;
+
+      try {
+        await navigator.clipboard.writeText(email);
+        if (status) status.textContent = 'Email copied.';
+      } catch {
+        if (status) status.textContent = 'Select the email address or use the mail link.';
+      }
+    });
+  }
+</script>
