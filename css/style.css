@@ -192,7 +192,6 @@ h1 em { font-family: ui-serif, Georgia, "Times New Roman", serif; font-weight: 4
 }
 @media (max-width: 768px) {
   .glyph { right: -40%; bottom: auto; top: 34%; width: min(160vw, 640px); }
-  .hero { padding-bottom: 28px; }
   .index-list a { grid-template-columns: 40px minmax(0, 1fr); }
   .index-list a > .mono:last-child { grid-column: 2; }
   .contact-list li { grid-template-columns: 1fr; gap: 0; }
