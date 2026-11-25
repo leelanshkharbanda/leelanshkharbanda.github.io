@@ -45,6 +45,19 @@ Source: https://github.com/leelanshkharbanda/leelanshkharbanda.github.io (branch
 - The 320px simulation caption begins at the fold; it is not clipped, and CTA/links are fully visible. Optional future polish: trim hero top padding at <=360px.
 - `research/` is served by Pages as static files. It contains only source-cited public notes, no private data or internal council splits.
 
+## Production-ready variants (added 2026-11-25)
+
+Four complete alternative directions now ship under `/variants/`, each with its own council-approved build and a preview in the chooser page:
+
+- `field-notes/` — warm editorial dossier, Palatino display, numbered annotation rails. Full four-seat council approved after one fix round (final 9/9/9/9).
+- `signal-lab/` — dark modular instrument bench with honest tabbed channel models. Full four-seat council approved after one fix round (final 9/9/9.5/9).
+- `kinetic-atlas/` — cinematic dark/light chapters, recurring impulse trace, scroll-linked reveals. Full council approved; three low residuals (header ghosting, 13px labels, 6px eyebrow overlap) fixed and re-confirmed (final 9.5/9.5/9/10).
+- `index-object/` — light catalogue cover, serif statement headline, focus-reveal dossiers. Full council approved; two low residuals (320px mid-word wrap, text-spacing URL overflow) fixed and re-confirmed (final 9/10/10/10).
+
+All four: one h1, 3 case studies, branded 404, no external runtime requests or fonts, no JS build step, AA contrast, 44px targets, 320px reflow, no-JS and reduced-motion fallbacks, and no claims beyond the verified GitHub record. The harness injects a 🐴 into `document.title` in screenshots; the served HTML is clean.
+
+Open `https://leelanshkharbanda.github.io/variants/` to choose. The original v2 instrument-stage build remains the root site.
+
 ## Editing locally
 
 Open `index.html` directly, or serve the folder with any static server. The site needs no build step. Push to `main` to publish.

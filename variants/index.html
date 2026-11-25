@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio options — Leelansh Kharbanda</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{color-scheme:light dark;--paper:#F4F1E9;--ink:#16181B;--muted:#66635D;--rule:rgba(22,24,27,.2);--accent:#B23A20}
+  @media (prefers-color-scheme:dark){:root{--paper:#101214;--ink:#F2EFE7;--muted:#AAA69E;--rule:rgba(242,239,231,.2);--accent:#FF6B45}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:clamp(24px,5vw,64px)}
+  header{border-bottom:1px solid var(--rule);padding-bottom:24px;margin-bottom:40px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.05;margin:0 0 12px;letter-spacing:-.02em}
+  .lede{max-width:62ch;margin:0;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+  .card{border:1px solid var(--rule);display:flex;flex-direction:column;min-height:100%}
+  .card img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;background:#111}
+  .card-body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;color:var(--accent)}
+  h2{font-size:1.35rem;line-height:1.2;margin:0}
+  p{margin:0;color:var(--muted)}
+  .go{display:inline-flex;align-items:center;min-height:44px;margin-top:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;text-decoration:none;border-bottom:1px solid var(--rule)}
+  footer{margin-top:48px;border-top:1px solid var(--rule);padding-top:24px;color:var(--muted)}
+  footer a{min-height:44px;display:inline-flex;align-items:center;margin-right:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Four portfolio directions.</h1>
+    <p class="lede">All four are complete, static, and council-approved for production. Each keeps the same verified project facts and accessibility gates; they differ in art direction, not substance. Pick one, or mix and match sections.</p>
+  </header>
+  <main class="grid">
+    <article class="card">
+      <img src="./field-notes/preview.png" alt="Field Notes hero: warm editorial dossier with serif headline and figure plate">
+      <div class="card-body">
+        <span class="tag">A / FIELD NOTES</span>
+        <h2>Quiet editorial dossier</h2>
+        <p>Warm paper, numbered annotation rails, Palatino display and figure-first case sheets. Recruiter-legible and calm.</p>
+        <a class="go" href="./field-notes/">Open Field Notes ↗</a>
+      </div>
+    </article>
+    <article class="card">
+      <img src="./signal-lab/preview.png" alt="Signal Lab hero: dark modular instrument panels with lime accent">
+      <div class="card-body">
+        <span class="tag">B / SIGNAL LAB</span>
+        <h2>Modular instrument bench</h2>
+        <p>Navy panels, lime telemetry, honest interactive channel model and tabbed datasheets. The most technical option.</p>
+        <a class="go" href="./signal-lab/">Open Signal Lab ↗</a>
+      </div>
+    </article>
+    <article class="card">
+      <img src="./kinetic-atlas/preview.png" alt="Kinetic Atlas hero: cinematic dark chapter with impulse trace and coral accent">
+      <div class="card-body">
+        <span class="tag">C / KINETIC ATLAS</span>
+        <h2>Cinematic scroll essay</h2>
+        <p>Alternating dark and light chapters, a recurring impulse trace and scroll-linked reveals. The most immersive option.</p>
+        <a class="go" href="./kinetic-atlas/">Open Kinetic Atlas ↗</a>
+      </div>
+    </article>
+    <article class="card">
+      <img src="./index-object/preview.png" alt="Index Object hero: light catalogue cover with large serif statement and project numerals">
+      <div class="card-body">
+        <span class="tag">D / INDEX OBJECT</span>
+        <h2>Gallery / dossier grid</h2>
+        <p>Catalogue cover, oversized statement headline, restrained accent and focus-reveal project dossiers. The most typographic option.</p>
+        <a class="go" href="./index-object/">Open Index Object ↗</a>
+      </div>
+    </article>
+  </main>
+  <footer>
+    <p>The original instrument-stage build remains at the <a href="../">site root</a>.</p>
+    <a href="https://github.com/leelanshkharbanda/leelanshkharbanda.github.io">Source repository ↗</a>
+  </footer>
+</div>
+</body>
+</html>

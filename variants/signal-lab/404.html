@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:,"/>
+<meta name="description" content="Signal lost — the requested bench page is not part of SIGNAL LAB.">
+<title>404 / SIGNAL LOST — SIGNAL LAB</title>
+<script>try{var t=localStorage.getItem('signal-lab-theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">[ LK ]</span><span class="brand-name">SIGNAL LAB</span></a>
+    <nav class="site-nav" aria-label="Primary"><a href="index.html#work">Work</a><a href="index.html#index">Index</a><a href="index.html#thinking">Thinking</a><a href="index.html#about">About</a><a href="index.html#contact">Contact</a></nav>
+    <span class="panel-state" aria-hidden="true">NO CARRIER</span>
+  </div>
+</header>
+<main id="main">
+  <section class="error-bench" aria-labelledby="error-title">
+    <p class="eyebrow"><span class="eyebrow-num">ERR</span> / CHANNEL STATUS · NO CARRIER</p>
+    <h1 id="error-title">404 / Signal lost.</h1>
+    <p class="lede">The requested instrument is not on this bench. The path you followed ends here, with no measured response to report.</p>
+    <div class="error-readout grid-field" role="img" aria-label="A flat baseline trace with a dashed gap marking the missing channel.">
+      <svg viewBox="0 0 640 180" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 90 H640" class="d-floor"/>
+        <path d="M0 72 H150" class="d-solid"/><path d="M150 72 C210 30 240 150 300 90 S400 40 470 90 H640" class="d-dash"/>
+        <path d="M170 20 V160 M200 20 V160" class="d-measure"/>
+      </svg>
+      <span class="error-figure" aria-hidden="true">404</span>
+    </div>
+    <dl class="error-meta"><div><dt>STATUS</dt><dd>Path not found</dd></div><div><dt>RESPONSE</dt><dd>None measured</dd></div><div><dt>ACTION</dt><dd>Return to the bench</dd></div></dl>
+    <div class="hero-actions"><a class="action" href="index.html">Return to the bench <span aria-hidden="true">→</span></a><a href="index.html#work">Read the datasheets</a><a href="mailto:leelansh24319@iiitd.ac.in">Email</a></div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner"><p class="footer-brand"><span aria-hidden="true">[ LK ]</span> SIGNAL LAB</p><p class="footer-note">Static workbench. No trackers, no external assets, no build step.</p><a href="index.html">Home</a></div>
+</footer>
+</body>
+</html>

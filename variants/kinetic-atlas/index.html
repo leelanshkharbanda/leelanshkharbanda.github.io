@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="KINETIC ATLAS — a static scroll essay by Leelansh Kharbanda, an ECE undergraduate at IIIT Delhi working at the software/hardware boundary.">
+<title>KINETIC ATLAS — Leelansh Kharbanda</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="sig-trace" viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <path d="M0 160 H120 L138 160 L156 54 L174 258 L192 98 L212 178 L232 132 L254 158 L288 160 H420 L438 160 L456 68 L474 244 L492 102 L512 172 L532 134 L554 157 L588 160 H720 L738 160 L756 78 L774 222 L792 106 L812 168 L832 133 L854 157 L888 160 H1020 L1038 160 L1056 60 L1074 250 L1092 100 L1112 174 L1132 134 L1154 157 L1200 160"
+          fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<canvas id="trace-canvas" class="trace-canvas" aria-hidden="true"></canvas>
+<div class="progress" aria-hidden="true"><span class="progress__fill"></span></div>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="#top" aria-label="KINETIC ATLAS, back to top"><span class="brand__mark" aria-hidden="true">LK</span><span class="brand__name">KINETIC ATLAS</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#index">Index</a>
+      <a href="#thinking">Thinking</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 01 / HERO -->
+  <section id="top" class="chapter chapter--dark hero" aria-labelledby="hero-title">
+    <div class="chapter__inner">
+      <p class="eyebrow"><span class="mono">01 / ECE &middot; IIIT DELHI &middot; SIGNAL / ARCHITECTURE</span></p>
+      <div class="hero__grid">
+        <div class="hero__copy">
+          <h1 id="hero-title" class="display">Signals,<br>made <em>legible.</em></h1>
+          <p class="lede">Software that models, measures, or respects the machine underneath. Signal processing, computer architecture and local-first tools &mdash; built at the boundary where code meets hardware.</p>
+          <p class="hero__note mono">SIMULATED CHANNELS. MEASURED COUNTERS. LOCAL-FIRST TOOLS.</p>
+          <div class="actions">
+            <a class="btn" href="#work">See the work <span aria-hidden="true">&darr;</span></a>
+            <a class="btn btn--quiet" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <figure class="hero__figure">
+          <svg class="trace trace--hero sigil" role="img" aria-label="An original signal trace: a flat baseline, sharp rise, decaying oscillation and a returning flat tail, repeated across the frame."><use href="#sig-trace"></use></svg>
+          <figcaption class="caption mono">FIG. 01 &mdash; IMPULSE RESPONSE. The same trace returns, changed, in every chapter.</figcaption>
+          <p class="caption caption--qualifier mono">SIMULATION &mdash; MODEL, NOT A LIVE CAPTURE</p>
+        </figure>
+      </div>
+    </div>
+    <p class="chapter__tag mono" aria-hidden="true">01 / 06</p>
+  </section>
+
+  <!-- 02 / CASE DATASHEETS -->
+  <section id="work" class="chapter chapter--light" aria-labelledby="work-title">
+    <div class="chapter__inner">
+      <header class="section-head reveal">
+        <p class="eyebrow mono">02 / SELECTED WORK &mdash; DATASHEETS</p>
+        <h2 id="work-title" class="section-title">Three instruments,<br>one question: <em>what can we verify?</em></h2>
+        <p class="section-intro">Each entry is a datasheet, not a sales pitch: the mechanism, its stated boundary, and the one detail worth keeping.</p>
+      </header>
+
+      <article class="datasheet reveal" aria-labelledby="chronos-title">
+        <div class="datasheet__side">
+          <p class="sheet-no mono">DS&mdash;01</p>
+          <svg class="trace trace--sheet" role="img" aria-label="The signal trace compressed into a low, dense band for the propagation case."><use href="#sig-trace"></use></svg>
+          <p class="caption mono">PROPAGATION</p>
+        </div>
+        <div class="datasheet__body">
+          <h3 id="chronos-title">Chronos-DSP</h3>
+          <p class="sheet-summary">A real-time wireless propagation simulator with an Elixir/Phoenix control plane and a Rust NIF DSP data plane. A LiveView dashboard drives a 3D scene of transmitters, receivers and planar walls while the signal processing runs server-side.</p>
+          <dl class="spec">
+            <div><dt class="mono">CHANNEL MODEL</dt><dd>Line-of-sight, specular reflections via the image-source method, knife-edge diffraction, transmission, material attenuation and Doppler.</dd></div>
+            <div><dt class="mono">DIGITAL PATH</dt><dd>QPSK modulation, AWGN and bit-error-rate in a seeded, reproducible pipeline.</dd></div>
+            <div><dt class="mono">SYSTEM DETAIL</dt><dd><code class="mono">render_rx_block/5</code> runs the Rust NIF on a dirty CPU scheduler with artifact-magic checking, with a deterministic pure-Elixir reference fallback that mirrors its sample order, interpolation, rotation and RNG.</dd></div>
+            <div><dt class="mono">BOUNDARY</dt><dd>A simulator, not a live radio.</dd></div>
+          </dl>
+          <p class="sheet-link"><a class="text-link" href="https://github.com/leelanshkharbanda/Chronos-DSP">Source repository <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+
+      <article class="datasheet reveal" aria-labelledby="modstudio-title">
+        <div class="datasheet__side">
+          <p class="sheet-no mono">DS&mdash;02</p>
+          <svg class="trace trace--sheet trace--wide" role="img" aria-label="The signal trace stretched and tilted for the browser visualisation case."><use href="#sig-trace"></use></svg>
+          <p class="caption mono">VISUALISATION</p>
+        </div>
+        <div class="datasheet__body">
+          <h3 id="modstudio-title">Modulation Studio</h3>
+          <p class="sheet-summary">A browser DSP visualizer with a live demo. Named modulation schemes are drawn as waveforms, FFT plots and constellations so the effect of a parameter is visible immediately.</p>
+          <dl class="spec">
+            <div><dt class="mono">SURFACE</dt><dd>Runs in the browser; no install and no server-side DSP.</dd></div>
+            <div><dt class="mono">READOUT</dt><dd>Waveform, frequency spectrum and constellation views of the selected named scheme.</dd></div>
+            <div><dt class="mono">SCOPE</dt><dd>A teaching and inspection tool for named schemes &mdash; deliberately not a claim about a fixed catalogue size.</dd></div>
+          </dl>
+          <p class="sheet-link"><a class="text-link" href="https://leelanshkharbanda.github.io/Modulation-Studio/">Live demo <span aria-hidden="true">&nearr;</span></a> <a class="text-link" href="https://github.com/leelanshkharbanda/Modulation-Studio">Source repository <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+
+      <article class="datasheet reveal" aria-labelledby="moe-title">
+        <div class="datasheet__side">
+          <p class="sheet-no mono">DS&mdash;03</p>
+          <svg class="trace trace--sheet trace--steps" role="img" aria-label="The signal trace flattened into a stepped profile for the memory-wall case."><use href="#sig-trace"></use></svg>
+          <p class="caption mono">ARCHITECTURE</p>
+        </div>
+        <div class="datasheet__body">
+          <h3 id="moe-title">MoE Memory Wall</h3>
+          <p class="sheet-summary">A computer-architecture group course project studying Mixtral-8x7B decode with experts offloaded to CPU DRAM, using LLMSimulator and an SSD-offloading variant.</p>
+          <dl class="spec">
+            <div><dt class="mono">MECHANISM</dt><dd>Training-free expert predictors and a prefetcher that copies predicted experts from DRAM into HBM ahead of use, with guided replacement, preemption and a feedback throttle.</dd></div>
+            <div><dt class="mono">REPORTED RESULT</dt><dd>The authors' calibrated speculative gate reports 1.27&times; at C=64 on TinyMoE prose against on-demand LRU, with explicit energy and DRAM-to-HBM traffic costs reported alongside it.</dd></div>
+            <div><dt class="mono">BOUNDARY</dt><dd>Simulation only. No GPU measurements were taken.</dd></div>
+          </dl>
+          <p class="sheet-link"><a class="text-link" href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project">Source repository <span aria-hidden="true">&nearr;</span></a></p>
+        </div>
+      </article>
+    </div>
+    <p class="chapter__tag mono" aria-hidden="true">02 / 06</p>
+  </section>
+
+  <!-- 03 / INDEX -->
+  <section id="index" class="chapter chapter--dark" aria-labelledby="index-title">
+    <div class="chapter__inner">
+      <header class="section-head reveal">
+        <p class="eyebrow mono">03 / INDEX</p>
+        <h2 id="index-title" class="section-title">Four more<br><em>entries.</em></h2>
+        <p class="section-intro">A short index of work that shares the same method: build the mechanism, then make its behaviour observable.</p>
+      </header>
+      <svg class="trace trace--index sigil" role="img" aria-label="The recurring signal trace reduced to four low marks, one per index entry."><use href="#sig-trace"></use></svg>
+      <ol class="index-list">
+        <li class="reveal">
+          <span class="idx-num mono">01</span>
+          <div><h3>index &mdash; RISC-V RV32I</h3><p>An assembler and simulator for the RV32I base integer instruction set, built from scratch to make instruction execution inspectable rather than assumed.</p></div>
+        </li>
+        <li class="reveal">
+          <span class="idx-num mono">02</span>
+          <div><h3>HPC_Boost</h3><p>Malware detection via a four-event CPU hardware performance-counter subset on RaDaR and x86-64 KVM traces.</p></div>
+        </li>
+        <li class="reveal">
+          <span class="idx-num mono">03</span>
+          <div><h3>Life OS</h3><p>A local-first personal system with a Tauri desktop app and on-device inference &mdash; data stays with the person using it.</p></div>
+        </li>
+        <li class="reveal">
+          <span class="idx-num mono">04</span>
+          <div><h3>Tasveer</h3><p>The media society of IIIT Delhi, coordinated by Leelansh.</p></div>
+        </li>
+      </ol>
+    </div>
+    <p class="chapter__tag mono" aria-hidden="true">03 / 06</p>
+  </section>
+
+  <!-- 04 / THINKING -->
+  <section id="thinking" class="chapter chapter--light" aria-labelledby="thinking-title">
+    <div class="chapter__inner">
+      <header class="section-head reveal">
+        <p class="eyebrow mono">04 / THINKING</p>
+        <h2 id="thinking-title" class="section-title">The trace is<br>the argument.</h2>
+      </header>
+      <p class="statement reveal">I trust a model more when I can see what it assumed, and I trust a measurement more when I can reproduce it.</p>
+      <div class="notes">
+        <div class="note reveal"><span class="note__no mono">A / 01</span><h3>Model the boundary</h3><p>The interesting behaviour lives where a scheduler meets a sample, or where a predicted expert crosses the DRAM&ndash;HBM line. Naming that boundary is the first step to measuring it.</p></div>
+        <div class="note reveal"><span class="note__no mono">A / 02</span><h3>Label the boundary</h3><p>A simulator is a simulator. A reported speedup is reported from a specific configuration. Saying exactly what was run is part of the result, not a footnote to it.</p></div>
+        <div class="note reveal"><span class="note__no mono">A / 03</span><h3>Keep it local</h3><p>Local-first tools and on-device inference are not an aesthetic here: they are a way to let a person keep the trace of their own work.</p></div>
+      </div>
+    </div>
+    <p class="chapter__tag mono" aria-hidden="true">04 / 06</p>
+  </section>
+
+  <!-- 05 / ABOUT -->
+  <section id="about" class="chapter chapter--dark" aria-labelledby="about-title">
+    <div class="chapter__inner">
+      <header class="section-head reveal">
+        <p class="eyebrow mono">05 / ABOUT</p>
+        <h2 id="about-title" class="section-title">Leelansh<br><em>Kharbanda.</em></h2>
+      </header>
+      <div class="about-grid">
+        <p class="about-lead reveal">ECE undergraduate at IIIT Delhi, working at the software/hardware boundary.</p>
+        <div class="about-copy reveal">
+          <p>My work pairs the physical layer with the software that observes it: a propagation simulator with a Rust DSP data plane, a browser-based modulation visualizer, a simulated study of expert prefetching, and counters that report what a processor actually did.</p>
+          <p>Outcome: a small atlas of instruments for making signals and machines legible &mdash; current study and public, reproducible work.</p>
+          <p class="mono about-line">CURRENT BASE &mdash; IIIT DELHI &nbsp;/&nbsp; FOCUS &mdash; SIGNAL PROCESSING, COMPUTER ARCHITECTURE, LOCAL-FIRST TOOLS</p>
+        </div>
+      </div>
+    </div>
+    <p class="chapter__tag mono" aria-hidden="true">05 / 06</p>
+  </section>
+
+  <!-- 06 / CONTACT -->
+  <section id="contact" class="chapter chapter--light" aria-labelledby="contact-title">
+    <div class="chapter__inner">
+      <header class="section-head reveal">
+        <p class="eyebrow mono">06 / CONTACT</p>
+        <h2 id="contact-title" class="section-title">Open a<br><em>channel.</em></h2>
+      </header>
+      <p class="contact-lead reveal">Questions about signal chains, counter telemetry or reproducible simulation are welcome.</p>
+      <ul class="contact-list reveal">
+        <li><a class="contact-link" href="mailto:leelansh24319@iiitd.ac.in"><span class="mono">EMAIL</span><span>leelansh24319@iiitd.ac.in <span aria-hidden="true">&nearr;</span></span></a></li>
+        <li><a class="contact-link" href="https://github.com/leelanshkharbanda"><span class="mono">GITHUB</span><span>github.com/leelanshkharbanda <span aria-hidden="true">&nearr;</span></span></a></li>
+        <li><a class="contact-link" href="https://linkedin.com/in/leelansh-kharbanda"><span class="mono">LINKEDIN</span><span>linkedin.com/in/leelansh-kharbanda <span aria-hidden="true">&nearr;</span></span></a></li>
+      </ul>
+    </div>
+    <p class="chapter__tag mono" aria-hidden="true">06 / 06</p>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-inner">
+    <p class="mono">KINETIC ATLAS &mdash; A STATIC SCROLL ESSAY. CSS, SEMANTIC HTML AND ONE SMALL CANVAS. NO TRACKERS.</p>
+    <p class="mono"><a href="#top">Back to top <span aria-hidden="true">&uarr;</span></a></p>
+  </div>
+</footer>
+<script src="js/main.js" defer></script>
+</body>
+</html>

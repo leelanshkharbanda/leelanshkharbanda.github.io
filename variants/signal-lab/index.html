@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:,"/>
+<meta name="description" content="SIGNAL LAB — an instrument workbench for Leelansh Kharbanda: software at the software/hardware boundary, signal processing, computer architecture and local-first tools.">
+<title>SIGNAL LAB — Leelansh Kharbanda</title>
+<script>try{var t=localStorage.getItem('signal-lab-theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/main.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">[ LK ]</span><span class="brand-name">SIGNAL LAB</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#index">Index</a>
+      <a href="#thinking">Thinking</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false"><span class="toggle-glyph" aria-hidden="true">◐</span><span class="toggle-label">Light</span></button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-claim">
+      <p class="eyebrow"><span class="eyebrow-num">01</span> / BENCH · ECE · IIIT DELHI · SIGNAL / ARCHITECTURE</p>
+      <h1 id="hero-title">Model the channel.<br>Measure the counters.</h1>
+      <p class="plain-language"><strong>What this means:</strong> these are small, reproducible experiments that show how software models, moves and measures signals inside a machine — simulations and instruments, not deployed products.</p>
+      <div class="hero-actions">
+        <a class="action" href="#work">See the bench <span aria-hidden="true">↓</span></a>
+        <a href="https://github.com/leelanshkharbanda">GitHub</a>
+        <a href="mailto:leelansh24319@iiitd.ac.in">Email</a>
+      </div>
+      <p class="lede">Leelansh Kharbanda is an ECE undergrad at IIIT Delhi working at the software/hardware boundary — signal processing, computer architecture and local-first tools.</p>
+      <p class="hero-note">A small bench of reproducible experiments: simulators, measurements and instruments for the machine underneath.</p>
+      <p class="hero-caption">INSTRUMENT STATE · SIMULATION ONLY · NO LIVE RADIO, NO GPU MEASUREMENTS</p>
+    </div>
+
+    <div class="bench" aria-label="Instrument bench">
+      <article class="panel panel-signal" aria-labelledby="panel-signal-title">
+        <div class="panel-head"><h2 id="panel-signal-title">CH A / QPSK CONSTELLATION</h2><span class="panel-state">INTERACTIVE</span></div>
+        <div class="panel-body">
+          <div class="canvas-wrap grid-field" id="constellation-wrap">
+            <svg class="poster" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+              <path d="M160 20 V180 M20 100 H300" class="p-axis"/>
+              <circle cx="160" cy="100" r="66" class="p-ring"/>
+              <circle cx="113" cy="53" r="3.5" class="p-dot"/><circle cx="207" cy="53" r="3.5" class="p-dot"/>
+              <circle cx="113" cy="147" r="3.5" class="p-dot"/><circle cx="207" cy="147" r="3.5" class="p-dot"/>
+            </svg>
+            <canvas id="constellation" aria-hidden="true"></canvas>
+          </div>
+          <p class="panel-caption axis-hint">I axis (real) → · Q axis (imag) ↑ · ideal QPSK points + seeded noise · ILLUSTRATIVE SIMULATION</p>
+          <div class="readout">
+            <div class="readout-row"><label for="snr">AWGN · SNR</label><output id="snr-value" for="snr">30 dB</output></div>
+            <input id="snr" type="range" min="0" max="30" step="1" value="30" aria-describedby="snr-help">
+            <p class="readout-line" id="snr-help" aria-live="polite">Estimated BER &lt; 1e-9 — simulated QPSK over AWGN. A clean carrier, not a measured link.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" aria-labelledby="panel-path-title">
+        <div class="panel-head"><h2 id="panel-path-title">CH B / PROPAGATION PATH</h2><span class="panel-state">MODEL</span></div>
+        <div class="panel-body">
+          <svg class="diagram" viewBox="0 0 320 150" role="img" aria-labelledby="path-title path-desc" focusable="false">
+            <title id="path-title">Simulated propagation paths between transmitter and receiver</title>
+            <desc id="path-desc">A transmitter at lower left and a receiver at upper right. A dashed straight line is the line-of-sight path. A solid two-segment line is an image-source reflection off a plane. A short dashed vertical segment at the plane edge marks knife-edge diffraction.</desc>
+            <path d="M16 118 H304" class="d-floor"/>
+            <path d="M164 20 V74" class="d-plane"/>
+            <path d="M22 114 L298 62" class="d-dash"/>
+            <path d="M22 114 L164 26 L298 62" class="d-solid"/>
+            <path d="M164 26 V70" class="d-dash"/>
+            <path d="M60 100 V128 M60 100 H64 M60 128 H64" class="d-measure"/>
+            <circle cx="22" cy="114" r="4.5" class="d-node"/><circle cx="298" cy="62" r="4.5" class="d-node"/>
+          </svg>
+          <p class="panel-caption">Direct path · image-source reflection · knife-edge diffraction. Geometry from a simulator, not an over-the-air measurement.</p>
+        </div>
+      </article>
+
+      <article class="panel" aria-labelledby="panel-pmu-title">
+        <div class="panel-head"><h2 id="panel-pmu-title">CH C / COUNTER SUBSET</h2><span class="panel-state">STUDY</span></div>
+        <div class="panel-body">
+          <p class="chart-flag">ILLUSTRATIVE · NOT MEASURED</p>
+          <div class="bars" aria-hidden="true"><span style="--h:62%"></span><span style="--h:38%"></span><span style="--h:84%"></span><span style="--h:50%"></span></div>
+          <p class="panel-caption">Four selected hardware performance counter events — a subset-selection study on x86-64 KVM traces. Bar heights are illustrative only.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section datasheets" id="work" aria-labelledby="work-title">
+    <div class="section-head">
+      <p class="eyebrow"><span class="eyebrow-num">02</span> / CASE DATASHEETS</p>
+      <h2 id="work-title">Three instruments, read like a bench.</h2>
+      <p class="section-intro">Each datasheet separates the claim from the mechanism and the limits. Open the segments to read them; with scripts off, every segment stays on the page.</p>
+    </div>
+
+    <article class="datasheet" aria-labelledby="ds-chronos-title">
+      <div class="ds-head"><div><p class="ds-id">DS–01 / PHYSICAL LAYER</p><h3 id="ds-chronos-title">Chronos-DSP</h3></div><p class="ds-status">SIMULATOR · NOT A LIVE RADIO</p></div>
+      <dl class="ds-meta"><div><dt>Layer</dt><dd>Control plane + DSP data plane</dd></div><div><dt>Stack</dt><dd>Elixir / Phoenix · Rust NIF</dd></div><div><dt>Domain</dt><dd>Propagation · modulation · BER</dd></div></dl>
+      <div class="ds-body">
+        <figure class="ds-figure">
+          <svg viewBox="0 0 320 160" role="img" aria-labelledby="chronos-svg-title chronos-svg-desc" focusable="false">
+            <title id="chronos-svg-title">Chronos-DSP processing chain</title>
+            <desc id="chronos-svg-desc">Four blocks left to right: a control plane, a native DSP routine, a seeded channel and a bit-error readout, joined by arrows. A small lower path returns from the native routine to a reference implementation.</desc>
+            <rect x="6" y="48" width="62" height="44" rx="2" class="d-box"/><rect x="96" y="48" width="62" height="44" rx="2" class="d-box"/>
+            <rect x="186" y="48" width="62" height="44" rx="2" class="d-box"/><rect x="266" y="48" width="48" height="44" rx="2" class="d-box"/>
+            <path d="M68 70 H92 M158 70 H182 M248 70 H262" class="d-arrow"/>
+            <path d="M127 92 V126 H157 V92" class="d-dash"/>
+            <rect x="96" y="126" width="62" height="24" rx="2" class="d-box-soft"/>
+          </svg>
+          <figcaption>Control plane → native DSP → seeded channel → BER readout, with a deterministic reference fallback below.</figcaption>
+        </figure>
+        <div class="reader" data-tabs>
+          <div class="tablist" role="tablist" aria-label="Chronos-DSP sections">
+            <button type="button" role="tab" id="c-tab-1" aria-controls="c-panel-1" aria-selected="true" tabindex="0">01 Claim</button>
+            <button type="button" role="tab" id="c-tab-2" aria-controls="c-panel-2" aria-selected="false" tabindex="-1">02 Mechanism</button>
+            <button type="button" role="tab" id="c-tab-3" aria-controls="c-panel-3" aria-selected="false" tabindex="-1">03 Bounds</button>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-panel-1" aria-labelledby="c-tab-1" tabindex="0">
+            <p>A real-time wireless propagation simulator: an Elixir/Phoenix control plane drives a LiveView scene while a Rust NIF runs the signal-processing data plane server-side.</p>
+            <p>The channel model covers line of sight, specular reflections via the image-source method, knife-edge diffraction, transmission, material attenuation and Doppler. QPSK, AWGN and BER run through a seeded, reproducible pipeline.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-panel-2" aria-labelledby="c-tab-2" tabindex="0">
+            <p><code>render_rx_block/5</code> dispatches the NIF on a dirty CPU scheduler with artifact-magic checking. A pure-Elixir reference path mirrors the NIF's sample order, interpolation, rotation and RNG so results can be cross-checked.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-panel-3" aria-labelledby="c-tab-3" tabindex="0">
+            <p>This is a simulator. It does not receive over-the-air signals and is not a deployed radio product. No accuracy figure is claimed here beyond what the repository itself documents.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="datasheet" aria-labelledby="ds-studio-title">
+      <div class="ds-head"><div><p class="ds-id">DS–02 / VISIBLE DSP</p><h3 id="ds-studio-title">Modulation Studio</h3></div><p class="ds-status">LIVE BROWSER DEMO</p></div>
+      <dl class="ds-meta"><div><dt>Layer</dt><dd>Browser visualizer</dd></div><div><dt>Views</dt><dd>Waveform · FFT · constellation</dd></div><div><dt>Signal</dt><dd>Named schemes only</dd></div></dl>
+      <div class="ds-body">
+        <figure class="ds-figure">
+          <svg viewBox="0 0 320 160" role="img" aria-labelledby="studio-svg-title studio-svg-desc" focusable="false">
+            <title id="studio-svg-title">Three linked DSP views</title>
+            <desc id="studio-svg-desc">Three small plots side by side: a carrier waveform, a magnitude spectrum with one prominent lobe, and a constellation of four points.</desc>
+            <path d="M6 80 H104 M116 80 H214 M226 80 H314" class="d-floor"/>
+            <path d="M8 62 Q20 22 32 62 T56 62 T80 62 T102 62" class="d-solid"/>
+            <path d="M118 118 V46 M126 118 L138 52 L150 118 L162 62 L174 118 L186 70 L198 118 L212 84" class="d-solid"/>
+            <circle cx="248" cy="54" r="3" class="d-node"/><circle cx="292" cy="54" r="3" class="d-node"/><circle cx="248" cy="106" r="3" class="d-node"/><circle cx="292" cy="106" r="3" class="d-node"/>
+            <path d="M248 40 V120 M234 80 H306" class="d-measure"/>
+          </svg>
+          <figcaption>Waveform, FFT magnitude spectrum and constellation — three views of one signal.</figcaption>
+        </figure>
+        <div class="reader" data-tabs>
+          <div class="tablist" role="tablist" aria-label="Modulation Studio sections">
+            <button type="button" role="tab" id="m-tab-1" aria-controls="m-panel-1" aria-selected="true" tabindex="0">01 Claim</button>
+            <button type="button" role="tab" id="m-tab-2" aria-controls="m-panel-2" aria-selected="false" tabindex="-1">02 Mechanism</button>
+            <button type="button" role="tab" id="m-tab-3" aria-controls="m-panel-3" aria-selected="false" tabindex="-1">03 Bounds</button>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="m-panel-1" aria-labelledby="m-tab-1" tabindex="0">
+            <p>A browser DSP visualizer with a live static-site demo. Analog schemes include AM DSB-LC, AM DSB-SC, FM and PM; named digital schemes include ASK, FSK, BPSK, QPSK and 16-QAM.</p>
+            <p>It draws waveforms, FFT magnitude spectra and constellations, and computes BER/SER for digital schemes and correlation for analog ones.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="m-panel-2" aria-labelledby="m-tab-2" tabindex="0">
+            <p>Impairments include AWGN, fading and carrier/phase offset. An optional adaptive receiver combines a PLL with timing recovery, exposed in the browser next to the three views.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="m-panel-3" aria-labelledby="m-tab-3" tabindex="0">
+            <p>Source descriptions disagree on the exact digital-scheme count, so this page names schemes instead of asserting a total. Analytics are off by default and honor Do Not Track / Global Privacy Control.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="datasheet study" aria-labelledby="ds-moe-title">
+      <div class="ds-head"><div><p class="ds-id">DS–03 / MEMORY WALL</p><h3 id="ds-moe-title">MoE Memory Wall</h3></div><p class="ds-status">SIMULATION · GROUP COURSE PROJECT</p></div>
+      <dl class="ds-meta"><div><dt>Layer</dt><dd>Computer architecture</dd></div><div><dt>Setting</dt><dd>CA Project 2, Group 24</dd></div><div><dt>Method</dt><dd>Trace-driven simulation</dd></div></dl>
+      <div class="ds-body study-layout">
+        <figure class="ds-figure">
+          <svg viewBox="0 0 320 160" role="img" aria-labelledby="moe-svg-title moe-svg-desc" focusable="false">
+            <title id="moe-svg-title">Speculative expert prefetch across the memory boundary</title>
+            <desc id="moe-svg-desc">Two horizontal memory bands. A dashed arrow rises from the lower CPU DRAM band to the upper HBM band ahead of a marked use point.</desc>
+            <rect x="10" y="32" width="300" height="38" rx="2" class="d-box-soft"/>
+            <rect x="10" y="98" width="300" height="38" rx="2" class="d-box-soft"/>
+            <path d="M56 124 C110 124 118 50 172 50" class="d-dash"/>
+            <path d="M172 50 H262" class="d-solid"/>
+            <path d="M258 44 L268 50 L258 56" class="d-arrow"/>
+            <path d="M268 34 V76" class="d-measure"/>
+            <circle cx="56" cy="124" r="4" class="d-node"/><circle cx="172" cy="50" r="4" class="d-node"/>
+          </svg>
+          <figcaption>Predicted experts are copied from DRAM into HBM ahead of use; the reported costs are accounted for in the study.</figcaption>
+        </figure>
+        <div class="reader" data-tabs>
+          <div class="tablist" role="tablist" aria-label="MoE Memory Wall sections">
+            <button type="button" role="tab" id="w-tab-1" aria-controls="w-panel-1" aria-selected="true" tabindex="0">01 Claim</button>
+            <button type="button" role="tab" id="w-tab-2" aria-controls="w-panel-2" aria-selected="false" tabindex="-1">02 Mechanism</button>
+            <button type="button" role="tab" id="w-tab-3" aria-controls="w-panel-3" aria-selected="false" tabindex="-1">03 Bounds</button>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="w-panel-1" aria-labelledby="w-tab-1" tabindex="0">
+            <p>A group course project studying Mixtral-8x7B decode with experts offloaded to CPU DRAM, using LLMSimulator and an SSD-offloading fork. The final submission adds training-free expert predictors and a prefetcher.</p>
+            <p>The project <em>reports</em> 1.27x at C=64 on TinyMoE prose against on-demand LRU, with energy and DRAM→HBM traffic costs shown alongside.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="w-panel-2" aria-labelledby="w-tab-2" tabindex="0">
+            <p>The policy combines a calibrated speculative gate with history fallback, guided replacement, preemption and a feedback throttle. Results are reported across platform × workload × batch × capacity configurations.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="w-panel-3" aria-labelledby="w-tab-3" tabindex="0">
+            <p>Everything here is simulation; no GPU is needed and no GPU measurement is claimed. It is a group course project, not sole authorship and not a production deployment.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="section index-section" id="index" aria-labelledby="index-title">
+    <div class="section-head">
+      <p class="eyebrow"><span class="eyebrow-num">03</span> / BENCH INDEX</p>
+      <h2 id="index-title">Four more entries on the shelf.</h2>
+      <p class="section-intro">Smaller instruments, kept for the way they ask a question: what does the machine actually do?</p>
+    </div>
+    <ol class="index-list">
+      <li><a class="index-link" href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator">
+        <span class="idx-num">01</span><span class="idx-main"><span class="idx-title">RV32I assembler &amp; simulator</span><span class="idx-desc">A two-pass, label-resolving Python pipeline with immediate range checks and an auditable PC/register trace.</span></span><span class="idx-tag">ISA / CORE</span></a></li>
+      <li><a class="index-link" href="https://github.com/leelanshkharbanda/HPC_Boost">
+        <span class="idx-num">02</span><span class="idx-main"><span class="idx-title">HPC_Boost · 4-event PMU subset</span><span class="idx-desc">Malware-detection study selecting four hardware performance counter events on RaDaR and x86-64 KVM traces.</span></span><span class="idx-tag">COUNTERS</span></a></li>
+      <li><a class="index-link" href="https://github.com/leelanshkharbanda/Life-Os">
+        <span class="idx-num">03</span><span class="idx-main"><span class="idx-title">Life OS</span><span class="idx-desc">Local-first desktop productivity app; on-device ONNX inference and vector memory keep data and models on the machine.</span></span><span class="idx-tag">LOCAL-FIRST</span></a></li>
+      <li><a class="index-link" href="https://github.com/leelanshkharbanda/tasveer">
+        <span class="idx-num">04</span><span class="idx-main"><span class="idx-title">Tasveer</span><span class="idx-desc">Site of IIIT Delhi's media society, which Leelansh coordinates — a society project, not a personal product.</span></span><span class="idx-tag">SOCIETY</span></a></li>
+    </ol>
+  </section>
+
+  <section class="section thinking" id="thinking" aria-labelledby="thinking-title">
+    <div class="section-head">
+      <p class="eyebrow"><span class="eyebrow-num">04</span> / NOTEBOOK</p>
+      <h2 id="thinking-title">Thinking, in the margins.</h2>
+    </div>
+    <div class="notes">
+      <article class="note"><p class="note-id">N–01 / REPRODUCIBILITY</p><h3>A simulator earns trust by being reproducible.</h3><p>A seeded pipeline and a deterministic reference path mean a result can be checked twice. In Chronos-DSP the fallback mirrors the NIF's sample order, interpolation, rotation and RNG; agreement between two implementations is a more useful claim than a single pretty plot.</p><p class="annotation">MARGIN → trust the check, not the picture.</p></article>
+      <article class="note"><p class="note-id">N–02 / MEASUREMENT</p><h3>Measure before you accelerate.</h3><p>The MoE study reports a speedup together with energy and traffic costs, and states that the numbers come from simulation. Acceleration without the cost column is only half an experiment.</p><p class="annotation">MARGIN → a ratio needs its denominator.</p></article>
+      <article class="note"><p class="note-id">N–03 / LOCAL-FIRST</p><h3>Keeping data local is a design constraint, not a slogan.</h3><p>Life OS keeps inference and user data on the device. That choice shapes the stack as much as any feature list: the model boundary, the storage layer and the trust model all move to the machine in front of you.</p><p class="annotation">MARGIN → the boundary is the feature.</p></article>
+    </div>
+  </section>
+
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="about-copy">
+      <p class="eyebrow"><span class="eyebrow-num">05</span / OPERATOR</p>
+      <h2 id="about-title">Leelansh Kharbanda</h2>
+      <p>ECE undergrad at IIIT Delhi. The work sits at the software/hardware boundary: modeling a channel, reading hardware counters, building tools that run on the device in front of you.</p>
+      <p>The through-line is code that knows the machine underneath — from a Rust DSP data plane and an RV32I simulator to a browser DSP visualizer and a local-first desktop app. He also coordinates Tasveer, IIIT Delhi's media society.</p>
+      <p class="about-fine">No employer, job title or graduation date is claimed here. "Engineer" describes the practice, not a verified role.</p>
+    </div>
+    <dl class="about-facts">
+      <div><dt>FIELD</dt><dd>Signal processing</dd></div>
+      <div><dt>ARCHITECTURE</dt><dd>RV32I · PMU counters</dd></div>
+      <div><dt>PRACTICE</dt><dd>Local-first tools</dd></div>
+      <div><dt>SOCIETY</dt><dd>Tasveer · coordinator</dd></div>
+      <div><dt>LOCATION</dt><dd>IIIT Delhi</dd></div>
+    </dl>
+  </section>
+
+  <section class="section contact" id="contact" aria-labelledby="contact-title">
+    <p class="eyebrow"><span class="eyebrow-num">06</span / CONTACT</p>
+    <h2 id="contact-title">Open a channel.</h2>
+    <ul class="contact-list">
+      <li><a href="mailto:leelansh24319@iiitd.ac.in"><span class="contact-label">EMAIL</span><span class="contact-value">leelansh24319@iiitd.ac.in</span><span class="contact-arrow" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://github.com/leelanshkharbanda"><span class="contact-label">GITHUB</span><span class="contact-value">github.com/leelanshkharbanda</span><span class="contact-arrow" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://linkedin.com/in/leelansh-kharbanda"><span class="contact-label">LINKEDIN</span><span class="contact-value">linkedin.com/in/leelansh-kharbanda</span><span class="contact-arrow" aria-hidden="true">↗</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-brand"><span aria-hidden="true">[ LK ]</span> SIGNAL LAB</p>
+    <p class="footer-note">Static workbench. No trackers, no external assets, no build step.</p>
+    <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>
