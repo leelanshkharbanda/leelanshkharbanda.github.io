@@ -1,0 +1,138 @@
+<div class="signal-toy" data-signal-toy>
+  <div class="signal-toy__topline">
+    <span>01 / CHANNEL SKETCHPAD</span>
+    <span class="signal-toy__drag-label">DRAG THE DOTS</span>
+  </div>
+
+  <svg
+    class="signal-toy__svg"
+    viewBox="0 0 480 270"
+    role="group"
+    aria-labelledby="signal-toy-title signal-toy-description"
+  >
+    <title id="signal-toy-title">A tiny, controllable signal-path sketch</title>
+    <desc id="signal-toy-description">
+      Move a transmitter and receiver to compare a direct path with a reflected path. This is an
+      original visual toy, not Chronos-DSP data or a physical radio measurement.
+    </desc>
+    <defs>
+      <pattern id="signal-toy-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#45483d" stroke-width="1" />
+      </pattern>
+      <marker
+        id="signal-toy-arrow"
+        viewBox="0 0 10 10"
+        refX="8"
+        refY="5"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse"
+      >
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#dfff68" />
+      </marker>
+    </defs>
+
+    <rect width="480" height="270" fill="#20231c" />
+    <rect width="480" height="270" fill="url(#signal-toy-grid)" />
+    <path d="M 28 218 L 452 218" stroke="#f5f1e6" stroke-width="8" />
+    <path d="M 28 218 L 452 218" stroke="#ff785a" stroke-width="2" stroke-dasharray="5 7" />
+    <text x="30" y="244" class="signal-toy__svg-label">
+      REFLECTOR / A MADE-UP WALL
+    </text>
+    <text x="450" y="244" text-anchor="end" class="signal-toy__svg-label">
+      NOT TO SCALE
+    </text>
+
+    <path
+      data-signal-path="direct"
+      d="M 104 104 L 370 82"
+      fill="none"
+      stroke="#dfff68"
+      stroke-width="3"
+      marker-end="url(#signal-toy-arrow)"
+    />
+    <path
+      data-signal-path="echo"
+      d="M 104 104 L 237 218 L 370 82"
+      fill="none"
+      stroke="#ff785a"
+      stroke-width="2"
+      stroke-dasharray="7 6"
+      marker-end="url(#signal-toy-arrow)"
+    />
+    <circle data-signal-bounce cx="237" cy="218" r="5" fill="#ff785a" />
+
+    <g
+      class="signal-toy__handle"
+      data-signal-handle="transmitter"
+      data-x="104"
+      data-y="104"
+      tabindex="0"
+      role="slider"
+      aria-label="Transmitter horizontal position"
+      aria-valuemin="40"
+      aria-valuemax="440"
+      aria-valuenow="104"
+    >
+      <circle r="25" fill="#dfff68" fill-opacity="0.15" />
+      <circle r="15" fill="#dfff68" stroke="#20231c" stroke-width="3" />
+      <circle r="4" fill="#20231c" />
+      <text y="43" text-anchor="middle" class="signal-toy__handle-label">
+        TX / MOVE ME
+      </text>
+    </g>
+
+    <g
+      class="signal-toy__handle"
+      data-signal-handle="receiver"
+      data-x="370"
+      data-y="82"
+      tabindex="0"
+      role="slider"
+      aria-label="Receiver horizontal position"
+      aria-valuemin="40"
+      aria-valuemax="440"
+      aria-valuenow="370"
+    >
+      <circle r="25" fill="#ff785a" fill-opacity="0.15" />
+      <circle r="15" fill="#ff785a" stroke="#20231c" stroke-width="3" />
+      <circle r="4" fill="#20231c" />
+      <text y="43" text-anchor="middle" class="signal-toy__handle-label">
+        RX / CATCH IT
+      </text>
+    </g>
+  </svg>
+
+  <div class="signal-toy__readouts">
+    <p>
+      <span>DIRECT PATH</span>
+      <strong data-toy-direct>267 units</strong>
+    </p>
+    <p>
+      <span>REFLECTED PATH</span>
+      <strong data-toy-echo>423 units</strong>
+    </p>
+    <span class="signal-toy__readout-note">a visual sketch, not a measurement</span>
+  </div>
+
+  <div class="signal-toy__controls" id="signal-toy-instructions">
+    <label>
+      <span>Transmitter</span>
+      <input data-toy-range="transmitter" type="range" min="40" max="440" value="104" />
+    </label>
+    <label>
+      <span>Receiver</span>
+      <input data-toy-range="receiver" type="range" min="40" max="440" value="370" />
+    </label>
+    <button data-toy-reset type="button">
+      Reset ↺
+    </button>
+  </div>
+</div>
+
+<script>
+  import { updateSignalToy } from '../scripts/signal-toy';
+
+  const toy = document.querySelector<HTMLElement>('[data-signal-toy]');
+  if (toy) updateSignalToy(toy);
+</script>

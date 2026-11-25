@@ -10,8 +10,56 @@ interface Props {
   showVisual?: boolean;
 }
 
+const projectNotes: Record<string, { label: string; preview: string; color: string }> = {
+  'chronos-dsp': {
+    label: 'make some waves',
+    preview: 'geometry → simulated IQ',
+    color: 'var(--play-blue)',
+  },
+  'life-os': {
+    label: 'keep the good stuff local',
+    preview: 'local records → recommendations',
+    color: 'var(--play-green)',
+  },
+  'modulation-studio': {
+    label: 'mess with the signal',
+    preview: 'source → impairment → recovery',
+    color: 'var(--play-yellow)',
+  },
+  'hpc-boost': {
+    label: 'four counters, one honest no',
+    preview: 'PMU traces → held-out binaries',
+    color: 'var(--play-coral)',
+  },
+  'moe-memory-wall': {
+    label: 'move experts, mind the budget',
+    preview: 'experts → bounded HBM cache',
+    color: 'var(--play-lilac)',
+  },
+  'riscv-simulator': {
+    label: 'watch the registers change',
+    preview: 'assembly → register state',
+    color: 'var(--play-blue)',
+  },
+  'university-erp': {
+    label: 'give every role its lane',
+    preview: 'roles → services → schemas',
+    color: 'var(--play-green)',
+  },
+  tasveer: {
+    label: 'tell the campus story',
+    preview: 'stories → people → shared credit',
+    color: 'var(--play-yellow)',
+  },
+};
+
 const { project, index, variant = 'standard', showVisual = true } = Astro.props;
 const data = project.data;
+const note = projectNotes[project.id] ?? {
+  label: 'open the notebook',
+  preview: 'question → mechanism → evidence',
+  color: 'var(--play-yellow)',
+};
 const datum = `P-${String(index + 1).padStart(2, '0')}`;
 const credit = data.creditLabel
   ? data.creditLabel
@@ -19,19 +67,27 @@ const credit = data.creditLabel
     ? `${roleLabels[data.role]} · ${data.teamSize} people`
     : roleLabels[data.role];
 const primaryLink = data.links.find((link) => link.kind === 'source');
+const demoLink = data.links.find((link) => link.kind === 'demo');
 ---
 
-<article class={`project-card project-card--${variant}`}>
-  <div class="project-card__datum">
-    <span class="sr-only">Project record </span>
-    {datum}
-  </div>
+<article
+  id={`project-${project.id}`}
+  class={`project-card project-card--${variant}`}
+  data-project-card
+  data-project={project.id}
+  style={`--card-color: ${note.color}`}
+>
   <div class="project-card__content">
+    <div class="project-card__datum">
+      <span class="sr-only">Project record </span>
+      {datum}
+    </div>
     <div class="project-card__meta">
       <span>{statusLabels[data.status]}</span>
       <span>{credit}</span>
       <span>{evidenceLabels[data.evidenceClass]}</span>
     </div>
+    <p class="project-card__play-label">{note.label}</p>
     <h3>
       <a href={`/work/${project.id}/`}>{data.title}</a>
     </h3>
@@ -44,12 +100,18 @@ const primaryLink = data.links.find((link) => link.kind === 'source');
       ))}
     </ul>
     <p class="project-card__limit">
-      <strong>Limit:</strong> {data.limits[0]}
+      <strong>Guardrail:</strong> {data.limits[0]}
     </p>
     <div class="project-card__actions">
       <a class="arrow-link" href={`/work/${project.id}/`}>
-        Read case study <span aria-hidden="true">→</span>
+        Open project notes <span aria-hidden="true">→</span>
       </a>
+      {demoLink && (
+        <a class="arrow-link" href={demoLink.url} target="_blank" rel="noreferrer noopener">
+          Try live demo <span aria-hidden="true">↗</span>
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      )}
       {primaryLink && (
         <a class="quiet-link" href={primaryLink.url} target="_blank" rel="noreferrer noopener">
           Source <span aria-hidden="true">↗</span>
@@ -58,12 +120,22 @@ const primaryLink = data.links.find((link) => link.kind === 'source');
       )}
     </div>
   </div>
+
   {showVisual && data.diagram !== 'none' && (
-    <ProjectVisual
-      id={`card-${project.id}`}
-      diagram={data.diagram}
-      alt={data.diagramAlt}
-      caption={data.diagramCaption}
-    />
+    <div class="project-card__stage">
+      <span class="project-card__preview-label" aria-hidden="true">
+        PEEK / ORIGINAL SCHEMATIC
+      </span>
+      <ProjectVisual
+        id={`card-${project.id}`}
+        diagram={data.diagram}
+        alt={data.diagramAlt}
+        caption={data.diagramCaption}
+        preview={true}
+      />
+      <span class="project-card__preview-note" aria-hidden="true">
+        {note.preview}
+      </span>
+    </div>
   )}
 </article>

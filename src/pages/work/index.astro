@@ -14,26 +14,55 @@ async function resolveProjects(slugs: readonly string[]) {
 
 const featured = await resolveProjects(featuredProjects);
 const archive = await resolveProjects(archiveProjects);
+const allProjects = [...featured, ...archive];
 const description =
   'Selected engineering work by Leelansh Kharbanda: wireless-channel simulation, local-first software, browser DSP, hardware-counter research, and memory-system simulation.';
 ---
 
 <BaseLayout title="Work" description={description}>
-  <section class="page-hero page-shell" aria-labelledby="page-title">
-    <p class="eyebrow">Work index · 5 case studies + 3 archive records</p>
-    <h1 id="page-title">Evidence before spectacle.</h1>
-    <p class="page-hero__intro">
-      Each project is presented as an argument: the question, constraints, mechanism, contribution,
-      artifact, result type, and limits. Team credit and simulation boundaries stay visible.
-    </p>
+  <section class="playground-page-hero page-shell" aria-labelledby="page-title">
+    <div>
+      <p class="play-kicker">The project shelf · 5 deep dives + 3 archive records</p>
+      <h1 id="page-title">Pick a project. Poke a hole in it.</h1>
+      <p class="playground-page-hero__intro">
+        I kept the receipts: the question, the moving parts, the source, and the limits. Start with
+        whatever looks interesting; every project has a direct route to its notes and evidence.
+      </p>
+    </div>
+    <div class="project-stack" aria-hidden="true">
+      <div class="project-stack__sheet">
+        <span>PERSONAL SIMULATIONS</span>
+        <strong>Signals, states & systems</strong>
+        <span>Source-linked / limits included</span>
+      </div>
+      <div class="project-stack__sheet">
+        <span>TEAM WORK</span>
+        <strong>Built with other people</strong>
+        <span>Credit stays visible</span>
+      </div>
+      <div class="project-stack__sheet">
+        <span>8 PROJECT RECORDS</span>
+        <strong>No polished sales pitch</strong>
+        <span>Just the useful bits</span>
+      </div>
+    </div>
   </section>
+
+  <nav class="project-jump page-shell" aria-label="Jump to a project">
+    <span>Pick a trail</span>
+    {allProjects.map((project, index) => (
+      <a href={`#project-${project.id}`}>
+        {String(index + 1).padStart(2, '0')} / {project.data.title.split(':')[0]}
+      </a>
+    ))}
+  </nav>
 
   <section class="work-section page-shell" aria-labelledby="featured-title">
     <SectionHeading
-      id="W-01"
+      id="DEEP DIVES"
       headingId="featured-title"
-      title="Case studies"
-      intro="The five projects with the strongest evidence and narrative range."
+      title="The full project notebooks."
+      intro="Five case studies with enough room for the mechanism, the contribution, the evidence, and the parts that did not work."
     />
     <div class="project-list">
       {featured.map((project, index) => (
@@ -50,10 +79,10 @@ const description =
   <section class="archive-section" aria-labelledby="archive-title">
     <div class="page-shell">
       <SectionHeading
-        id="W-02"
+        id="SIDE DRAWER"
         headingId="archive-title"
-        title="Archive"
-        intro="Smaller or earlier team work, kept compact and explicitly credited."
+        title="Earlier work, still on the bench."
+        intro="Smaller or earlier team projects. Compact does not mean uncredited: the archive keeps the shared-work and evidence boundaries explicit."
       />
       <div class="archive-grid">
         {archive.map((project, index) => (
@@ -70,13 +99,20 @@ const description =
 
   <section class="work-contact page-shell" aria-labelledby="work-contact-title">
     <SectionHeading
-      id="W-03"
+      id="SOURCE CODE"
       headingId="work-contact-title"
-      title="Want to inspect the source?"
-      intro={`The public GitHub profile is the index for the original repositories behind these records.`}
+      title="Want to follow the breadcrumbs?"
+      intro="My public GitHub profile is the index for the original repositories behind these records."
     />
-    <a class="button button--primary" href={site.github} target="_blank" rel="noreferrer noopener">
+    <a
+      class="button button--primary"
+      data-magnetic
+      href={site.github}
+      target="_blank"
+      rel="noreferrer noopener"
+    >
       Open GitHub <span aria-hidden="true">↗</span>
+      <span class="sr-only"> (opens in a new tab)</span>
     </a>
   </section>
 </BaseLayout>

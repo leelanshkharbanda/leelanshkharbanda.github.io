@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content';
 import ContactBlock from '../components/ContactBlock.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
+import SignalToy from '../components/SignalToy.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { homepageProjects } from '../data/curation';
 import { requireProjectEntries } from '../data/projects';
@@ -15,49 +16,52 @@ const description =
 ---
 
 <BaseLayout title={site.name} description={description}>
-  <section class="hero page-shell" aria-labelledby="hero-title">
-    <div class="hero__identity">
-      <p class="eyebrow">{site.education}</p>
+  <section class="playground-hero page-shell" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="play-kicker">Hello, I’m Leelansh — welcome to my bench</p>
       <h1 id="hero-title">
-        <span>I build inspectable systems.</span>
-        <span class="hero__title-tail">Software ↔ hardware.</span>
+        <span>I build</span>
+        <span class="hero-highlight">inspectable systems</span>
+        <span class="hero-title-tail">then poke at them until they make sense.</span>
       </h1>
-      <p class="hero__intro">{site.introduction}</p>
-      <div class="hero__actions">
-        <a class="button button--primary" href="#selected-work">
-          View selected work
+      <p class="hero-intro">
+        I’m an ECE student who likes signals, tiny instructions, and software that shows its work.
+        This is where I keep the projects I’m opening up, taking apart, and learning from.
+      </p>
+      <div class="hero-actions">
+        <a class="button button--primary" data-magnetic href="#selected-work">
+          Open the project playground <span aria-hidden="true">↓</span>
         </a>
-        <a class="button button--secondary" href="/resume/">
-          Résumé
+        <a class="button button--secondary" data-magnetic href="/about/">
+          Meet the human <span aria-hidden="true">→</span>
         </a>
       </div>
+      <nav class="hero-project-strip" aria-label="Featured projects">
+        <span>Fresh from the bench</span>
+        <a href="/work/chronos-dsp/">
+          01 / Chronos-DSP <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/work/life-os/">
+          02 / Life OS <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/work/modulation-studio/">
+          03 / Modulation Studio <span aria-hidden="true">↗</span>
+        </a>
+      </nav>
     </div>
 
-    <section class="proof-strip" aria-label="Portfolio evidence summary">
-      <div class="proof-strip__item">
-        <span class="datum-label">D-01</span>
-        <p class="proof-strip__label">Question</p>
-        <p>Can technical behavior become inspectable?</p>
-      </div>
-      <div class="proof-strip__item">
-        <span class="datum-label">D-02</span>
-        <p class="proof-strip__label">Artifact</p>
-        <p>Five case studies and three archive records, linked to source evidence.</p>
-      </div>
-      <div class="proof-strip__item">
-        <span class="datum-label">D-03</span>
-        <p class="proof-strip__label">Evidence class</p>
-        <p>Source, tests, releases, live demos, simulations, and explicit limits.</p>
-      </div>
-    </section>
+    <div class="hero-toy-wrap">
+      <p class="toy-sticker">a tiny experiment — go on, move the dots</p>
+      <SignalToy />
+    </div>
   </section>
 
   <section id="selected-work" class="work-section page-shell" aria-labelledby="work-title">
     <SectionHeading
-      id="S-01"
+      id="PLAY / 01"
       headingId="work-title"
-      title="Selected work"
-      intro="Three complementary systems: a wireless-channel simulation, a local-first desktop prototype, and a browser signal lab."
+      title="Things I make so I can see how they tick."
+      intro="Three projects, three ways into the same habit: follow the state, keep the evidence close, and say where the model stops."
     />
     <div class="project-grid">
       {projects.map((project, index) => (
@@ -71,7 +75,7 @@ const description =
     </div>
     <div class="section-actions">
       <a class="arrow-link" href="/work/">
-        Explore all work <span aria-hidden="true">→</span>
+        Browse all eight project records <span aria-hidden="true">→</span>
       </a>
     </div>
   </section>
@@ -79,24 +83,27 @@ const description =
   <section class="about-preview" aria-labelledby="about-preview-title">
     <div class="page-shell about-preview__inner">
       <SectionHeading
-        id="S-02"
+        id="PLAY / 02"
         headingId="about-preview-title"
-        title="The recurring questions"
-        intro="Different projects, one habit: make the mechanism visible and keep the evidence close."
+        title="Why I keep opening the box."
+        intro="Different projects, one recurring question: what changed inside the system, and how can I show you?"
       />
       <div class="about-preview__body">
         <div>
           <p>
-            I am an ECE undergraduate at IIIT Delhi. My work moves between signal processing,
-            computer architecture, hardware-counter telemetry, and local-first software—not because
-            the domains are interchangeable, but because each asks how a hidden process can be
-            observed, modeled, and explained.
+            I’m an ECE undergraduate at IIIT Delhi. I move between signal processing, computer
+            architecture, hardware-counter telemetry, and local-first software because each one
+            gives me a different hidden process to trace, model, and explain.
+          </p>
+          <p>
+            I also care about the sticky notes around a claim: who did the work, what was simulated,
+            and what the evidence cannot tell us yet.
           </p>
           <a class="arrow-link" href="/about/">
-            More about my approach <span aria-hidden="true">→</span>
+            More about how I think <span aria-hidden="true">→</span>
           </a>
         </div>
-        <ul class="theme-list">
+        <ul class="theme-list" aria-label="Recurring project themes">
           {site.themes.map((theme, index) => (
             <li>
               <span class="datum-label">0{index + 1}</span>
@@ -110,10 +117,10 @@ const description =
 
   <section id="contact" class="contact-section page-shell" aria-labelledby="contact-title">
     <SectionHeading
-      id="S-03"
+      id="PLAY / 03"
       headingId="contact-title"
-      title="Have a system worth understanding?"
-      intro="Email about a relevant role, research question, or project collaboration."
+      title="Got a strange little system question?"
+      intro="I like emails that start with the problem, the weird behavior, or the thing you cannot quite explain yet."
     />
     <ContactBlock />
   </section>
