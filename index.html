@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="Leelansh Kharbanda — ECE undergrad at IIIT Delhi. Software that models, measures, and respects the machine underneath.">
-<title>Leelansh Kharbanda — software at the hardware boundary</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2316181D'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='26' fill='%23F4F2EC' text-anchor='middle'%3ELK%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Leelansh Kharbanda — ECE undergrad at IIIT Delhi. Software that models and measures the machine underneath: signal processing, computer architecture, local-first tools.">
+<title>Leelansh Kharbanda — model it, measure it, show the trace</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230D0E10'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='26' fill='%23FF5A33' text-anchor='middle'%3ELK%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="./css/style.css">
 <script type="module" src="./js/main.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header">
-  <a class="brand" href="#main" aria-label="Leelansh Kharbanda, back to top">[LK]</a>
+<header class="utility">
+  <a class="brand" href="#main" aria-label="Leelansh Kharbanda, back to top"><span class="monogram">[LK]</span> <span class="brand-name">LEELANSH KHARBANDA</span></a>
   <nav aria-label="Primary">
     <a href="#work">Work</a>
     <a href="#thinking">Thinking</a>
@@ -23,152 +23,216 @@
 </header>
 
 <main id="main">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-body">
-      <div class="hero-copy">
-        <p class="kicker">SIGNAL PROCESSING <span aria-hidden="true">/</span> COMPUTER ARCHITECTURE <span aria-hidden="true">/</span> LOCAL-FIRST TOOLS</p>
-        <h1 id="hero-title">Leelansh<br>Kharbanda</h1>
-        <p class="lede">ECE undergrad at IIIT Delhi, building software that models, measures, and respects the machine underneath.</p>
-        <ol class="proofs" aria-label="Two selected proof points">
-          <li>
-            <span class="mono index">01 / FIELD</span>
-            <p class="proof-title">Chronos-DSP</p>
-            <p class="proof-detail">Elixir/Phoenix control plane driving a Rust NIF DSP data plane, with a deterministic reference fallback.</p>
-          </li>
-          <li>
-            <span class="mono index">02 / SIGNAL</span>
-            <p class="proof-title">Modulation Studio</p>
-            <p class="proof-detail">A working browser DSP visualizer — waveforms, FFT spectra and constellations.</p>
-          </li>
-        </ol>
-        <p class="actions">
-          <a class="cta" href="#work">See the work <span aria-hidden="true">↓</span></a>
-          <a class="mono sub" href="https://github.com/leelanshkharbanda">GitHub</a>
-          <a class="mono sub" href="mailto:leelansh24319@iiitd.ac.in">email</a>
-        </p>
-      </div>
+  <section class="hero" aria-labelledby="hook">
+    <div class="field" aria-hidden="true">
+      <svg class="field-poster" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="#FF5A33" stroke-opacity=".24">
+          <circle cx="120" cy="90" r="2"/><circle cx="260" cy="140" r="2"/><circle cx="410" cy="70" r="2"/>
+          <circle cx="560" cy="160" r="2"/><circle cx="690" cy="100" r="2"/><circle cx="180" cy="300" r="2"/>
+          <circle cx="350" cy="340" r="2"/><circle cx="520" cy="290" r="2"/><circle cx="720" cy="360" r="2"/>
+          <path d="M0 225 H800" stroke-opacity=".14"/>
+        </g>
+      </svg>
+      <canvas class="field-canvas" width="1" height="1"></canvas>
+    </div>
 
-      <aside class="panel" aria-label="Channel monitor demonstration">
-        <p class="mono panel-label">CHANNEL MONITOR <span aria-hidden="true">—</span> QPSK / AWGN</p>
-        <p class="mono plot-label">WAVEFORM</p>
-        <svg class="scope wave-scope" viewBox="0 0 480 200" aria-hidden="true" focusable="false">
-          <line class="axis" x1="0" y1="100" x2="480" y2="100"></line>
-          <path id="wave" class="wave" d="M0 100.0 L3 90.2 L6 80.9 L9 72.7 L12 66.0 L15 61.2 L18 58.5 L21 58.1 L24 60.1 L27 64.2 L30 70.3 L33 78.1 L36 87.0 L39 96.7 L42 106.6 L45 116.1 L48 124.7 L51 131.9 L54 137.4 L57 140.8 L60 142.0 L63 140.8 L66 137.4 L69 131.9 L72 124.7 L75 116.1 L78 106.6 L81 96.7 L84 87.0 L87 78.1 L90 70.3 L93 64.2 L96 60.1 L99 58.1 L102 58.5 L105 61.2 L108 66.0 L111 72.7 L114 80.9 L117 90.2 L120 100.0 L123 109.8 L126 119.1 L129 127.3 L132 134.0 L135 138.8 L138 141.5 L141 141.9 L144 139.9 L147 135.8 L150 129.7 L153 121.9 L156 113.0 L159 103.3 L162 93.4 L165 83.9 L168 75.3 L171 68.1 L174 62.6 L177 59.2 L180 58.0 L183 59.2 L186 62.6 L189 68.1 L192 75.3 L195 83.9 L198 93.4 L201 103.3 L204 113.0 L207 121.9 L210 129.7 L213 135.8 L216 139.9 L219 141.9 L222 141.5 L225 138.8 L228 134.0 L231 127.3 L234 119.1 L237 109.8 L240 100.0 L243 90.2 L246 80.9 L249 72.7 L252 66.0 L255 61.2 L258 58.5 L261 58.1 L264 60.1 L267 64.2 L270 70.3 L273 78.1 L276 87.0 L279 96.7 L282 106.6 L285 116.1 L288 124.7 L291 131.9 L294 137.4 L297 140.8 L300 142.0 L303 140.8 L306 137.4 L309 131.9 L312 124.7 L315 116.1 L318 106.6 L321 96.7 L324 87.0 L327 78.1 L330 70.3 L333 64.2 L336 60.1 L339 58.1 L342 58.5 L345 61.2 L348 66.0 L351 72.7 L354 80.9 L357 90.2 L360 100.0 L363 109.8 L366 119.1 L369 127.3 L372 134.0 L375 138.8 L378 141.5 L381 141.9 L384 139.9 L387 135.8 L390 129.7 L393 121.9 L396 113.0 L399 103.3 L402 93.4 L405 83.9 L408 75.3 L411 68.1 L414 62.6 L417 59.2 L420 58.0 L423 59.2 L426 62.6 L429 68.1 L432 75.3 L435 83.9 L438 93.4 L441 103.3 L444 113.0 L447 121.9 L450 129.7 L453 135.8 L456 139.9 L459 141.9 L462 141.5 L465 138.8 L468 134.0 L471 127.3 L474 119.1 L477 109.8 L480 100.0"></path>
-        </svg>
-        <p class="mono plot-label">CONSTELLATION <span aria-hidden="true">—</span> I / Q</p>
-        <svg class="scope constellation" viewBox="0 0 480 200" aria-hidden="true" focusable="false">
-          <line class="axis" x1="0" y1="100" x2="480" y2="100"></line>
-          <line class="axis" x1="240" y1="0" x2="240" y2="200"></line>
-          <circle class="ring" cx="240" cy="100" r="52"></circle>
-          <circle class="ring" cx="240" cy="100" r="92"></circle>
-          <g id="dots" class="dots"><circle cx="186.5" cy="60.0" r="4.5"></circle><circle cx="188.9" cy="58.7" r="4.5"></circle><circle cx="187.9" cy="60.4" r="4.5"></circle><circle cx="186.5" cy="61.3" r="4.5"></circle><circle cx="292.6" cy="61.2" r="4.5"></circle><circle cx="292.7" cy="61.6" r="4.5"></circle><circle cx="291.3" cy="58.1" r="4.5"></circle><circle cx="291.8" cy="59.9" r="4.5"></circle><circle cx="187.7" cy="139.5" r="4.5"></circle><circle cx="187.8" cy="139.1" r="4.5"></circle><circle cx="187.3" cy="141.9" r="4.5"></circle><circle cx="186.0" cy="139.6" r="4.5"></circle><circle cx="293.4" cy="138.3" r="4.5"></circle><circle cx="294.0" cy="141.4" r="4.5"></circle><circle cx="290.8" cy="138.1" r="4.5"></circle><circle cx="290.4" cy="141.0" r="4.5"></circle></g>
-        </svg>
-        <p class="mono legend">4 SYMBOLS / QUADRANT · SEEDED, REPRODUCIBLE</p>
-        <p id="readout" class="mono readout" role="status" aria-live="polite">AWGN · SNR ∞ · BER 0</p>
-        <p class="mono assist">A clean carrier degrades as noise rises — a small model of the channel in Chronos-DSP.</p>
-        <div class="snr-control">
-          <label class="mono" for="snr">Add noise (SNR)</label>
-          <input id="snr" type="range" min="0" max="30" step="1" value="30" aria-describedby="snr-hint">
-          <span id="snr-hint" class="visually-hidden">Lower signal-to-noise ratio means more noise. Use arrow keys to adjust.</span>
-        </div>
-      </aside>
+    <svg class="glyph" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <path class="glyph-stroke" d="M60 70 C 90 470, 510 470, 540 70"></path>
+      <path class="glyph-stroke" d="M60 530 C 90 130, 510 130, 540 530"></path>
+      <path class="glyph-axis" d="M60 300 H540"></path>
+    </svg>
+
+    <div class="hero-inner">
+      <p class="kicker">01 / ECE · IIIT DELHI <span aria-hidden="true">·</span> SIGNAL / ARCHITECTURE</p>
+      <h1 id="hook">Model it.<br>Measure it.<br>Show the <em>trace.</em></h1>
+      <p class="lede">Software that models and measures the machine underneath — signal processing, computer architecture, local-first tools. I make the channel, the cache and the counters visible.</p>
+      <p class="actions">
+        <a class="cta" href="#work">See the work <span aria-hidden="true">↓</span></a>
+        <a class="stage-link" href="https://github.com/leelanshkharbanda">GitHub</a>
+        <a class="stage-link" href="mailto:leelansh24319@iiitd.ac.in">email</a>
+      </p>
+    </div>
+
+    <figure class="artifact">
+      <svg class="rays" viewBox="0 0 640 340" role="img" aria-labelledby="rays-title rays-desc" focusable="false">
+        <title id="rays-title">Chronos-DSP channel ray paths</title>
+        <desc id="rays-desc">A transmitter at left, two planar walls in the middle and a receiver at right. A direct line-of-sight path, a first-order image-source reflected path and a knife-edge diffraction path are drawn.</desc>
+        <g class="walls" fill="none" stroke="currentColor" stroke-opacity=".55">
+          <path d="M250 40 L268 300"></path>
+          <path d="M420 20 L438 290"></path>
+        </g>
+        <g class="nodes">
+          <circle cx="70" cy="170" r="9"></circle><circle cx="580" cy="215" r="9"></circle>
+          <text x="70" y="200" text-anchor="middle">TX</text><text x="580" y="245" text-anchor="middle">RX</text>
+        </g>
+        <path class="path-los" d="M79 170 L571 215"></path>
+        <path class="path-reflect" d="M79 170 L260 96 L430 118 L571 215"></path>
+        <path class="path-diffract" d="M79 170 L268 300 L571 215"></path>
+      </svg>
+      <figcaption class="artifact-caption">
+        <span class="paths-full">01 LINE-OF-SIGHT · 02 IMAGE-SOURCE REFLECTION · 03 KNIFE-EDGE DIFFRACTION</span>
+        <span class="paths-short" aria-hidden="true">LoS · REFLECT · DIFFRACT</span>
+        <span class="scope">SIMULATION — NOT A LIVE RADIO</span>
+      </figcaption>
+      <p class="stamp" aria-hidden="true">SIMULATION</p>
+    </figure>
+
+    <svg class="fft" viewBox="0 0 1000 60" aria-hidden="true" focusable="false">
+      <path id="fft-path" d="M0 30 L40 24 L80 38 L120 20 L160 45 L200 28 L240 34 L280 18 L320 40 L360 26 L400 32 L440 22 L480 42 L520 29 L560 35 L600 19 L640 44 L680 27 L720 33 L760 21 L800 39 L840 25 L880 36 L920 20 L960 43 L1000 30"></path>
+    </svg>
+
+    <div class="readout-bar">
+      <p id="readout" class="readout" role="status" aria-live="polite">AWGN · SNR ∞ · BER 0</p>
+      <div class="control">
+        <label class="mono" for="snr">Add noise (SNR)</label>
+        <input id="snr" type="range" min="0" max="30" step="1" value="30" aria-describedby="snr-hint" disabled>
+        <span id="snr-hint" class="visually-hidden">In the static fallback the readout is a fixed reference. With JavaScript enabled, lower signal-to-noise ratio adds noise; arrow keys adjust the value.</span>
+      </div>
+      <p class="readout-meta mono">ELIXIR / PHOENIX <span aria-hidden="true">·</span> RUST NIF <span aria-hidden="true">·</span> SEEDED</p>
     </div>
   </section>
 
   <section id="work" class="chapter" aria-labelledby="work-title">
-    <p class="mono chapter-label">01 / SELECTED WORK</p>
-    <h2 id="work-title">Selected work</h2>
+    <p class="chapter-label mono">02 / MEASUREMENT RAIL</p>
+    <h2 id="work-title">The work is the evidence.</h2>
+    <p class="chapter-note mono">THREE DATASHEETS — REAL ARTIFACTS, NOT CARDS</p>
+    <div class="marquee" aria-hidden="true"><div class="marquee-track">
+      <span>ELIXIR/PHOENIX CONTROL PLANE&nbsp; · &nbsp;RUST NIF DATA PLANE&nbsp; · &nbsp;SEEDED AWGN&nbsp; · &nbsp;RV32I TWO-PASS&nbsp; · &nbsp;4-EVENT PMU&nbsp; · &nbsp;C=64 · SIMULATED&nbsp; · &nbsp;</span>
+      <span>ELIXIR/PHOENIX CONTROL PLANE&nbsp; · &nbsp;RUST NIF DATA PLANE&nbsp; · &nbsp;SEEDED AWGN&nbsp; · &nbsp;RV32I TWO-PASS&nbsp; · &nbsp;4-EVENT PMU&nbsp; · &nbsp;C=64 · SIMULATED&nbsp; · &nbsp;</span>
+    </div></div>
+    <ul class="rail-values mono">
+      <li>RUST NIF / ELIXIR PHOENIX</li><li>QPSK · AWGN · BER</li><li>RV32I · TRACE</li><li>4-EVENT PMU</li><li>C=64 · SIMULATED</li>
+    </ul>
 
     <article class="case" aria-labelledby="case-chronos">
-      <div class="case-head">
-        <span class="mono">01 / FIELD</span>
-        <h3 id="case-chronos">Chronos-DSP</h3>
-        <p class="case-tag">Elixir + Rust NIF</p>
-      </div>
-      <div class="case-body">
-        <p class="case-lede">A real-time wireless propagation simulator with an Elixir/Phoenix control plane and a Rust NIF DSP data plane.</p>
-        <div class="case-instrument">
-          <p class="mono">CHANNEL RECORD / SEEDED RUN</p>
-          <svg viewBox="0 0 480 80" aria-hidden="true" focusable="false"><line class="axis" x1="0" y1="40" x2="480" y2="40"></line><path class="wave" d="M0 40.0 L12 29.4 L24 22.9 L36 22.9 L48 29.4 L60 40.0 L72 50.6 L84 57.1 L96 57.1 L108 50.6 L120 40.0 L132 29.4 L144 22.9 L156 22.9 L168 29.4 L180 40.0 L192 50.6 L204 57.1 L216 57.1 L228 50.6 L240 40.0 L252 29.4 L264 22.9 L276 22.9 L288 29.4 L300 40.0 L312 50.6 L324 57.1 L336 57.1 L348 50.6 L360 40.0 L372 29.4 L384 22.9 L396 22.9 L408 29.4 L420 40.0 L432 50.6 L444 57.1 L456 57.1 L468 50.6 L480 40.0"></path></svg>
-          <p class="mono">QPSK · AWGN · BER</p>
+      <div class="case-head mono"><span>01 / FIELD</span><span>ELIXIR · RUST</span></div>
+      <h3 id="case-chronos">Chronos-DSP</h3>
+      <p class="case-lede">A real-time wireless propagation simulator with an Elixir/Phoenix control plane and a Rust NIF DSP data plane.</p>
+      <div class="datasheet">
+        <figure class="datasheet-art">
+          <svg viewBox="0 0 640 300" role="img" aria-labelledby="chrono-art-title chrono-art-desc" focusable="false">
+            <title id="chrono-art-title">Channel ray paths and QPSK constellation</title>
+            <desc id="chrono-art-desc">Transmitter to receiver via direct line of sight, image-source reflection and knife-edge diffraction, beside a four-point QPSK constellation.</desc>
+            <g class="walls" fill="none" stroke="currentColor" stroke-opacity=".5"><path d="M230 30 L246 270"></path><path d="M380 20 L396 260"></path></g>
+            <g class="nodes"><circle cx="55" cy="145" r="8"></circle><circle cx="540" cy="180" r="8"></circle><text x="55" y="173" text-anchor="middle">TX</text><text x="540" y="208" text-anchor="middle">RX</text></g>
+            <path class="art-los" d="M63 145 L532 180"></path>
+            <path class="art-reflect" d="M63 145 L238 88 L388 104 L532 180"></path>
+            <path class="art-diffract" d="M63 145 L246 270 L532 180"></path>
+            <g class="art-constellation" transform="translate(610 150)">
+              <circle cx="0" cy="0" r="72" class="art-ring"></circle><circle cx="0" cy="0" r="38" class="art-ring"></circle>
+              <path d="M-80 0 H80 M0 -80 V80" class="art-cross"></path>
+              <circle cx="-26" cy="-26" r="5"></circle><circle cx="26" cy="-26" r="5"></circle><circle cx="-26" cy="26" r="5"></circle><circle cx="26" cy="26" r="5"></circle>
+            </g>
+          </svg>
+          <figcaption class="mono">RAY PATHS / SEEDED QPSK · AWGN · BER</figcaption>
+        </figure>
+        <div class="datasheet-body">
+          <p>A supervised LiveView dashboard drives a 3D scene of transmitters, receivers and planar walls. The channel models line-of-sight, image-source reflections, knife-edge diffraction, transmission and Doppler; a seeded QPSK/AWGN pipeline reports BER.</p>
+          <ul class="fact-list mono">
+            <li><code>render_rx_block/5</code> runs on a dirty CPU scheduler.</li>
+            <li>A pure-Elixir reference mirrors sample order, interpolation, rotation and RNG, and degrades cleanly without the NIF artifact.</li>
+          </ul>
+          <p class="scope">Scope: a simulator, not a live radio product.</p>
+          <p class="case-links"><a href="https://github.com/leelanshkharbanda/Chronos-DSP">View repository <span aria-hidden="true">↗</span></a></p>
         </div>
-        <p>A supervised LiveView dashboard drives a 3D scene of transmitters, receivers and planar walls. The channel models line-of-sight, image-source reflections, knife-edge diffraction, transmission and Doppler; a seeded QPSK/AWGN pipeline reports BER.</p>
-        <ul class="detail">
-          <li><code>render_rx_block/5</code> runs on a dirty CPU scheduler.</li>
-          <li>A pure-Elixir reference mirrors the NIF's sample order, interpolation, rotation and RNG, and degrades cleanly if the artifact is missing.</li>
-        </ul>
-        <p class="scope">Scope: a simulator, not a live radio product.</p>
-        <p class="case-links"><a href="https://github.com/leelanshkharbanda/Chronos-DSP">View repository <span aria-hidden="true">↗</span></a></p>
       </div>
     </article>
 
     <article class="case" aria-labelledby="case-modulation">
-      <div class="case-head">
-        <span class="mono">02 / SIGNAL</span>
-        <h3 id="case-modulation">Modulation Studio</h3>
-        <p class="case-tag">Browser DSP</p>
-      </div>
-      <div class="case-body">
-        <p class="case-lede">A terminal-style visualizer for modulation, FFT spectra and constellations — with a working live demo.</p>
-        <p>Waveforms, received and demodulated signals, FFT magnitude and constellation plots update in the browser. Named schemes include AM DSB-LC/DSB-SC, FM, PM, ASK, FSK, BPSK, QPSK and 16-QAM.</p>
-        <ul class="detail">
-          <li>AWGN, fading and carrier/phase offset, with BER/SER and correlation readouts.</li>
-          <li>Optional adaptive receiver combining a PLL with timing recovery.</li>
-        </ul>
-        <p class="scope">Named schemes are listed rather than a hard count — the live demo, README and repo description give different totals.</p>
-        <p class="case-links"><a href="https://leelanshkharbanda.github.io/Modulation-Studio/">Live demo <span aria-hidden="true">↗</span></a><a href="https://github.com/leelanshkharbanda/Modulation-Studio">View repository <span aria-hidden="true">↗</span></a></p>
+      <div class="case-head mono"><span>02 / SIGNAL</span><span>BROWSER DSP</span></div>
+      <h3 id="case-modulation">Modulation Studio</h3>
+      <p class="case-lede">A terminal-style visualizer for modulation, FFT spectra and constellations — with a working live demo.</p>
+      <div class="datasheet">
+        <figure class="datasheet-art">
+          <svg viewBox="0 0 640 300" role="img" aria-labelledby="mod-art-title mod-art-desc" focusable="false">
+            <title id="mod-art-title">Waveform, spectrum and constellation views</title>
+            <desc id="mod-art-desc">A time-domain waveform above a magnitude spectrum, with a QPSK constellation at right.</desc>
+            <path class="art-los" d="M20 70 L40 52 L60 44 L80 52 L100 70 L120 88 L140 96 L160 88 L180 70 L200 52 L220 44 L240 52 L260 70 L280 88 L300 96 L320 88 L340 70 L360 52 L380 44 L400 52 L420 70"></path>
+            <path class="art-reflect" d="M20 220 L60 216 L100 226 L140 208 L180 244 L220 214 L260 230 L300 206 L340 240 L380 218 L420 228 L460 212 L500 236 L540 220 L580 226 L620 216"></path>
+            <path class="art-cross" d="M20 130 H620"></path>
+            <g class="art-constellation" transform="translate(520 80)">
+              <circle cx="0" cy="0" r="48" class="art-ring"></circle>
+              <path d="M-56 0 H56 M0 -56 V56" class="art-cross"></path>
+              <circle cx="-20" cy="-20" r="5"></circle><circle cx="20" cy="-20" r="5"></circle><circle cx="-20" cy="20" r="5"></circle><circle cx="20" cy="20" r="5"></circle>
+            </g>
+          </svg>
+          <figcaption class="mono">WAVEFORM / FFT MAGNITUDE / I-Q CONSTELLATION</figcaption>
+        </figure>
+        <div class="datasheet-body">
+          <p>Waveforms, received and demodulated signals, FFT magnitude and constellation plots update in the browser. Named schemes include AM DSB-LC/DSB-SC, FM, PM, ASK, FSK, BPSK, QPSK and 16-QAM.</p>
+          <ul class="fact-list mono">
+            <li>AWGN, fading and carrier/phase offset, with BER/SER and correlation readouts.</li>
+            <li>Optional adaptive receiver combining a PLL with timing recovery.</li>
+          </ul>
+          <p class="scope">Named schemes are listed rather than a hard count — the live demo, README and repo description give different totals.</p>
+          <p class="case-links"><a href="https://leelanshkharbanda.github.io/Modulation-Studio/">Live demo <span aria-hidden="true">↗</span></a><a href="https://github.com/leelanshkharbanda/Modulation-Studio">View repository <span aria-hidden="true">↗</span></a></p>
+        </div>
       </div>
     </article>
 
     <article class="case alt" aria-labelledby="case-moe">
-      <div class="case-head">
-        <span class="mono">03 / MEMORY</span>
-        <h3 id="case-moe">MoE Memory Wall</h3>
-        <p class="case-tag">Computer architecture</p>
-      </div>
-      <div class="case-body">
-        <p class="case-lede">Training-free expert prediction and prefetching across the DRAM–HBM boundary.</p>
-        <p>A computer-architecture course project (CA Project 2, Group 24) studying Mixtral-8x7B decode with experts offloaded to CPU DRAM, simulated with LLMSimulator.</p>
-        <ul class="detail">
-          <li>Calibrated speculative gate with guided replacement, preemption and a feedback throttle.</li>
-          <li>Reported 1.27x at C=64 on TinyMoE prose versus on-demand LRU.</li>
-        </ul>
-        <p class="scope">Scope: everything is simulation; numbers are as reported by the project, with configuration intact. Group course project.</p>
-        <p class="case-links"><a href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project">View repository <span aria-hidden="true">↗</span></a></p>
+      <div class="case-head mono"><span>03 / MEMORY</span><span>COMPUTER ARCHITECTURE</span></div>
+      <h3 id="case-moe">MoE Memory Wall</h3>
+      <p class="case-lede">Training-free expert prediction and prefetching across the DRAM–HBM boundary.</p>
+      <div class="datasheet">
+        <figure class="datasheet-art">
+          <svg viewBox="0 0 640 300" role="img" aria-labelledby="moe-art-title moe-art-desc" focusable="false">
+            <title id="moe-art-title">Simulated prefetch speedup at two cache capacities</title>
+            <desc id="moe-art-desc">A bar chart comparing on-demand LRU at 1.00 with the reported speculative gate at C equals 64, reported 1.27 times, and at C equals 224, reported 1.00 times. All values are simulated.</desc>
+            <path class="art-cross" d="M40 250 H600"></path>
+            <rect x="90" y="120" width="110" height="130" class="art-bar-dim"></rect>
+            <rect x="270" y="85" width="110" height="165" class="art-bar"></rect>
+            <rect x="450" y="120" width="110" height="130" class="art-bar-dim"></rect>
+            <g class="art-labels" text-anchor="middle">
+              <text x="145" y="278">LRU</text><text x="325" y="278">C=64</text><text x="505" y="278">C=224</text>
+              <text x="145" y="106">1.00x</text><text x="325" y="70">1.27x</text><text x="505" y="106">1.00x</text>
+            </g>
+          </svg>
+          <figcaption class="mono">REPORTED BY SIMULATION — NOT A GPU MEASUREMENT</figcaption>
+        </figure>
+        <div class="datasheet-body">
+          <p>A computer-architecture course project (CA Project 2, Group 24) studying Mixtral-8x7B decode with experts offloaded to CPU DRAM, simulated with LLMSimulator.</p>
+          <ul class="fact-list mono">
+            <li>Calibrated speculative gate with guided replacement, preemption and a feedback throttle.</li>
+            <li>Reported 1.27x at C=64 on TinyMoE prose versus on-demand LRU.</li>
+          </ul>
+          <p class="scope">Scope: everything is simulation; numbers are as reported by the project, with configuration intact. Group course project.</p>
+          <p class="case-links"><a href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project">View repository <span aria-hidden="true">↗</span></a></p>
+        </div>
       </div>
     </article>
   </section>
 
   <section id="thinking" class="chapter short" aria-labelledby="thinking-title">
-    <p class="mono chapter-label">02 / HOW I THINK</p>
-    <h2 id="thinking-title">How I think</h2>
-    <p class="chapter-note">METHOD — MODEL THE LAYER, THEN MEASURE IT</p>
-    <p class="prose-wide">Signal processing and computer architecture are both about what the machine actually does — the channel, the cache, the counter, the clock. I use software to model those layers rather than treating them as an abstraction.</p>
+    <p class="chapter-label mono">03 / HOW I THINK</p>
+    <h2 id="thinking-title">Model the layer, then measure it.</h2>
+    <p class="chapter-note mono">METHOD — CHANNEL / CACHE / COUNTER / CLOCK</p>
+    <p class="prose-wide">Signal processing and computer architecture are both about what the machine actually does. I use software to model those layers rather than treating them as an abstraction — then I measure the model and show the trace.</p>
   </section>
 
   <section id="index" class="chapter short" aria-labelledby="index-title">
-    <p class="mono chapter-label">03 / INDEX</p>
-    <h2 id="index-title">Index</h2>
-    <p class="chapter-note">FOUR MORE ORIGINAL REPOSITORIES</p>
+    <p class="chapter-label mono">04 / INDEX</p>
+    <h2 id="index-title">Four more original repositories.</h2>
+    <p class="chapter-note mono">TRACE · COUNTERS · LOCAL-FIRST · SOCIETY</p>
     <ol class="index-list">
       <li><a href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator"><span class="mono">01</span><span><strong>RISC-V Assembler &amp; Simulator</strong><small class="mono index-detail">Two-pass RV32I assembler with an auditable execution trace.</small></span><span class="mono">RV32I · trace</span></a></li>
-      <li><a href="https://github.com/leelanshkharbanda/HPC_Boost"><span class="mono">02</span><span><strong>HPC_Boost</strong><small class="mono index-detail">Malware detection from four CPU hardware-counter events.</small></span><span class="mono">Hardware counters</span></a></li>
+      <li><a href="https://github.com/leelanshkharbanda/HPC_Boost"><span class="mono">02</span><span><strong>HPC_Boost</strong><small class="mono index-detail">Malware detection from four CPU hardware-counter events.</small></span><span class="mono">4-event PMU</span></a></li>
       <li><a href="https://github.com/leelanshkharbanda/Life-Os"><span class="mono">03</span><span><strong>Life OS</strong><small class="mono index-detail">Local-first Tauri app with on-device ONNX inference.</small></span><span class="mono">Local-first</span></a></li>
       <li><a href="https://leelanshkharbanda.github.io/tasveer/"><span class="mono">04</span><span><strong>Tasveer</strong><small class="mono index-detail">Website for IIIT Delhi's media society, which I coordinate.</small></span><span class="mono">Media society</span></a></li>
     </ol>
   </section>
 
   <section id="about" class="chapter short" aria-labelledby="about-title">
-    <p class="mono chapter-label">04 / ABOUT</p>
-    <h2 id="about-title">About</h2>
-    <p class="chapter-note">IIIT DELHI · ECE · PRESENT TENSE</p>
-    <p class="prose-wide">ECE undergrad at IIIT Delhi. I coordinate Tasveer, the institute's media society. My interests sit around signal processing, computer architecture, hardware-counter telemetry and local-first tools.</p>
+    <p class="chapter-label mono">05 / ABOUT</p>
+    <h2 id="about-title">Signal, cache, counters.</h2>
+    <p class="chapter-note mono">IIIT DELHI · ECE · PRESENT TENSE</p>
+    <p class="prose-wide">ECE undergrad at IIIT Delhi. I coordinate Tasveer, the institute's media society. My interests sit around signal processing, computer architecture, hardware-counter telemetry and local-first tools — the layers where software meets the machine.</p>
   </section>
 
   <section id="contact" class="chapter short" aria-labelledby="contact-title">
-    <p class="mono chapter-label">05 / CONTACT</p>
-    <h2 id="contact-title">Contact</h2>
-    <p class="chapter-note">EMAIL / GITHUB / LINKEDIN</p>
+    <p class="chapter-label mono">06 / CONTACT</p>
+    <h2 id="contact-title">Open a channel.</h2>
+    <p class="chapter-note mono">EMAIL / GITHUB / LINKEDIN</p>
     <ul class="contact-list">
       <li><span class="mono">EMAIL</span><a href="mailto:leelansh24319@iiitd.ac.in">leelansh24319@iiitd.ac.in</a></li>
       <li><span class="mono">GITHUB</span><a href="https://github.com/leelanshkharbanda">github.com/leelanshkharbanda</a></li>
@@ -177,12 +241,9 @@
   </section>
 </main>
 <footer class="site-footer">
-  <p class="mono">LEELANSH KHARBANDA · IIIT DELHI</p>
+  <p class="mono">LEELANSH KHARBANDA · IIIT DELHI <span aria-hidden="true">/</span> MODEL · MEASURE · REPEAT</p>
   <nav aria-label="Footer">
-    <a href="#work">Work</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-    <a href="#main">Top</a>
+    <a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a><a href="#main">Top</a>
   </nav>
 </footer>
 </body>
