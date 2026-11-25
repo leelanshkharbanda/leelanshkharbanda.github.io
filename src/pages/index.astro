@@ -12,7 +12,7 @@ import { site } from '../data/site';
 const entries = await Promise.all(homepageProjects.map((slug) => getEntry('projects', slug)));
 const projects = requireProjectEntries(homepageProjects, entries);
 const description =
-  'Leelansh Kharbanda is a B.Tech ECE student at IIIT Delhi building inspectable systems across signal processing, computer architecture, hardware telemetry, and local-first software.';
+  'Leelansh Kharbanda’s personal project playground: signal paths, computer architecture, hardware-counter experiments, and local-first tools—including the rough edges.';
 ---
 
 <BaseLayout title={site.name} description={description}>

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 test('playground opens with a personal project hook', async ({ page }) => {
   await page.goto('/');
@@ -70,6 +71,50 @@ test('touch drag keeps the toy, range, and reset in sync', async ({ browser, bro
   await page.getByRole('button', { name: /Reset/ }).click();
   await expect(handle).toHaveAttribute('aria-valuenow', '104');
   await context.close();
+});
+
+test('visual scrollers stay keyboard accessible at 320px and 200% text', async ({ page }) => {
+  const largeText = 'html { font-size: 200% !important; }';
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto('/');
+  await page.addStyleTag({ content: largeText });
+  const preview = page.locator('.project-visual__root').first();
+  await expect(preview).toHaveAttribute('tabindex', '0');
+  expect(await preview.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  await preview.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(preview).toBeFocused();
+  expect(await preview.evaluate((element) => getComputedStyle(element).outlineWidth)).toBe('3px');
+  expect(await preview.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await page.keyboard.press('ArrowLeft');
+  expect(await preview.evaluate((element) => element.scrollLeft)).toBe(0);
+
+  await page.goto('/work/chronos-dsp/');
+  await page.addStyleTag({ content: largeText });
+  const trace = page.locator('.trace-inspector__figure');
+  await expect(trace).toHaveAttribute('tabindex', '0');
+  await expect(trace).toHaveAttribute('aria-label', 'Interactive signal path and constellation');
+  expect(await trace.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  await trace.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(trace).toBeFocused();
+  expect(await trace.evaluate((element) => getComputedStyle(element).outlineWidth)).toBe('3px');
+  expect(await trace.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await page.keyboard.press('ArrowLeft');
+  expect(await trace.evaluate((element) => element.scrollLeft)).toBe(0);
+
+  for (const route of ['/', '/work/', '/work/chronos-dsp/']) {
+    await page.goto(route);
+    await page.addStyleTag({ content: largeText });
+    const results = await new AxeBuilder({ page }).analyze();
+    const serious = results.violations.filter((violation) =>
+      ['serious', 'critical'].includes(violation.impact ?? ''),
+    );
+    expect(
+      serious.map((violation) => violation.id),
+      route,
+    ).toEqual([]);
+  }
 });
 
 test('mobile project title precedes its schematic', async ({ page }) => {

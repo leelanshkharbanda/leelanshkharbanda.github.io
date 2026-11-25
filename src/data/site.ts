@@ -1,9 +1,9 @@
 export const site = {
   name: 'Leelansh Kharbanda',
   initials: 'LK',
-  positioning: 'I build inspectable systems across software and hardware.',
+  positioning: 'I make small systems so I can see what they’re doing.',
   introduction:
-    'From wireless signal paths and computer architecture to hardware-counter telemetry and local-first tools, I build systems and simulations that make technical behavior easier to see.',
+    'Signal paths, tiny instructions, memory movement, and local-first tools. This is where I keep the experiments—including the ones that didn’t work.',
   education: 'B.Tech ECE · IIIT Delhi',
   email: 'leelansh24319@iiitd.ac.in',
   github: 'https://github.com/leelanshkharbanda',

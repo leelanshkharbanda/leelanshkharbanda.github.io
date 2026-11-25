@@ -2,7 +2,7 @@
 
 ## Mission
 
-Build Leelansh Kharbanda’s personal portfolio as a distinctive, accessible demonstration of engineering at the software/hardware intersection. The user is unavailable during this run; route unresolved choices through the review council and record the decision.
+Build Leelansh Kharbanda’s personal portfolio as a distinctive, accessible project showcase—curious and tactile rather than corporate or service-selling. The user is unavailable during this run; route unresolved choices through the review council and record the decision.
 
 ## Evidence rules
 

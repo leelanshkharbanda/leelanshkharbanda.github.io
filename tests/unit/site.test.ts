@@ -13,7 +13,7 @@ describe('public site facts', () => {
   });
 
   it('keeps positioning specific to the verified domains', () => {
-    expect(site.positioning).toContain('software and hardware');
+    expect(site.positioning).toContain('small systems');
     expect(site.themes).toEqual([
       'Signal processing',
       'Computer architecture',

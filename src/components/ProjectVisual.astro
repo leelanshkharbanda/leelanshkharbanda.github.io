@@ -97,6 +97,9 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
     class={`project-visual__root${preview ? ' project-visual__root--preview' : ''}`}
     id={figureId}
     data-diagram={diagram}
+    data-visual-scroll
+    tabindex="0"
+    aria-label={alt}
   >
     <svg
       class={`project-visual__svg project-visual__svg--${diagram}`}

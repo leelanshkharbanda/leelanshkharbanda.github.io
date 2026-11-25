@@ -1,21 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#f4f1ea"/>
-  <rect x="0" y="0" width="72" height="630" fill="#171917"/>
-  <rect x="72" y="0" width="8" height="630" fill="#c33b1b"/>
-  <g fill="#555a55" font-family="monospace" font-size="18" letter-spacing="3">
-    <text x="132" y="86">LEELANSH KHARBANDA / EVIDENCE 2026</text>
+  <defs>
+    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#d8d1c1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#f6f2e7"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect x="0" y="0" width="72" height="630" fill="#1d1e19"/>
+  <rect x="72" y="0" width="8" height="630" fill="#a9341a"/>
+  <g fill="#5c5a50" font-family="monospace" font-size="18" letter-spacing="3">
+    <text x="132" y="86">LEELANSH KHARBANDA / PERSONAL PROJECT LAB</text>
     <text x="132" y="530">B.TECH ECE · IIIT DELHI</text>
   </g>
-  <g fill="#171917" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="-4">
-    <text x="126" y="224" font-size="82">Inspectable systems</text>
-    <text x="126" y="318" font-size="82">across software</text>
-    <text x="126" y="412" font-size="82">and hardware.</text>
+  <g fill="#1d1e19" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="-4">
+    <text x="126" y="224" font-size="68">I make small systems</text>
+    <text x="126" y="318" font-size="68">so I can see what</text>
+    <text x="126" y="412" font-size="68">they’re doing.</text>
   </g>
+  <rect x="800" y="148" width="90" height="28" rx="14" fill="#dfff68" stroke="#1d1e19" stroke-width="3"/>
+  <rect x="820" y="176" width="296" height="250" rx="28" fill="#d9c9ff" stroke="#1d1e19" stroke-width="4"/>
   <g fill="none" stroke-linecap="square" stroke-linejoin="miter">
-    <path d="M790 458h70l24-92 46 174 36-128 28 46h106" stroke="#c33b1b" stroke-width="10"/>
-    <path d="M790 500h310" stroke="#116c73" stroke-width="4"/>
+    <path d="M840 314h40l20-78 38 142 30-104 24 40h84" stroke="#a9341a" stroke-width="9"/>
+    <path d="M840 356h250" stroke="#116b60" stroke-width="4"/>
   </g>
-  <g fill="#116c73" font-family="monospace" font-size="16" letter-spacing="2">
-    <text x="790" y="544">SIGNAL / SYSTEM / EVIDENCE</text>
+  <g fill="#116b60" font-family="monospace" font-size="16" letter-spacing="2">
+    <text x="820" y="544">SIGNAL / SYSTEM / ROUGH EDGES</text>
   </g>
 </svg>

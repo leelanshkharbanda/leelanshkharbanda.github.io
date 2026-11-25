@@ -1622,7 +1622,7 @@ h3 {
 
   .project-card h3,
   .project-list .project-card h3 {
-    font-size: clamp(2rem, 10vw, 3rem);
+    font-size: clamp(1.8rem, 8.5vw, 2.6rem);
   }
 
   .project-card__meta span + span::before {

@@ -185,7 +185,12 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
           </p>
         </div>
 
-        <figure className="trace-inspector__figure">
+        <figure
+          className="trace-inspector__figure"
+          data-visual-scroll
+          tabIndex={0}
+          aria-label="Interactive signal path and constellation"
+        >
           <svg
             className="trace-inspector__svg"
             viewBox="0 0 720 390"

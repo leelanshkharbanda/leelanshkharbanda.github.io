@@ -106,4 +106,14 @@ window.addEventListener('blur', () => {
   resetCards();
   cursor?.classList.remove('is-visible', 'is-pressed');
 });
+
+for (const scroller of document.querySelectorAll<HTMLElement>('[data-visual-scroll]')) {
+  scroller.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') scroller.scrollLeft += 64;
+    else if (event.key === 'ArrowLeft') scroller.scrollLeft -= 64;
+    else return;
+    event.preventDefault();
+  });
+}
+
 syncMotion();
