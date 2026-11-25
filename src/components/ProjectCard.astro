@@ -53,6 +53,24 @@ const projectNotes: Record<string, { label: string; preview: string; color: stri
   },
 };
 
+const projectExperiments: Record<string, string> = {
+  'chronos-dsp':
+    'Move one wall and the direct and reflected paths stop agreeing. The toy above is a sketch of that question, not recorded Chronos-DSP output.',
+  'life-os':
+    'Trace one recommendation from local record to embedding to bandit to explanation. The model files still have to be provisioned locally.',
+  'modulation-studio':
+    'Add noise and the constellation spreads before the error rate becomes obvious. The live project lets you inspect that change directly.',
+  'hpc-boost':
+    'Per-binary conditioning added only 0.0045 balanced accuracy on this corpus. The useful result was deciding not to build the router.',
+  'moe-memory-wall':
+    'At C=64, TinyMoE-prose reached 1.27× in simulation while uniform routing stayed at 1.00×. Predictability was the whole game.',
+  'riscv-simulator':
+    'Step through one instruction and watch the program counter, registers, and memory change together.',
+  'university-erp':
+    'Follow one role through the desktop UI and see where authentication ends and ERP state begins.',
+  tasveer: 'Browse from an event story to the people who shot, edited, wrote, and coordinated it.',
+};
+
 const { project, index, variant = 'standard', showVisual = true } = Astro.props;
 const data = project.data;
 const note = projectNotes[project.id] ?? {
@@ -94,6 +112,10 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
     {data.statusNote && <p class="project-card__status-note">{data.statusNote}</p>}
     <p class="project-card__question">{data.question}</p>
     <p class="project-card__summary">{data.summary}</p>
+    <details class="project-card__experiment">
+      <summary>{note.label}</summary>
+      <p>{projectExperiments[project.id]}</p>
+    </details>
     <ul class="tag-list" aria-label="Technologies used">
       {data.stack.slice(0, 4).map((item) => (
         <li>{item}</li>

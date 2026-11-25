@@ -35,16 +35,20 @@ import { site } from '../data/site';
 
   const syncMotionControl = () => {
     if (!motionToggle) return;
-    const reduced = reducedMotion.matches || document.documentElement.dataset.motion === 'reduced';
-    motionToggle.hidden = reduced;
-    motionToggle.textContent = 'Reduce motion';
+    const manualReduced = document.documentElement.dataset.motion === 'reduced';
+    motionToggle.hidden = reducedMotion.matches;
+    motionToggle.textContent = manualReduced ? 'Enable motion' : 'Reduce motion';
+    motionToggle.setAttribute('aria-pressed', String(manualReduced));
   };
 
   if (motionToggle) {
     motionToggle.addEventListener('click', () => {
-      document.documentElement.dataset.motion = 'reduced';
+      const manualReduced = document.documentElement.dataset.motion === 'reduced';
+      if (manualReduced) delete document.documentElement.dataset.motion;
+      else document.documentElement.dataset.motion = 'reduced';
       try {
-        localStorage.setItem('portfolio-motion', 'reduced');
+        if (manualReduced) localStorage.removeItem('portfolio-motion');
+        else localStorage.setItem('portfolio-motion', 'reduced');
       } catch {
         // Session-only preference is sufficient when storage is unavailable.
       }

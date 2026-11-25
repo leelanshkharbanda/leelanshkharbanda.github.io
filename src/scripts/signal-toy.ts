@@ -60,7 +60,7 @@ export function updateSignalToy(toy: HTMLElement) {
   const moveHandle = (name: HandleName, point: Point) => {
     state[name] = {
       x: clamp(point.x, 40, 440),
-      y: clamp(point.y, 48, 185),
+      y: initial[name].y,
     };
     draw();
   };
