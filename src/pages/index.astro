@@ -37,7 +37,7 @@ const description =
           Open the project playground <span aria-hidden="true">↓</span>
         </a>
         <a class="button button--secondary" data-magnetic href="/about/">
-          Meet the human <span aria-hidden="true">→</span>
+          About me <span aria-hidden="true">→</span>
         </a>
       </div>
       <nav class="hero-project-strip" aria-label="Featured projects">
@@ -59,6 +59,16 @@ const description =
       <SignalToy />
     </div>
   </section>
+
+  <nav class="playground-comparison page-shell" aria-label="Compare featured projects">
+    {projects.map((project) => (
+      <a href={`/work/${project.id}/`}>
+        <span>{project.data.title.split(':')[0]}</span>
+        <strong>{project.data.question}</strong>
+        <span>{project.data.results[0]?.value ?? project.data.summary}</span>
+      </a>
+    ))}
+  </nav>
 
   <section id="selected-work" class="work-section page-shell" aria-labelledby="work-title">
     <SectionHeading
