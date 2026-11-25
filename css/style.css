@@ -73,7 +73,7 @@ h1 em { font-family: ui-serif, Georgia, "Times New Roman", serif; font-weight: 4
 .path-los { stroke: var(--stage-ink); stroke-width: 3; opacity: .85; }
 .path-reflect { stroke: var(--stage-signal); stroke-width: 4; stroke-dasharray: 900; stroke-dashoffset: 0; }
 .path-diffract { stroke: var(--stage-signal); stroke-width: 2.5; stroke-dasharray: 8 6; opacity: .85; }
-.artifact-caption { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 10px; padding: 6px 8px; background: rgba(13,14,16,.88); font-size: 14px; letter-spacing: .02em; color: var(--stage-muted); }
+.artifact-caption { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 10px; padding: 6px 8px; background: rgba(13,14,16,.96); font-size: 14px; letter-spacing: .02em; color: var(--stage-muted); }
 .artifact-caption .scope { color: var(--stage-ink); }
 .paths-short { display: none; }
 .stamp { position: absolute; top: -14px; right: -10px; margin: 0; padding: 6px 10px; border: 1px solid var(--stage-signal); color: var(--stage-signal); font-size: 14px; transform: rotate(-5deg); background: var(--stage); }
@@ -118,9 +118,9 @@ h1 em { font-family: ui-serif, Georgia, "Times New Roman", serif; font-weight: 4
 @media (max-width: 768px) {
   :root { --header-h: 104px; }
   .utility { flex-wrap: wrap; align-content: center; gap: 0; padding: 8px 16px; }
-  .utility nav { width: 100%; justify-content: space-between; }
+  .utility nav { width: 100%; justify-content: space-between; gap: 0; }
   .utility nav a { padding: 0 4px; font-size: 14px; }
-  .hero { padding-top: 24px; padding-bottom: 20px; }
+  .hero { padding-top: 24px; padding-bottom: 40px; }
   .hero-inner { max-width: none; }
   .artifact { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 20px; }
   .stamp { top: -10px; right: 0; font-size: 14px; }
@@ -130,6 +130,7 @@ h1 em { font-family: ui-serif, Georgia, "Times New Roman", serif; font-weight: 4
 }
 @media (max-width: 360px) {
   h1 { font-size: clamp(2.25rem, 11vw, 3rem); }
+  .utility nav a { padding: 0 2px; }
 }
 
 /* Chapter system — warm paper reading field, stage-ink artifacts */

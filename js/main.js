@@ -33,6 +33,7 @@
   }
 
   slider.disabled = false;
+  slider.setAttribute('aria-valuetext', 'Clean channel, bit error rate zero');
   slider.addEventListener('input', () => {
     const snr = Number(slider.value);
     const next = drawSignal(snr);
