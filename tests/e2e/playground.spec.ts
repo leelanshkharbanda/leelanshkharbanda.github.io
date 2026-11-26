@@ -11,6 +11,71 @@ test('playground opens with a personal project hook', async ({ page }) => {
   await expect(page.locator('.playground-comparison a')).toHaveCount(3);
 });
 
+test('primary pill settles into its shadow and presses flat', async ({ page }) => {
+  await page.goto('/');
+  const button = page.locator('.button--primary[data-magnetic]');
+  const press = () =>
+    button.evaluate((element) =>
+      getComputedStyle(element).getPropertyValue('--button-press').trim(),
+    );
+  const translation = () =>
+    button.evaluate((element) => {
+      const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+      return matrix.e;
+    });
+
+  await expect.poll(press).toBe('0px');
+  await button.hover();
+  await expect.poll(press).toBe('2px');
+  await expect(button).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  expect(await button.evaluate((element) => getComputedStyle(element).boxShadow)).toContain(
+    '2px 2px 0px',
+  );
+
+  const bounds = await button.boundingBox();
+  expect(bounds).not.toBeNull();
+  await page.mouse.move(bounds!.x + bounds!.width - 10, bounds!.y + bounds!.height / 2);
+  await expect.poll(translation).toBeGreaterThan(8);
+  await page.mouse.down();
+  await expect.poll(press).toBe('4px');
+  await expect.poll(translation).toBeGreaterThan(10);
+  await expect(button).toHaveCSS('box-shadow', 'none');
+  await expect(button).toHaveCSS('transition-duration', '0.07s');
+  await page.mouse.up();
+  await expect.poll(press).toBe('2px');
+
+  await button.evaluate((element) => element.blur());
+  await page.mouse.move(0, 0);
+  await expect.poll(press).toBe('0px');
+
+  await page.reload();
+  await page.keyboard.press('Tab');
+  await button.focus();
+  await expect(button).toBeFocused();
+  await expect.poll(press).toBe('2px');
+  await expect(button).toHaveCSS('outline-style', 'solid');
+  await expect(button).toHaveCSS('outline-width', '3px');
+  await expect(button).toHaveCSS('outline-offset', '4px');
+});
+
+test('reduced motion keeps the primary pill detent static', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const button = page.locator('.button--primary[data-magnetic]');
+  await button.hover();
+  await expect(button).toHaveCSS('transform', 'none');
+  await expect(button).toHaveCSS('transition-duration', '0s');
+
+  await page.keyboard.press('Tab');
+  await button.focus();
+  await expect(button).toHaveCSS('outline-width', '3px');
+  await expect(button).toHaveCSS('transform', 'none');
+  await page.mouse.down();
+  await expect(button).toHaveCSS('transform', 'none');
+  await expect(button).toHaveCSS('transition-duration', '0s');
+  await page.mouse.up();
+});
+
 test('signal toy supports keyboard movement and reversible motion', async ({ page }) => {
   await page.goto('/');
   const transmitter = page.getByRole('slider', { name: 'Transmitter horizontal position' });

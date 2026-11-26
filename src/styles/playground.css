@@ -213,6 +213,7 @@ h3 {
 }
 
 .button {
+  --button-press: 0px;
   min-height: 3.25rem;
   border: 2px solid var(--ink);
   border-radius: 999px;
@@ -220,9 +221,13 @@ h3 {
   box-shadow: 4px 4px 0 var(--ink);
   font-size: 0.76rem;
   font-weight: 650;
-  transform: translate(var(--magnet-x, 0), var(--magnet-y, 0)) rotate(-1deg);
+  transform: translate(
+      calc(var(--magnet-x, 0px) + var(--button-press)),
+      calc(var(--magnet-y, 0px) + var(--button-press))
+    )
+    rotate(-1deg);
   transition:
-    transform 160ms ease,
+    transform 240ms cubic-bezier(0.2, 0.9, 0.25, 1.15),
     box-shadow 160ms ease,
     background-color 160ms ease,
     color 160ms ease;
@@ -234,11 +239,20 @@ h3 {
   color: var(--ink);
 }
 
-.button--primary:hover {
+.button--primary:hover,
+.button--primary:focus-visible {
+  --button-press: 2px;
   border-color: var(--ink);
   background: var(--play-yellow);
   box-shadow: 2px 2px 0 var(--ink);
   color: var(--ink);
+}
+
+.button--primary:active {
+  --button-press: 4px;
+  background: var(--play-yellow);
+  box-shadow: none;
+  transition-duration: 70ms;
 }
 
 .button--secondary {
