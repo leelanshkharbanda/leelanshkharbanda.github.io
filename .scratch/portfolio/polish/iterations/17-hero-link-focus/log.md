@@ -35,6 +35,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile rest, hover, focus, and route screenshots were inspected. The yellow state is clear, the focus ring remains visible, and card geometry does not shift.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `8206512` and pushed to `main`.
+- Pages deployment run `45888711297` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus, yellow background, and z-index 1 above sibling cards.
+
 ## Next candidates
 
 1. Do a final hover-only selector audit; stop if remaining treatments are intentional or non-interactive.

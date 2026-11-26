@@ -362,6 +362,58 @@ test('featured comparison links match hover yellow on keyboard focus', async ({
   await expect(link).toHaveCSS('transition-duration', '0s');
 });
 
+test('about threads match their hover detent on keyboard focus', async ({ page }, testInfo) => {
+  await page.goto('/about/');
+  const link = page.locator('.about-thread').first();
+  const skip = page.getByRole('link', { name: 'Skip to content' });
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  const focusThread = async () => {
+    await skip.focus();
+    for (let step = 0; step < 6; step += 1) await page.keyboard.press(tabKey);
+  };
+  const transform = () =>
+    link.evaluate((element) => {
+      const value = getComputedStyle(element).transform;
+      if (value === 'none') return { x: 0, y: 0, angle: 0 };
+      const matrix = new DOMMatrixReadOnly(value);
+      return {
+        x: Math.round(matrix.e),
+        y: Math.round(matrix.f),
+        angle: Math.round((Math.atan2(matrix.b, matrix.a) * 180) / Math.PI),
+      };
+    });
+  const expectDetent = async () => {
+    await expect.poll(transform).toEqual({ x: 3, y: 3, angle: -1 });
+    await expect(link).toHaveCSS('box-shadow', 'rgb(29, 30, 25) 2px 2px 0px 0px');
+  };
+
+  await expect.poll(transform).toEqual({ x: 0, y: 0, angle: 0 });
+  await link.hover();
+  await expectDetent();
+  await page.mouse.move(0, 0);
+  await expect.poll(transform).toEqual({ x: 0, y: 0, angle: 0 });
+  await focusThread();
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('outline-width', '3px');
+  await expectDetent();
+  await link.evaluate((element) => element.blur());
+  await expect.poll(transform).toEqual({ x: 0, y: 0, angle: 0 });
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await link.hover();
+  await expect(link).toHaveCSS('transform', 'none');
+  await expect(link).toHaveCSS('transition-duration', '0s');
+  await focusThread();
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('transform', 'none');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/about/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await focusThread();
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('transform', 'none');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

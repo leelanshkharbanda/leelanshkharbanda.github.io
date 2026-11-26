@@ -1411,7 +1411,8 @@ h3 {
   background: var(--play-pink);
 }
 
-.about-thread:hover {
+.about-thread:hover,
+.about-thread:focus-visible {
   box-shadow: 2px 2px 0 var(--ink);
   color: var(--ink);
   transform: translate(3px, 3px) rotate(-1deg);
