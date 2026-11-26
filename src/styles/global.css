@@ -1944,6 +1944,7 @@ tbody tr:last-child td {
   letter-spacing: -0.035em;
   line-height: 1.05;
   text-decoration: none;
+  transition: color 160ms ease;
 }
 
 .next-project a > span:first-child {
@@ -1955,7 +1956,8 @@ tbody tr:last-child td {
   flex: none;
 }
 
-.next-project a:hover {
+.next-project a:hover,
+.next-project a:focus-visible {
   color: var(--dark-signal);
 }
 

@@ -290,6 +290,40 @@ test('project titles match hover color and underline on keyboard focus', async (
   await expect(title).toHaveCSS('text-decoration-line', 'underline');
 });
 
+test('next-project links match hover coral on keyboard focus', async ({ page }, testInfo) => {
+  await page.goto('/work/chronos-dsp/');
+  const link = page.locator('.next-project a');
+  const previous = page.locator('.case-body a').last();
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  await expect(link).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await link.hover();
+  await expect(link).toHaveCSS('color', 'rgb(255, 133, 103)');
+  await page.mouse.move(0, 0);
+  await expect(link).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('color', 'rgb(255, 133, 103)');
+  await expect(link).toHaveCSS('outline-width', '3px');
+  await link.evaluate((element) => element.blur());
+  await expect(link).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await expect(link).toHaveCSS('transition-duration', '0.16s');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await link.hover();
+  await expect(link).toHaveCSS('color', 'rgb(255, 133, 103)');
+  await expect(link).toHaveCSS('transition-duration', '0s');
+  await page.mouse.move(0, 0);
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('color', 'rgb(255, 133, 103)');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/work/chronos-dsp/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(link).toHaveCSS('transition-duration', '0s');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

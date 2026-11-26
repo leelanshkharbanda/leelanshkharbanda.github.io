@@ -35,6 +35,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile rest, hover, focus, and route screenshots were inspected. The signal color/underline is clear, the focus ring remains visible, and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `863cca4` and pushed to `main`.
+- Pages deployment run `45886019382` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on the project title, signal color, and underline.
+
 ## Next candidates
 
 1. Audit the remaining project-strip and next-project hover treatments for keyboard parity.
