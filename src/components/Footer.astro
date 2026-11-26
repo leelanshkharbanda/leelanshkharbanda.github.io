@@ -38,7 +38,6 @@ import { site } from '../data/site';
     const manualReduced = document.documentElement.dataset.motion === 'reduced';
     motionToggle.hidden = reducedMotion.matches;
     motionToggle.textContent = manualReduced ? 'Enable motion' : 'Reduce motion';
-    motionToggle.setAttribute('aria-pressed', String(manualReduced));
   };
 
   if (motionToggle) {

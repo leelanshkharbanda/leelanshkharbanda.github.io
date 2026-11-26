@@ -62,6 +62,13 @@ test('every route preserves core content without JavaScript', async ({ browser }
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto('/work/chronos-dsp/');
   await expect(page.locator('.project-visual__root')).toBeVisible();
+  await expect(page.locator('.trace-inspector__stage-row[data-stage="source"]')).toHaveClass(
+    /trace-inspector__stage-row--active/,
+  );
+  await expect(page.locator('.trace-inspector__path-node[data-stage="source"]')).toHaveClass(
+    /trace-inspector__path-node--active/,
+  );
+  await expect(page.locator('.trace-inspector__readout-heading')).toContainText('Source');
   await page.getByText('Stage table', { exact: true }).click();
   await expect(page.locator('.trace-static-details tbody tr')).toHaveCount(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
@@ -242,6 +249,78 @@ test('signal sketch advances, reports, and resets without autoplay', async ({ pa
   await expect(inspector).toHaveAttribute('data-stage', 'receiver');
   await reset.click();
   await expect(inspector).toHaveAttribute('data-stage', 'source');
+});
+
+test('trace stage handoff settles the active row and SVG node together', async ({ page }) => {
+  await page.goto('/work/chronos-dsp/');
+  const inspector = page.locator('.trace-inspector__root');
+  const channelRow = page.locator('.trace-inspector__stage-row[data-stage="channel"]');
+  const channelBox = page.locator(
+    '.trace-inspector__path-node[data-stage="channel"] .trace-inspector__path-box',
+  );
+  const timing = await inspector.evaluate((root) => {
+    const row = root.querySelector('.trace-inspector__stage-row')!;
+    const box = root.querySelector('.trace-inspector__path-box')!;
+    const styles = [getComputedStyle(row), getComputedStyle(box)];
+    return {
+      durations: styles.flatMap((style) =>
+        style.transitionDuration.split(',').map((duration) => Number.parseFloat(duration)),
+      ),
+      easings: styles.flatMap(
+        (style) => style.transitionTimingFunction.match(/cubic-bezier\([^)]*\)/g) ?? [],
+      ),
+    };
+  });
+  expect(timing.durations).toEqual([0.18, 0.18, 0.18, 0.18, 0.18]);
+  expect(timing.easings).toEqual(Array(5).fill('cubic-bezier(0.2, 0.8, 0.2, 1)'));
+
+  const next = page.getByRole('button', { name: 'Next', exact: true });
+  await inspector.scrollIntoViewIfNeeded();
+  await expect(next).toBeEnabled();
+  await next.focus();
+  await page.keyboard.press('Enter');
+  await expect(next).toBeFocused();
+  await expect(channelRow).toHaveClass(/trace-inspector__stage-row--active/);
+  await expect(channelRow).toHaveCSS('background-color', 'rgb(35, 40, 35)');
+  await expect(channelBox).toHaveCSS('fill', 'rgb(53, 35, 30)');
+  await expect(channelBox).toHaveCSS('stroke', 'rgb(255, 133, 103)');
+  await expect(page.locator('.trace-inspector__readout-heading')).toContainText('Channel');
+  await expect(page.locator('.trace-inspector__status')).toContainText('Stage 2 of 4');
+});
+
+test('reduced motion and the manual toggle snap trace stage colors', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/work/chronos-dsp/');
+  const inspector = page.locator('.trace-inspector__root');
+  const channelRow = page.locator('.trace-inspector__stage-row[data-stage="channel"]');
+  const channelBox = page.locator(
+    '.trace-inspector__path-node[data-stage="channel"] .trace-inspector__path-box',
+  );
+  const durations = () =>
+    inspector.evaluate((root) => {
+      const row = root.querySelector('.trace-inspector__stage-row')!;
+      const box = root.querySelector('.trace-inspector__path-box')!;
+      return [
+        getComputedStyle(row).transitionDuration,
+        getComputedStyle(box).transitionDuration,
+      ].flatMap((value) => value.split(',').map((duration) => Number.parseFloat(duration)));
+    });
+  const expectChannelColors = async () => {
+    await expect(channelRow).toHaveCSS('background-color', 'rgb(35, 40, 35)');
+    await expect(channelBox).toHaveCSS('fill', 'rgb(53, 35, 30)');
+    await expect(channelBox).toHaveCSS('stroke', 'rgb(255, 133, 103)');
+  };
+  expect((await durations()).every((duration) => duration <= 0.001)).toBe(true);
+  await page.getByRole('button', { name: 'Next', exact: true }).click();
+  await expectChannelColors();
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/work/chronos-dsp/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduced');
+  expect((await durations()).every((duration) => duration <= 0.001)).toBe(true);
+  await page.getByRole('button', { name: 'Next', exact: true }).click();
+  await expectChannelColors();
 });
 
 test('unknown routes return a useful 404 page', async ({ page }) => {

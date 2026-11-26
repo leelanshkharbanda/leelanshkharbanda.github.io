@@ -85,15 +85,12 @@ test('signal toy supports keyboard movement and reversible motion', async ({ pag
 
   const toggle = page.getByRole('button', { name: 'Reduce motion' });
   await toggle.click();
-  await expect(page.getByRole('button', { name: 'Enable motion' })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
-  await page.getByRole('button', { name: 'Enable motion' }).click();
-  await expect(page.getByRole('button', { name: 'Reduce motion' })).toHaveAttribute(
-    'aria-pressed',
-    'false',
-  );
+  const enableMotion = page.getByRole('button', { name: 'Enable motion' });
+  await expect(enableMotion).toBeVisible();
+  await expect(enableMotion).not.toHaveAttribute('aria-pressed');
+  await enableMotion.click();
+  await expect(toggle).toBeVisible();
+  await expect(toggle).not.toHaveAttribute('aria-pressed');
 });
 
 test('touch drag keeps the toy, range, and reset in sync', async ({ browser, browserName }) => {

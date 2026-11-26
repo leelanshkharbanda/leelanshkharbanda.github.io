@@ -1509,6 +1509,10 @@ address {
   border-right: 1px solid var(--dark-secondary);
   border-bottom: 3px solid transparent;
   color: var(--dark-secondary);
+  transition:
+    background-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .trace-inspector__stage-row:last-child {
@@ -1687,6 +1691,9 @@ address {
 .trace-inspector__path-box {
   fill: #222620;
   stroke: var(--rule);
+  transition:
+    fill 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    stroke 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .trace-inspector__path-node--active .trace-inspector__path-box {

@@ -36,6 +36,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile screenshots were inspected for all five required routes. No clipping, overlap, diagram cutoff, or contrast regression was observed.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `8f907fd` and pushed to `main`.
+- Pages deployment run `45851131602` completed successfully.
+- Live verification returned HTTP 200 with the expected 0 px rest and 2 px hover detent.
+
 ## Next candidates
 
 1. Give TraceInspector stage changes a short coordinated settle across the active row, SVG node, and readout so the mechanism handoff feels connected.
