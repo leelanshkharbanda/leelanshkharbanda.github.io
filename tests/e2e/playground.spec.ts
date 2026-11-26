@@ -155,6 +155,58 @@ test('identity mark rotates on hover and keyboard focus', async ({ page }, testI
   await expect(mark).toHaveCSS('transform', 'none');
 });
 
+test('navigation links match hover color on keyboard focus', async ({ page }, testInfo) => {
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  await page.setViewportSize({ width: 1440, height: 900 });
+  for (const route of ['/', '/work/']) {
+    await page.goto(route);
+    const link = page.locator('.desktop-nav a').first();
+    const restingColor = route === '/' ? 'rgba(0, 0, 0, 0)' : 'rgb(29, 30, 25)';
+    await expect(link).toHaveCSS('background-color', restingColor);
+    await link.hover();
+    await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+    await page.mouse.move(0, 0);
+    await expect(link).toHaveCSS('background-color', restingColor);
+    await page.getByRole('link', { name: 'Skip to content' }).focus();
+    for (let step = 0; step < 2; step += 1) await page.keyboard.press(tabKey);
+    await expect(link).toBeFocused();
+    await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+    await expect(link).toHaveCSS('outline-width', '3px');
+    if (route === '/work/') await expect(link).toHaveAttribute('aria-current', 'page');
+  }
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const route of ['/', '/work/']) {
+    await page.goto(route);
+    const summary = page.locator('.mobile-nav summary');
+    const link = page.locator('.mobile-nav a').first();
+    const restingColor = route === '/' ? 'rgba(0, 0, 0, 0)' : 'rgb(29, 30, 25)';
+    await summary.click();
+    await page.mouse.move(0, 0);
+    await expect(link).toHaveCSS('background-color', restingColor);
+    await link.hover();
+    await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+    await page.mouse.move(0, 0);
+    await expect(link).toHaveCSS('background-color', restingColor);
+    await summary.focus();
+    await page.keyboard.press(tabKey);
+    await expect(link).toBeFocused();
+    await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+    await expect(link).toHaveCSS('outline-width', '3px');
+    if (route === '/work/') await expect(link).toHaveAttribute('aria-current', 'page');
+  }
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('.desktop-nav a').first()).toHaveCSS('transition-duration', '0s');
+  await expect(page.locator('.mobile-nav a').first()).toHaveCSS('transition-duration', '0s');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(page.locator('.desktop-nav a').first()).toHaveCSS('transition-duration', '0s');
+  await expect(page.locator('.mobile-nav a').first()).toHaveCSS('transition-duration', '0s');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

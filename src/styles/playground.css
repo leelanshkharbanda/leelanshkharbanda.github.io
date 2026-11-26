@@ -166,10 +166,13 @@ h3 {
   border: 0;
   border-radius: 999px;
   padding-inline: 0.9rem;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
-.desktop-nav a:hover,
-.mobile-nav a:hover {
+.desktop-nav a:focus-visible,
+.mobile-nav a:focus-visible {
   background: var(--play-yellow);
   color: var(--ink);
 }
@@ -178,6 +181,22 @@ h3 {
 .mobile-nav a[aria-current='page'] {
   background: var(--ink);
   color: var(--paper);
+}
+
+.desktop-nav a[aria-current='page']:focus-visible,
+.mobile-nav a[aria-current='page']:focus-visible {
+  background: var(--play-yellow);
+  color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .desktop-nav a:hover,
+  .mobile-nav a:hover,
+  .desktop-nav a[aria-current='page']:hover,
+  .mobile-nav a[aria-current='page']:hover {
+    background: var(--play-yellow);
+    color: var(--ink);
+  }
 }
 
 .mobile-nav summary {
@@ -1726,6 +1745,8 @@ h3 {
 
   .button,
   .mobile-nav summary,
+  .desktop-nav a,
+  .mobile-nav a,
   .arrow-link span,
   .back-link__arrow,
   .project-card,
@@ -1749,6 +1770,8 @@ html[data-motion='reduced'] .signal-toy__readouts strong {
 
 html[data-motion='reduced'] .button,
 html[data-motion='reduced'] .mobile-nav summary,
+html[data-motion='reduced'] .desktop-nav a,
+html[data-motion='reduced'] .mobile-nav a,
 html[data-motion='reduced'] .arrow-link span,
 html[data-motion='reduced'] .back-link__arrow,
 html[data-motion='reduced'] .project-card,

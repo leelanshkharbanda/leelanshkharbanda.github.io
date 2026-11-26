@@ -35,6 +35,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile rest, reduced, focused, and route screenshots were inspected. The lime state is clear, the focus ring remains visible, and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `6a596c8` and pushed to `main`.
+- Pages deployment run `45876118573` completed successfully.
+- Live verification returned HTTP 200 with lime text/underline, the Enable motion action label, and no `aria-pressed`.
+
 ## Next candidates
 
 1. Revisit contact-copy confirmation timing only if real-device testing exposes a rough corner.
