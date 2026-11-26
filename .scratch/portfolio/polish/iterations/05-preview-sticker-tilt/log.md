@@ -35,6 +35,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile route, rest, hover, and focus screenshots were inspected. The sticker stays inside its stage bar and the diagram remains fully visible.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `22bc3f9` and pushed to `main`.
+- Pages deployment run `45866210178` completed successfully.
+- Live verification returned HTTP 200 with the expected -2° sticker transform.
+
 ## Next candidates
 
 1. Add a compact press detent to the mobile Menu summary so touch activation feels as deliberate as the hard-shadow styling.

@@ -109,6 +109,90 @@ test('preview sticker stays contained at narrow widths and 200% text', async ({ 
   }
 });
 
+test('mobile menu summary presses flat and shows open/focus state', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const details = page.locator('.mobile-nav');
+  const summary = details.locator('summary');
+  const translation = () =>
+    summary.evaluate((element) => {
+      const transform = getComputedStyle(element).transform;
+      return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).e;
+    });
+
+  await expect(summary).toHaveCSS('background-color', 'rgb(223, 255, 104)');
+  await summary.hover();
+  await page.mouse.down();
+  await expect.poll(translation).toBeGreaterThan(1.5);
+  await expect(summary).toHaveCSS('box-shadow', 'none');
+  await expect(summary).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await page.mouse.up();
+  await expect(details).toHaveAttribute('open', '');
+  await expect.poll(translation).toBe(0);
+  await expect(summary).toHaveCSS('box-shadow', 'rgb(29, 30, 25) 2px 2px 0px 0px');
+
+  await summary.click();
+  await expect(details).not.toHaveAttribute('open', '');
+  await expect(summary).toHaveCSS('background-color', 'rgb(223, 255, 104)');
+  await page.keyboard.press('Tab');
+  await summary.focus();
+  await expect(summary).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await page.keyboard.press('Enter');
+  await expect(details).toHaveAttribute('open', '');
+  await page.keyboard.press('Enter');
+  await expect(details).not.toHaveAttribute('open', '');
+  await page.keyboard.press('Space');
+  await expect(details).toHaveAttribute('open', '');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  await summary.hover();
+  await page.mouse.down();
+  await expect(summary).toHaveCSS('transform', 'none');
+  await expect(summary).toHaveCSS('transition-duration', '0s');
+  await page.mouse.up();
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.reload();
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await summary.hover();
+  await page.mouse.down();
+  await expect(summary).toHaveCSS('transform', 'none');
+  await page.mouse.up();
+});
+
+test('touch activation opens the mobile menu with visible state', async ({
+  browser,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Touch activation uses Chromium CDP input events.');
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto('/');
+  const summary = page.locator('.mobile-nav summary');
+  const box = await summary.boundingBox();
+  expect(box).not.toBeNull();
+  const client = await context.newCDPSession(page);
+  const x = box!.x + box!.width / 2;
+  const y = box!.y + box!.height / 2;
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ id: 1, x, y }],
+  });
+  await expect(summary).toBeVisible();
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchEnd',
+    touchPoints: [],
+  });
+  await expect(page.locator('.mobile-nav')).toHaveAttribute('open', '');
+  await expect(summary).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await context.close();
+});
+
 test('primary pill settles into its shadow and presses flat', async ({ page }) => {
   await page.goto('/');
   const button = page.locator('.button--primary[data-magnetic]');
@@ -126,9 +210,9 @@ test('primary pill settles into its shadow and presses flat', async ({ page }) =
   await button.hover();
   await expect.poll(press).toBe('2px');
   await expect(button).toHaveCSS('background-color', 'rgb(255, 220, 99)');
-  expect(await button.evaluate((element) => getComputedStyle(element).boxShadow)).toContain(
-    '2px 2px 0px',
-  );
+  await expect
+    .poll(() => button.evaluate((element) => getComputedStyle(element).boxShadow))
+    .toContain('2px 2px 0px');
 
   const bounds = await button.boundingBox();
   expect(bounds).not.toBeNull();

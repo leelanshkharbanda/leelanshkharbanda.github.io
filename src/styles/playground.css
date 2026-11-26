@@ -188,6 +188,21 @@ h3 {
   box-shadow: 2px 2px 0 var(--ink);
   color: var(--ink);
   font-weight: 650;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease;
+}
+
+.mobile-nav summary:active {
+  background: var(--play-yellow);
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+.mobile-nav[open] summary,
+.mobile-nav summary:focus-visible {
+  background: var(--play-yellow);
 }
 
 .mobile-nav nav {
@@ -1709,6 +1724,7 @@ h3 {
   }
 
   .button,
+  .mobile-nav summary,
   .project-card,
   .project-card__stage,
   .about-thread,
@@ -1729,6 +1745,7 @@ html[data-motion='reduced'] .signal-toy__readouts strong {
 }
 
 html[data-motion='reduced'] .button,
+html[data-motion='reduced'] .mobile-nav summary,
 html[data-motion='reduced'] .project-card,
 html[data-motion='reduced'] .project-card__stage,
 html[data-motion='reduced'] .about-thread,
