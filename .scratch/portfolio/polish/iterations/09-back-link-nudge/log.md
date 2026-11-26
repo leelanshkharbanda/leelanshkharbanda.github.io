@@ -37,6 +37,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile case-study and résumé rest, hover, focus, and route screenshots were inspected. No label clipping, overlap, or layout shift was introduced.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `d0464be` and pushed to `main`.
+- Pages deployment run `45874639738` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on the back link and the expected -3 px arrow nudge.
+
 ## Next candidates
 
 1. Review the footer motion toggle's visual state now that its accessible semantics are corrected.

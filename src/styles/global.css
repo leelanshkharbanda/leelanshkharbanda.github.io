@@ -1119,6 +1119,11 @@ address {
 
 .site-footer .text-button {
   color: var(--dark-secondary);
+  transition: color 160ms ease;
+}
+
+html[data-motion='reduced'] .motion-toggle {
+  color: var(--play-green);
 }
 
 .page-hero {

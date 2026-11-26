@@ -410,9 +410,13 @@ test('signal toy supports keyboard movement and reversible motion', async ({ pag
   const enableMotion = page.getByRole('button', { name: 'Enable motion' });
   await expect(enableMotion).toBeVisible();
   await expect(enableMotion).not.toHaveAttribute('aria-pressed');
+  await expect(enableMotion).toHaveCSS('color', 'rgb(223, 255, 104)');
+  await expect(enableMotion).toHaveCSS('border-bottom-color', 'rgb(223, 255, 104)');
   await enableMotion.click();
   await expect(toggle).toBeVisible();
   await expect(toggle).not.toHaveAttribute('aria-pressed');
+  await expect(toggle).toHaveCSS('color', 'rgb(199, 201, 188)');
+  await expect(toggle).toHaveCSS('border-bottom-color', 'rgb(199, 201, 188)');
 });
 
 test('signal toy readouts tick after input and respect reduced motion', async ({ page }) => {
