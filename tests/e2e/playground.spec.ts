@@ -324,6 +324,44 @@ test('next-project links match hover coral on keyboard focus', async ({ page }, 
   await expect(link).toHaveCSS('transition-duration', '0s');
 });
 
+test('featured comparison links match hover yellow on keyboard focus', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/');
+  const link = page.locator('.playground-comparison a').first();
+  const previous = page.getByRole('button', { name: /Reset/ });
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  await expect(link).toHaveCSS('background-color', 'rgb(246, 242, 231)');
+  await link.hover();
+  await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await page.mouse.move(0, 0);
+  await expect(link).toHaveCSS('background-color', 'rgb(246, 242, 231)');
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await expect(link).toHaveCSS('outline-width', '3px');
+  await expect(link).toHaveCSS('position', 'relative');
+  await expect(link).toHaveCSS('z-index', '1');
+  await link.evaluate((element) => element.blur());
+  await expect(link).toHaveCSS('background-color', 'rgb(246, 242, 231)');
+  await expect(link).toHaveCSS('transition-duration', '0.16s');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await link.hover();
+  await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await expect(link).toHaveCSS('transition-duration', '0s');
+  await page.mouse.move(0, 0);
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('background-color', 'rgb(255, 220, 99)');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(link).toHaveCSS('transition-duration', '0s');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

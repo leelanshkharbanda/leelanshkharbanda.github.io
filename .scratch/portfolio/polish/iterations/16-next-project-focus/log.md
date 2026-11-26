@@ -36,6 +36,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile rest, hover, focus, and route screenshots were inspected. The coral state is clear, the focus ring remains visible, and the large target does not shift.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `fda8eb3` and pushed to `main`.
+- Pages deployment run `45887465727` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on the next-project link and the expected coral color.
+
 ## Next candidates
 
 1. Audit the remaining hero project-strip/comparison hover treatments for keyboard parity.

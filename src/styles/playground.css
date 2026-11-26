@@ -686,10 +686,17 @@ h3 {
   background: var(--paper);
   color: var(--ink);
   text-decoration: none;
+  transition: background-color 160ms ease;
 }
 
-.playground-comparison a:hover {
+.playground-comparison a:hover,
+.playground-comparison a:focus-visible {
   background: var(--play-yellow);
+}
+
+.playground-comparison a:focus-visible {
+  position: relative;
+  z-index: 1;
 }
 
 .playground-comparison span {
@@ -1764,6 +1771,7 @@ h3 {
   .trace-inspector__controls button,
   .project-card h3 a,
   .next-project a,
+  .playground-comparison a,
   .arrow-link span,
   .back-link__arrow,
   .project-card,
@@ -1795,6 +1803,7 @@ html[data-motion='reduced'] .signal-toy__controls button,
 html[data-motion='reduced'] .trace-inspector__controls button,
 html[data-motion='reduced'] .project-card h3 a,
 html[data-motion='reduced'] .next-project a,
+html[data-motion='reduced'] .playground-comparison a,
 html[data-motion='reduced'] .arrow-link span,
 html[data-motion='reduced'] .back-link__arrow,
 html[data-motion='reduced'] .project-card,
