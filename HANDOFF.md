@@ -84,7 +84,7 @@ The shipped interaction is one real scope filter on the project index: All / Dee
 
 Also fixed: duplicate Projects/Index nav targets, forced-colors grid overflow, eyebrow separators leading wrapped lines, internal jargon in visitor copy, stale 404 copy, and external links missing `target="_blank" rel="noopener noreferrer"`. The expansion brief was formally amended so no signed-off interaction remains unimplemented.
 
-Final local council: art director 9.7, visitor 9.45 before publication (blocked only on live URL), frontend 9.7, accessibility 9.6 — all dimensions >=9.0 and zero site findings. Evidence: 33 screenshots in `.scratch/elevation-shots/index-object-polish/`, full edge results in `.scratch/index-object-polish/results.md`, research in `research/index-object-polish-interactions.md`, and the arbiter ruling on Wayfinder #32.
+Final local council: art director 9.7, frontend 9.7, accessibility 9.6, with visitor 9.45 before publication only because the live URL still served the old build. Live re-gate after publication: visitor 9.73 and frontend 9.875, both with zero findings. Every dimension >=9.0. Evidence: 33 screenshots in `.scratch/elevation-shots/index-object-polish/`, full edge results in `.scratch/index-object-polish/results.md`, research in `research/index-object-polish-interactions.md`, and the arbiter ruling on Wayfinder #32.
 
 Root v2 remains untouched. The promotion command in the previous section still applies.
 
