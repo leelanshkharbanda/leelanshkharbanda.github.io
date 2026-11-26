@@ -33,6 +33,7 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
   const headingId = `trace-inspector-${safeId}-heading`;
   const titleId = `trace-inspector-${safeId}-svg-title`;
   const descriptionId = `trace-inspector-${safeId}-svg-description`;
+  const scrollDescriptionId = `trace-inspector-${safeId}-scroll-description`;
   const markerId = `trace-inspector-${safeId}-arrow`;
   const panelId = `trace-inspector-${safeId}-panel`;
   const activeHeadingId = `trace-inspector-${safeId}-active-heading`;
@@ -190,7 +191,12 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
           data-visual-scroll
           tabIndex={0}
           aria-label="Interactive signal path and constellation"
+          aria-describedby={scrollDescriptionId}
         >
+          <span className="sr-only" id={scrollDescriptionId}>
+            If the sketch is wider than its frame, use Left and Right Arrow keys or scroll
+            horizontally.
+          </span>
           <svg
             className="trace-inspector__svg"
             viewBox="0 0 720 390"
@@ -250,17 +256,17 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
               })}
               <path
                 className="trace-inspector__path-link"
-                d="M 184 65 L 206 65"
+                d="M 184 65 L 216 65"
                 marker-end={`url(#${markerId})`}
               />
               <path
                 className="trace-inspector__path-link"
-                d="M 350 65 L 372 65"
+                d="M 350 65 L 382 65"
                 marker-end={`url(#${markerId})`}
               />
               <path
                 className="trace-inspector__path-link"
-                d="M 516 65 L 538 65"
+                d="M 516 65 L 548 65"
                 marker-end={`url(#${markerId})`}
               />
             </g>
@@ -303,8 +309,13 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
             </text>
           </svg>
           <figcaption className="trace-inspector__figure-caption">
-            The active row, datum, metric ledger, and constellation update together. Values change
-            immediately; no trace animation or autoplay is used.
+            <span>
+              The active row, datum, metric ledger, and constellation update together. Values change
+              immediately; no trace animation or autoplay is used.
+            </span>
+            <span className="visual-scroll-cue" aria-hidden="true">
+              Scroll →
+            </span>
           </figcaption>
         </figure>
       </div>

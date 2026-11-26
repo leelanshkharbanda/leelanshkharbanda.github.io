@@ -35,6 +35,7 @@ const safeId =
 const figureId = `project-visual-${safeId}`;
 const titleId = `${figureId}-title`;
 const descriptionId = `${figureId}-description`;
+const scrollDescriptionId = `${figureId}-scroll-description`;
 const arrowId = `${figureId}-arrow`;
 const traceArrowId = `${figureId}-trace-arrow`;
 
@@ -100,7 +101,12 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
     data-visual-scroll
     tabindex="0"
     aria-label={alt}
+    aria-describedby={scrollDescriptionId}
   >
+    <span class="sr-only" id={scrollDescriptionId}>
+      If the schematic is wider than its frame, use Left and Right Arrow keys or scroll
+      horizontally.
+    </span>
     <svg
       class={`project-visual__svg project-visual__svg--${diagram}`}
       viewBox={viewBoxes[diagram]}
@@ -176,17 +182,17 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__path"
-            d="M 110 116 L 294 116"
+            d="M 107 116 L 294 116"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path project-visual__path--dashed"
-            d="M 110 122 L 196 78 L 352 88 L 294 122"
+            d="M 107 122 L 196 78 L 352 88 L 294 122"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path project-visual__path--dotted"
-            d="M 110 128 L 246 166 L 352 150 L 294 128"
+            d="M 107 128 L 246 166 L 352 150 L 294 128"
             marker-end={`url(#${traceArrowId})`}
           />
 
@@ -198,23 +204,24 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             RECEIVER POSITION
           </text>
 
+          <path class="project-visual__rule" d="M 430 76 L 430 164" />
           <path
             class="project-visual__connector"
-            d="M 410 102 L 520 102"
+            d="M 430 102 L 518 102"
             marker-end={`url(#${arrowId})`}
           />
           <rect
             class="project-visual__panel project-visual__panel--raised"
-            x="540"
+            x="520"
             y="70"
-            width="366"
+            width="386"
             height="70"
             rx="2"
           />
-          <text class="project-visual__eyebrow" x="560" y="96">
+          <text class="project-visual__eyebrow" x="540" y="96">
             CANDIDATE PATHS
           </text>
-          <text class="project-visual__body" x="560" y="120">
+          <text class="project-visual__body" x="540" y="120">
             line of sight · reflection · transmission
           </text>
           <text class="project-visual__micro" x="886" y="96" text-anchor="end">
@@ -223,22 +230,22 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 106 218 L 106 254 L 126 254"
+            d="M 126 180 L 126 268"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 286 218 L 286 254 L 306 254"
+            d="M 346 180 L 346 268"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 466 218 L 466 254 L 486 254"
+            d="M 566 180 L 566 268"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 646 218 L 646 254 L 666 254"
+            d="M 786 180 L 786 268"
             marker-end={`url(#${arrowId})`}
           />
 
@@ -271,23 +278,23 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 212 322 L 244 322"
+            d="M 212 322 L 258 322"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 432 322 L 464 322"
+            d="M 432 322 L 478 322"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 652 322 L 684 322"
+            d="M 652 322 L 698 322"
             marker-end={`url(#${arrowId})`}
           />
 
           <polyline
             class="project-visual__wave"
-            points="720,402 736,402 744,388 752,416 760,374 768,430 776,390 784,414 792,402 812,402 828,402 836,390 844,414 852,378 860,426 868,394 876,410 884,402 904,402"
+            points="720,402 736,402 744,388 752,416 760,374 768,426 776,390 784,414 792,402 812,402 828,402 836,390 844,414 852,378 860,422 868,394 876,410 884,402 904,402"
           />
           <text class="project-visual__micro" x="40" y="408">
             MODEL BOUNDARY / NOT A RADIO CAPTURE
@@ -352,12 +359,12 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 224 130 L 258 130"
+            d="M 224 130 L 272 130"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 434 130 L 468 130"
+            d="M 434 130 L 482 130"
             marker-end={`url(#${arrowId})`}
           />
 
@@ -387,17 +394,17 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__path"
-            d="M 526 168 L 526 202 L 144 202 L 144 214"
+            d="M 526 168 L 526 196 L 144 196 L 144 224"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path"
-            d="M 526 168 L 526 214"
+            d="M 548 168 L 548 214 L 354 214 L 354 224"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path"
-            d="M 548 168 L 548 202 L 354 202 L 354 214"
+            d="M 571 168 L 571 224"
             marker-end={`url(#${traceArrowId})`}
           />
 
@@ -418,17 +425,17 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__path"
-            d="M 144 308 L 144 334 L 326 334 L 326 340"
+            d="M 144 308 L 144 328 L 326 328 L 326 350"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path"
-            d="M 354 308 L 354 340"
+            d="M 354 308 L 354 350"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path"
-            d="M 571 308 L 571 334 L 396 334 L 396 340"
+            d="M 571 308 L 571 340 L 396 340 L 396 350"
             marker-end={`url(#${traceArrowId})`}
           />
 
@@ -444,23 +451,32 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             SETUP / NETWORK
           </text>
           <text class="project-visual__micro" x="754" y="148">
-            required model setup + optional integrations
+            required model setup
           </text>
-          <text class="project-visual__body" x="754" y="196">
+          <text class="project-visual__micro" x="754" y="164">
+            + optional integrations
+          </text>
+          <text class="project-visual__body" x="754" y="202">
             model provisioning
           </text>
           <text class="project-visual__body" x="754" y="238">
-            exercise lookup (optional)
+            exercise lookup
+          </text>
+          <text class="project-visual__body" x="754" y="256">
+            (optional)
           </text>
           <text class="project-visual__body" x="754" y="280">
-            calendar sync (optional)
+            calendar sync
           </text>
-          <text class="project-visual__micro" x="754" y="330">
+          <text class="project-visual__body" x="754" y="298">
+            (optional)
+          </text>
+          <text class="project-visual__micro" x="754" y="344">
             NOT FULLY OFFLINE
           </text>
           <path
             class="project-visual__connector project-visual__connector--dashed"
-            d="M 690 246 L 720 246"
+            d="M 690 246 L 732 246"
             marker-end={`url(#${arrowId})`}
           />
         </g>
@@ -511,12 +527,12 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
           ))}
           <path
             class="project-visual__connector"
-            d="M 292 196 L 344 196"
+            d="M 280 196 L 358 196"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 612 196 L 664 196"
+            d="M 600 196 L 678 196"
             marker-end={`url(#${arrowId})`}
           />
           <text class="project-visual__micro" x="40" y="352">
@@ -564,26 +580,26 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 184 127 L 208 127"
+            d="M 184 127 L 222 127"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 368 127 L 392 127"
+            d="M 368 127 L 406 127"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 552 127 L 576 127"
+            d="M 552 127 L 590 127"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 736 127 L 760 127"
+            d="M 736 127 L 774 127"
             marker-end={`url(#${arrowId})`}
           />
 
-          <rect class="project-visual__panel" x="40" y="222" width="420" height="126" rx="2" />
+          <rect class="project-visual__panel" x="40" y="222" width="440" height="126" rx="2" />
           <text class="project-visual__eyebrow" x="60" y="252">
             SELECTION BOUNDARY
           </text>
@@ -599,12 +615,12 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 664 178 L 664 204 L 250 204 L 250 214"
+            d="M 664 178 L 664 204 L 250 204 L 250 220"
             marker-end={`url(#${arrowId})`}
           />
           <path
             class="project-visual__connector"
-            d="M 848 178 L 848 214"
+            d="M 848 178 L 848 220"
             marker-end={`url(#${arrowId})`}
           />
 
@@ -681,7 +697,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__path"
-            d="M 304 294 L 414 294"
+            d="M 292 294 L 428 294"
             marker-end={`url(#${traceArrowId})`}
           />
           <text class="project-visual__micro" x="310" y="278">
@@ -716,7 +732,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__path"
-            d="M 730 294 L 794 294"
+            d="M 730 294 L 808 294"
             marker-end={`url(#${traceArrowId})`}
           />
           <rect
@@ -784,7 +800,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 270 218 L 302 218"
+            d="M 270 130 L 316 130"
             marker-end={`url(#${arrowId})`}
           />
           <rect
@@ -807,7 +823,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__connector"
-            d="M 620 190 L 620 220"
+            d="M 620 190 L 620 234"
             marker-end={`url(#${arrowId})`}
           />
           <rect class="project-visual__panel" x="318" y="236" width="602" height="188" rx="2" />
@@ -867,6 +883,10 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
       )}
     </svg>
 
+    <noscript>
+      <p class="project-visual__transcript">{descriptions[diagram]}</p>
+    </noscript>
+
     <figcaption class="project-visual__caption">
       <span class="project-visual__caption-text">{caption}</span>
       {!preview && <span class="project-visual__rights">Original portfolio schematic</span>}
@@ -874,6 +894,9 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
         <span class="project-visual__evidence">Results: {evidenceIds.join(' · ')}</span>
       )}
       {isSignalDiagram && <span class="project-visual__evidence">{SIMULATION_LABEL}</span>}
+      <span class="visual-scroll-cue" aria-hidden="true">
+        Scroll →
+      </span>
     </figcaption>
   </figure>
 )}

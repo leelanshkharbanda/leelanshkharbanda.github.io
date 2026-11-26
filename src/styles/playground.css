@@ -45,7 +45,7 @@ body::before,
 
 ::selection {
   background: var(--play-blue);
-  color: white;
+  color: #000;
 }
 
 h1,
@@ -66,6 +66,7 @@ h3 {
   border-radius: 50%;
   background: var(--play-green);
   box-shadow: 0 0 0 2px var(--paper);
+  margin: -8px;
   opacity: 0;
   pointer-events: none;
   transition:
@@ -87,14 +88,14 @@ h3 {
 .playground-cursor.is-active {
   width: 32px;
   height: 32px;
-  margin: -8px;
+  margin: -16px;
   background: var(--play-yellow);
 }
 
 .playground-cursor.is-pressed {
   width: 11px;
   height: 11px;
-  margin: -2.5px;
+  margin: -5.5px;
 }
 
 .skip-link {
@@ -918,7 +919,7 @@ h3 {
   padding: 0.4rem 0.6rem;
   background: var(--card-color);
   box-shadow: 2px 2px 0 var(--ink);
-  color: var(--ink);
+  color: #000;
   font-family: var(--mono);
   font-size: 0.6rem;
   line-height: 1.4;
@@ -1447,8 +1448,7 @@ h3 {
   box-shadow: 5px 5px 0 var(--ink);
 }
 
-.evidence-ledger,
-.next-project {
+.evidence-ledger {
   border-top: 2px solid var(--ink);
 }
 
@@ -1573,6 +1573,11 @@ h3 {
     width: 100%;
   }
 
+  .case-hero h1 {
+    overflow-wrap: normal;
+    font-size: clamp(2rem, 10vw, 3.4rem);
+  }
+
   .hero-toy-wrap {
     margin-top: 1rem;
     padding-inline: 0.25rem;
@@ -1580,6 +1585,23 @@ h3 {
 
   .toy-sticker {
     right: -0.1rem;
+  }
+
+  .signal-toy__drag-label {
+    display: none;
+  }
+
+  .signal-toy__svg-label,
+  .signal-toy__handle-label {
+    font-size: 16px;
+  }
+
+  .signal-toy__readouts p span {
+    font-size: 0.62rem;
+  }
+
+  .signal-toy__controls label {
+    font-size: 0.65rem;
   }
 
   .signal-toy__controls {
@@ -1607,10 +1629,6 @@ h3 {
   .project-list .project-card,
   .project-card--archive {
     padding: 1rem;
-  }
-
-  .project-card__stage .project-visual__root svg {
-    min-width: 0;
   }
 
   .project-card__preview-note {

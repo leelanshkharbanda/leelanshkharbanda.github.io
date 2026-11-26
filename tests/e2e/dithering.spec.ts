@@ -41,6 +41,43 @@ test('dither field renders and responds without covering project content', async
   expect(errors).toEqual([]);
 });
 
+test('dither lens stays pointer-aligned while a diagram scrolls', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+  await page.addStyleTag({
+    content:
+      '.project-card, .project-card__stage { transform: none !important; transition: none !important; }',
+  });
+  const visual = page.locator('#project-chronos-dsp .project-visual__root');
+  await visual.scrollIntoViewIfNeeded();
+  const bounds = await visual.boundingBox();
+  expect(bounds).not.toBeNull();
+  expect(await visual.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  await page.mouse.move(bounds!.x + 120, bounds!.y + 100);
+  await expect
+    .poll(async () =>
+      Number.parseFloat(
+        await visual.evaluate((element) => element.style.getPropertyValue('--dither-lens-x')),
+      ),
+    )
+    .toBeGreaterThan(0);
+  const initialLensX = Number.parseFloat(
+    await visual.evaluate((element) => element.style.getPropertyValue('--dither-lens-x')),
+  );
+
+  await visual.evaluate((element) => {
+    element.scrollLeft = 160;
+  });
+  await expect
+    .poll(async () => {
+      const lensX = Number.parseFloat(
+        await visual.evaluate((element) => element.style.getPropertyValue('--dither-lens-x')),
+      );
+      return Math.abs(lensX - initialLensX - 160) < 1;
+    })
+    .toBe(true);
+});
+
 test('reduced motion keeps the dither field static', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');

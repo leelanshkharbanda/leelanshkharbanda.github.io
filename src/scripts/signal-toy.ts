@@ -23,6 +23,22 @@ export function updateSignalToy(toy: HTMLElement) {
   const echoReadout = toy.querySelector<HTMLElement>('[data-toy-echo]');
   if (!transmitter || !receiver || !directPath || !echoPath || !bounce) return;
 
+  const controls = toy.querySelector<HTMLElement>('.signal-toy__controls');
+  const dragLabel = toy.querySelector<HTMLElement>('.signal-toy__drag-label');
+  if (controls) controls.hidden = false;
+  if (dragLabel) dragLabel.hidden = false;
+
+  for (const [name, handle] of handles) {
+    handle.setAttribute('tabindex', '0');
+    handle.setAttribute('role', 'slider');
+    handle.setAttribute(
+      'aria-label',
+      `${name === 'transmitter' ? 'Transmitter' : 'Receiver'} horizontal position`,
+    );
+    handle.setAttribute('aria-valuemin', '40');
+    handle.setAttribute('aria-valuemax', '440');
+  }
+
   const initial: Record<HandleName, Point> = {
     transmitter: { x: 104, y: 104 },
     receiver: { x: 370, y: 82 },
@@ -51,7 +67,13 @@ export function updateSignalToy(toy: HTMLElement) {
     if (directReadout) directReadout.textContent = `${Math.round(directLength)} units`;
     if (echoReadout) echoReadout.textContent = `${Math.round(echoLength)} units`;
 
-    for (const name of ['transmitter', 'receiver'] as const) {
+    for (const [name, handle] of handles) {
+      const label = handle.querySelector<SVGTextElement>('.signal-toy__handle-label');
+      if (label) {
+        const halfWidth = label.getBBox().width / 2;
+        const labelX = clamp(state[name].x, halfWidth + 8, 480 - halfWidth - 8);
+        label.setAttribute('x', String(labelX - state[name].x));
+      }
       const range = toy.querySelector<HTMLInputElement>(`[data-toy-range="${name}"]`);
       if (range) range.value = String(Math.round(state[name].x));
     }
@@ -127,5 +149,7 @@ export function updateSignalToy(toy: HTMLElement) {
     draw();
   });
 
+  window.addEventListener('resize', draw, { passive: true });
+  void document.fonts.ready.then(draw);
   draw();
 }

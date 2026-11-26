@@ -1,7 +1,9 @@
 <div class="signal-toy" data-signal-toy>
   <div class="signal-toy__topline">
     <span>01 / CHANNEL SKETCHPAD</span>
-    <span class="signal-toy__drag-label">DRAG LEFT / RIGHT</span>
+    <span class="signal-toy__drag-label" hidden>
+      DRAG LEFT / RIGHT
+    </span>
   </div>
 
   <svg
@@ -10,10 +12,10 @@
     role="group"
     aria-labelledby="signal-toy-title signal-toy-description"
   >
-    <title id="signal-toy-title">A tiny, controllable signal-path sketch</title>
+    <title id="signal-toy-title">A tiny signal-path sketch</title>
     <desc id="signal-toy-description">
-      Move a transmitter and receiver to compare a direct path with a reflected path. This is an
-      original visual toy, not Chronos-DSP data or a physical radio measurement.
+      A transmitter and receiver compare a direct path with a reflected path. This is an original
+      visual sketch, not Chronos-DSP data or a physical radio measurement.
     </desc>
     <defs>
       <pattern id="signal-toy-grid" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -67,18 +69,13 @@
       data-signal-handle="transmitter"
       data-x="104"
       data-y="104"
-      tabindex="0"
-      role="slider"
-      aria-label="Transmitter horizontal position"
-      aria-valuemin="40"
-      aria-valuemax="440"
-      aria-valuenow="104"
+      transform="translate(104 104)"
     >
       <circle r="25" fill="#dfff68" fill-opacity="0.15" />
       <circle r="15" fill="#dfff68" stroke="#20231c" stroke-width="3" />
       <circle r="4" fill="#20231c" />
       <text y="43" text-anchor="middle" class="signal-toy__handle-label">
-        TX / MOVE ME
+        TX / SOURCE
       </text>
     </g>
 
@@ -87,18 +84,13 @@
       data-signal-handle="receiver"
       data-x="370"
       data-y="82"
-      tabindex="0"
-      role="slider"
-      aria-label="Receiver horizontal position"
-      aria-valuemin="40"
-      aria-valuemax="440"
-      aria-valuenow="370"
+      transform="translate(370 82)"
     >
       <circle r="25" fill="#ff785a" fill-opacity="0.15" />
       <circle r="15" fill="#ff785a" stroke="#20231c" stroke-width="3" />
       <circle r="4" fill="#20231c" />
       <text y="43" text-anchor="middle" class="signal-toy__handle-label">
-        RX / CATCH IT
+        RX / RECEIVER
       </text>
     </g>
   </svg>
@@ -110,12 +102,12 @@
     </p>
     <p>
       <span>REFLECTED PATH</span>
-      <strong data-toy-echo>423 units</strong>
+      <strong data-toy-echo>365 units</strong>
     </p>
     <span class="signal-toy__readout-note">a visual sketch, not a measurement</span>
   </div>
 
-  <div class="signal-toy__controls" id="signal-toy-instructions">
+  <div class="signal-toy__controls" id="signal-toy-instructions" hidden>
     <label>
       <span>Transmitter</span>
       <input data-toy-range="transmitter" type="range" min="40" max="440" value="104" />

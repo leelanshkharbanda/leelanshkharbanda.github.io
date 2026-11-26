@@ -179,6 +179,10 @@ address {
   box-shadow: 0 0 0 6px var(--ink);
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -452,7 +456,7 @@ address {
   line-height: 1.55;
 }
 
-.hero__actions,
+.hero-actions,
 .case-links {
   display: flex;
   flex-wrap: wrap;
@@ -653,16 +657,23 @@ address {
 }
 
 .project-visual__root {
+  container-name: project-visual;
+  container-type: inline-size;
   min-width: 0;
   margin: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
+  scrollbar-color: var(--dark-secondary) var(--ink);
+  scrollbar-width: thin;
 }
 
 .project-visual__root svg {
   display: block;
   width: 100%;
+  min-width: 960px;
   height: auto;
 }
 
@@ -700,6 +711,32 @@ address {
   width: 100%;
   color: var(--dark-signal);
   text-transform: uppercase;
+}
+
+.project-visual__transcript {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border-top: 1px solid var(--dark-secondary);
+  color: var(--dark-secondary);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.visual-scroll-cue {
+  display: none;
+  margin-left: auto;
+  color: var(--dark-signal);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@container project-visual (max-width: 959px) {
+  .visual-scroll-cue {
+    display: inline;
+  }
 }
 
 .project-visual__root text {
@@ -1137,6 +1174,10 @@ address {
 .prose li {
   font-size: 1.1rem;
   line-height: 1.7;
+}
+
+.prose > :first-child {
+  margin-top: 0;
 }
 
 .prose h2 {
@@ -1609,23 +1650,39 @@ address {
 }
 
 .trace-inspector__figure {
+  container-name: trace-visual;
+  container-type: inline-size;
   min-width: 0;
   margin: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
   padding: 1rem;
+  scrollbar-color: var(--dark-secondary) var(--ink);
+  scrollbar-width: thin;
 }
 
 .trace-inspector__svg {
   display: block;
   width: 100%;
+  min-width: 720px;
   height: auto;
 }
 
 .trace-inspector__figure-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   margin-top: 0.75rem;
   color: var(--dark-secondary);
   font-family: var(--mono);
   font-size: 0.66rem;
   line-height: 1.5;
+}
+
+@container trace-visual (max-width: 719px) {
+  .visual-scroll-cue {
+    display: inline;
+  }
 }
 
 .trace-inspector__root text {
@@ -1851,6 +1908,15 @@ tbody tr:last-child td {
   text-decoration: none;
 }
 
+.next-project a > span:first-child {
+  min-width: 0;
+  overflow-wrap: normal;
+}
+
+.next-project a > span:last-child {
+  flex: none;
+}
+
 .next-project a:hover {
   color: var(--dark-signal);
 }
@@ -1978,9 +2044,14 @@ tbody tr:last-child td {
   text-transform: uppercase;
 }
 
+.resume-toolkit p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
 .not-found {
   display: grid;
-  min-height: calc(100svh - 4.75rem);
+  min-height: calc(100svh - 5rem);
   align-content: center;
   padding-block: 5rem;
 }
@@ -2122,11 +2193,6 @@ html[data-motion='reduced'] *::after {
     column-gap: 0;
   }
 
-  .project-card--lead .project-visual__root,
-  .project-list .project-card--standard .project-visual__root {
-    margin-bottom: 1.5rem;
-  }
-
   .about-preview__body,
   .about-story__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -2183,7 +2249,7 @@ html[data-motion='reduced'] *::after {
     padding-block: 3.5rem;
   }
 
-  .hero__actions .button,
+  .hero-actions .button,
   .case-links .button {
     width: 100%;
   }
@@ -2224,19 +2290,6 @@ html[data-motion='reduced'] *::after {
     grid-row: auto;
   }
 
-  .project-visual__root,
-  .trace-inspector__figure {
-    overflow-x: auto;
-  }
-
-  .project-visual__root svg {
-    min-width: 960px;
-  }
-
-  .trace-inspector__svg {
-    min-width: 640px;
-  }
-
   .trace-inspector__controls {
     padding: 0.5rem;
   }
@@ -2258,6 +2311,10 @@ html[data-motion='reduced'] *::after {
     border-bottom: 0;
   }
 
+  .trace-inspector__stage-row--active {
+    border-bottom-color: var(--dark-signal);
+  }
+
   .trace-summary {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2268,8 +2325,13 @@ html[data-motion='reduced'] *::after {
   }
 
   .next-project a {
+    gap: 0.75rem;
     align-items: end;
-    font-size: clamp(1.8rem, 9vw, 3rem);
+    font-size: clamp(1.6rem, 8vw, 2.8rem);
+  }
+
+  .not-found {
+    min-height: calc(100svh - 4.5rem);
   }
 }
 
@@ -2338,6 +2400,10 @@ html[data-motion='reduced'] *::after {
     border-bottom: 2pt solid black;
   }
 
+  .resume-page {
+    padding: 0;
+  }
+
   .resume-header h1 {
     margin: 0;
     font-size: 22pt;
@@ -2369,6 +2435,7 @@ html[data-motion='reduced'] *::after {
     break-inside: avoid;
   }
 
+  .resume-entry h3,
   .resume-project h3 {
     font-size: 9.2pt;
   }

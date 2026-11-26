@@ -14,6 +14,20 @@ const initDitherField = () => {
   let animating = false;
   const pointer = { x: 0.5, y: 0.5 };
   const target = { x: 0.5, y: 0.5 };
+  let lensPointer: { x: number; y: number; visual: HTMLElement } | null = null;
+
+  const updateLensPosition = () => {
+    if (!lensPointer) return;
+    const bounds = lensPointer.visual.getBoundingClientRect();
+    lensPointer.visual.style.setProperty(
+      '--dither-lens-x',
+      `${lensPointer.x - bounds.left + lensPointer.visual.scrollLeft}px`,
+    );
+    lensPointer.visual.style.setProperty(
+      '--dither-lens-y',
+      `${lensPointer.y - bounds.top + lensPointer.visual.scrollTop}px`,
+    );
+  };
 
   const saveData = () => {
     if (!('connection' in navigator)) return false;
@@ -131,15 +145,8 @@ const initDitherField = () => {
 
       const visual = card.querySelector<HTMLElement>('.project-visual__root');
       if (!visual) return;
-      const visualBounds = visual.getBoundingClientRect();
-      visual.style.setProperty(
-        '--dither-lens-x',
-        `${((event.clientX - visualBounds.left) / visualBounds.width) * 100}%`,
-      );
-      visual.style.setProperty(
-        '--dither-lens-y',
-        `${((event.clientY - visualBounds.top) / visualBounds.height) * 100}%`,
-      );
+      lensPointer = { x: event.clientX, y: event.clientY, visual };
+      updateLensPosition();
     },
     { passive: true },
   );
@@ -152,7 +159,17 @@ const initDitherField = () => {
     target.x = 0.5;
     target.y = 0.5;
   });
-  window.addEventListener('resize', resize, { passive: true });
+  for (const visual of document.querySelectorAll<HTMLElement>('.project-visual__root')) {
+    visual.addEventListener('scroll', updateLensPosition, { passive: true });
+  }
+  window.addEventListener(
+    'resize',
+    () => {
+      resize();
+      updateLensPosition();
+    },
+    { passive: true },
+  );
   document.addEventListener('visibilitychange', syncMotion);
   finePointer.addEventListener('change', syncMotion);
   reducedMotion.addEventListener('change', syncMotion);
