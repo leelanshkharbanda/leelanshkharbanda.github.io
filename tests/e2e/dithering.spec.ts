@@ -1,4 +1,19 @@
 import { expect, test } from '@playwright/test';
+import sharp from 'sharp';
+
+const meanChannelDifference = async (first: Buffer, second: Buffer) => {
+  const [firstPixels, secondPixels] = await Promise.all([
+    sharp(first).removeAlpha().raw().toBuffer(),
+    sharp(second).removeAlpha().raw().toBuffer(),
+  ]);
+  if (firstPixels.length !== secondPixels.length) return 0;
+
+  let difference = 0;
+  for (let index = 0; index < firstPixels.length; index += 1) {
+    difference += Math.abs(firstPixels[index] - secondPixels[index]);
+  }
+  return difference / firstPixels.length;
+};
 
 test('dither field renders and responds without covering project content', async ({ page }) => {
   const errors: string[] = [];
@@ -56,4 +71,19 @@ test('runtime save-data stops the dither loop', async ({ page }) => {
     });
   });
   await expect(canvas).toHaveAttribute('data-motion', 'static');
+});
+
+test('dither remains visible in the wide hero layout', async ({ page }) => {
+  for (const width of [1101, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await page.evaluate(() => document.fonts.ready);
+
+    const hero = page.locator('.playground-hero');
+    const withDither = await hero.screenshot();
+    await page.addStyleTag({ content: '.dither-field { display: none !important; }' });
+    const withoutDither = await hero.screenshot();
+
+    expect(await meanChannelDifference(withDither, withoutDither), `${width}px`).toBeGreaterThan(1);
+  }
 });

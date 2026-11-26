@@ -47,6 +47,11 @@ test('print media removes dither paper surfaces', async ({ page }) => {
   await page.goto('/resume/');
   await expect(page.locator('.resume-page')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(page.locator('.resume-page')).toHaveCSS('box-shadow', 'none');
+  expect(
+    await page
+      .locator('.resume-page')
+      .evaluate((element) => getComputedStyle(element, '::before').display),
+  ).toBe('none');
 });
 
 test('résumé text stays readable with the dither field visible', async ({ page }) => {

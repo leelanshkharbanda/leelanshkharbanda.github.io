@@ -23,8 +23,24 @@ main,
 .leadership-section,
 .contact-section,
 .case-body {
+  position: relative;
+  z-index: 0;
   background: var(--paper);
-  box-shadow: 0 0 0 100vmax var(--paper);
+}
+
+.resume-page::before,
+.work-section::before,
+.about-story::before,
+.about-threads::before,
+.leadership-section::before,
+.contact-section::before,
+.case-body::before {
+  position: absolute;
+  inset: 0 -100vmax;
+  z-index: -1;
+  background: var(--paper);
+  content: '';
+  pointer-events: none;
 }
 
 .project-jump a {
@@ -147,6 +163,15 @@ html[data-motion='reduced'] .dither-field {
   .contact-section,
   .case-body {
     background: transparent !important;
-    box-shadow: none !important;
+  }
+
+  .resume-page::before,
+  .work-section::before,
+  .about-story::before,
+  .about-threads::before,
+  .leadership-section::before,
+  .contact-section::before,
+  .case-body::before {
+    display: none !important;
   }
 }
