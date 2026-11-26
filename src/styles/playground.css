@@ -135,7 +135,8 @@ h3 {
   transition: transform 180ms ease;
 }
 
-.identity-link:hover .identity-link__mark {
+.identity-link:hover .identity-link__mark,
+.identity-link:focus-visible .identity-link__mark {
   transform: rotate(8deg);
 }
 

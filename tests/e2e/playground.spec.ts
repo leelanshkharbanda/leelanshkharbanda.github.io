@@ -109,6 +109,52 @@ test('preview sticker stays contained at narrow widths and 200% text', async ({ 
   }
 });
 
+test('identity mark rotates on hover and keyboard focus', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const link = page.locator('.identity-link');
+  const skip = page.getByRole('link', { name: 'Skip to content' });
+  const mark = link.locator('.identity-link__mark');
+  const angle = () =>
+    mark.evaluate((element) => {
+      const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+      return (Math.atan2(matrix.b, matrix.a) * 180) / Math.PI;
+    });
+  const expectAngle = (target: number) =>
+    expect.poll(async () => Math.abs((await angle()) - target)).toBeLessThan(0.01);
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+
+  await expectAngle(-9);
+  await link.hover();
+  await expectAngle(8);
+  await page.mouse.move(0, 0);
+  await expectAngle(-9);
+
+  await skip.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('outline-width', '3px');
+  await expectAngle(8);
+  await link.evaluate((element) => element.blur());
+  await expectAngle(-9);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await link.hover();
+  await expect(mark).toHaveCSS('transform', 'none');
+  await skip.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(mark).toHaveCSS('transform', 'none');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await link.hover();
+  await expect(mark).toHaveCSS('transform', 'none');
+  await link.evaluate((element) => element.blur());
+  await skip.focus();
+  await page.keyboard.press(tabKey);
+  await expect(link).toBeFocused();
+  await expect(mark).toHaveCSS('transform', 'none');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

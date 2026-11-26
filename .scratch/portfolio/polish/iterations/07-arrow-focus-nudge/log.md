@@ -37,6 +37,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile rest, hover, focus, and route screenshots were inspected. The arrow stays inside the link and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `2da28d9` and pushed to `main`.
+- Pages deployment run `45870799524` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on the arrow link and a settled 4 px nudge.
+
 ## Next candidates
 
 1. Give the identity mark the same rotation on keyboard focus that it already has on hover.
