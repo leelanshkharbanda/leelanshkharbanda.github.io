@@ -35,6 +35,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile rest, hover, focus, and route screenshots were inspected. The lilac state is clear, the focus ring remains visible, and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `0dc155b` and pushed to `main`.
+- Pages deployment run `45882188620` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on the secondary button and the expected lilac background.
+
 ## Next candidates
 
 1. Audit remaining control-only hover states (SignalToy reset, TraceInspector controls) for keyboard parity.

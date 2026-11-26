@@ -658,9 +658,13 @@ h3 {
   color: var(--paper);
   font-family: var(--mono);
   font-size: 0.65rem;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
-.signal-toy__controls button:hover {
+.signal-toy__controls button:hover,
+.signal-toy__controls button:focus-visible {
   border-color: var(--play-green);
   color: var(--play-green);
 }
@@ -1753,6 +1757,8 @@ h3 {
   .mobile-nav a,
   .quiet-link,
   .site-footer a,
+  .signal-toy__controls button,
+  .trace-inspector__controls button,
   .arrow-link span,
   .back-link__arrow,
   .project-card,
@@ -1780,6 +1786,8 @@ html[data-motion='reduced'] .desktop-nav a,
 html[data-motion='reduced'] .mobile-nav a,
 html[data-motion='reduced'] .quiet-link,
 html[data-motion='reduced'] .site-footer a,
+html[data-motion='reduced'] .signal-toy__controls button,
+html[data-motion='reduced'] .trace-inspector__controls button,
 html[data-motion='reduced'] .arrow-link span,
 html[data-motion='reduced'] .back-link__arrow,
 html[data-motion='reduced'] .project-card,

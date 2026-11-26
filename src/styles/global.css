@@ -1506,9 +1506,13 @@ html[data-motion='reduced'] .motion-toggle {
   color: var(--paper);
   font-family: var(--mono);
   font-size: 0.75rem;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
-.trace-inspector__controls button:hover:not(:disabled) {
+.trace-inspector__controls button:hover:not(:disabled),
+.trace-inspector__controls button:focus-visible:not(:disabled) {
   border-color: var(--dark-signal);
   color: var(--dark-signal);
 }

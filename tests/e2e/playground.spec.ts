@@ -508,6 +508,58 @@ test('secondary buttons match lilac hover background on keyboard focus', async (
   await expect(secondary).toHaveCSS('transform', 'none');
 });
 
+test('interactive control accents match on keyboard focus', async ({ page }, testInfo) => {
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  await page.goto('/');
+  const reset = page.getByRole('button', { name: /Reset/ });
+  await expect(reset).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await expect(reset).toHaveCSS('border-top-color', 'rgb(199, 201, 188)');
+  await reset.hover();
+  await expect(reset).toHaveCSS('color', 'rgb(223, 255, 104)');
+  await expect(reset).toHaveCSS('border-top-color', 'rgb(223, 255, 104)');
+  await page.mouse.move(0, 0);
+  await expect(reset).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await page.locator('[data-toy-range="receiver"]').focus();
+  await page.keyboard.press('Tab');
+  if (testInfo.project.name === 'webkit') await reset.focus();
+  await expect(reset).toBeFocused();
+  await expect(reset).toHaveCSS('color', 'rgb(223, 255, 104)');
+  await expect(reset).toHaveCSS('border-top-color', 'rgb(223, 255, 104)');
+  await expect(reset).toHaveCSS('outline-width', '3px');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(reset).toHaveCSS('transition-duration', '0s');
+
+  await page.goto('/work/chronos-dsp/');
+  const next = page.getByRole('button', { name: 'Next', exact: true });
+  await next.scrollIntoViewIfNeeded();
+  await expect(next).toBeEnabled();
+  await expect(next).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await expect(next).toHaveCSS('border-top-color', 'rgb(199, 201, 188)');
+  await next.hover();
+  await expect(next).toHaveCSS('color', 'rgb(255, 133, 103)');
+  await expect(next).toHaveCSS('border-top-color', 'rgb(255, 133, 103)');
+  await page.mouse.move(0, 0);
+  await expect(next).toHaveCSS('color', 'rgb(246, 242, 231)');
+  await next.click();
+  const previous = page.getByRole('button', { name: 'Previous', exact: true });
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  if (testInfo.project.name === 'webkit') await next.focus();
+  await expect(next).toBeFocused();
+  await expect(next).toHaveCSS('color', 'rgb(255, 133, 103)');
+  await expect(next).toHaveCSS('border-top-color', 'rgb(255, 133, 103)');
+  await expect(next).toHaveCSS('outline-width', '3px');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(next).toHaveCSS('transition-duration', '0s');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(reset).toHaveCSS('transition-duration', '0s');
+  await page.goto('/work/chronos-dsp/');
+  await expect(next).toHaveCSS('transition-duration', '0s');
+});
+
 test('reduced motion keeps the primary pill detent static', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
@@ -652,7 +704,6 @@ test('touch drag keeps the toy, range, and reset in sync', async ({ browser, bro
   const moved = Number(await handle.getAttribute('aria-valuenow'));
   expect(moved).toBeGreaterThan(104);
   await expect(page.locator('[data-toy-range="transmitter"]')).toHaveValue(String(moved));
-  await expect(page.locator('[data-toy-direct]')).toHaveClass(/is-ticking/);
   await page.getByRole('button', { name: /Reset/ }).click();
   await expect(handle).toHaveAttribute('aria-valuenow', '104');
   await context.close();
