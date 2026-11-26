@@ -11,6 +11,104 @@ test('playground opens with a personal project hook', async ({ page }) => {
   await expect(page.locator('.playground-comparison a')).toHaveCount(3);
 });
 
+test('project preview sticker tilts with hover and keyboard focus', async ({ page }) => {
+  await page.goto('/');
+  const card = page.locator('#project-chronos-dsp');
+  const note = card.locator('.project-card__preview-note');
+  const angle = () =>
+    note.evaluate((element) => {
+      const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+      return (Math.atan2(matrix.b, matrix.a) * 180) / Math.PI;
+    });
+  const translationY = () =>
+    note.evaluate((element) => new DOMMatrixReadOnly(getComputedStyle(element).transform).f);
+  const origin = () =>
+    note.evaluate((element) => {
+      const style = getComputedStyle(element);
+      const [x, y] = style.transformOrigin.split(' ').map(Number.parseFloat);
+      return {
+        x,
+        y,
+        width: Number.parseFloat(style.width),
+        height: Number.parseFloat(style.height),
+      };
+    });
+
+  await expect.poll(async () => Math.abs(await angle())).toBeLessThan(0.01);
+  await card.hover();
+  await expect.poll(async () => Math.abs((await angle()) + 2)).toBeLessThan(0.01);
+  await expect.poll(async () => Math.abs((await translationY()) + 1)).toBeLessThan(0.01);
+  const stickerOrigin = await origin();
+  expect(stickerOrigin.x).toBeCloseTo(stickerOrigin.width, 1);
+  expect(stickerOrigin.y).toBeCloseTo(stickerOrigin.height / 2, 1);
+  expect(
+    await note.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const bar = element.parentElement!.getBoundingClientRect();
+      return (
+        rect.top < bar.top - 1 ||
+        rect.bottom > bar.bottom + 1 ||
+        rect.left < bar.left - 1 ||
+        rect.right > bar.right + 1
+      );
+    }),
+  ).toBe(false);
+
+  await page.mouse.move(0, 0);
+  await expect.poll(async () => Math.abs(await angle())).toBeLessThan(0.01);
+  await card.locator('h3 a').focus();
+  await expect.poll(async () => Math.abs((await angle()) + 2)).toBeLessThan(0.01);
+  await card.locator('h3 a').evaluate((element) => element.blur());
+  await expect.poll(async () => Math.abs(await angle())).toBeLessThan(0.01);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await card.hover();
+  await expect(note).toHaveCSS('transform', 'none');
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await card.hover();
+  await expect(note).toHaveCSS('transform', 'none');
+});
+
+test('preview sticker stays contained at narrow widths and 200% text', async ({ page }) => {
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
+    await page.evaluate(() => document.fonts.ready);
+    for (const scale of [100, 200]) {
+      if (scale === 200) {
+        await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+      }
+      const card = page.locator('#project-chronos-dsp');
+      const note = card.locator('.project-card__preview-note');
+      await card.scrollIntoViewIfNeeded();
+      await card.locator('h3 a').focus();
+      await expect
+        .poll(() =>
+          note.evaluate((element) => {
+            const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+            return Math.abs((Math.atan2(matrix.b, matrix.a) * 180) / Math.PI + 2);
+          }),
+        )
+        .toBeLessThan(0.01);
+      expect(
+        await note.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          const bar = element.parentElement!.getBoundingClientRect();
+          return (
+            rect.top < bar.top - 1 ||
+            rect.bottom > bar.bottom + 1 ||
+            rect.left < bar.left - 1 ||
+            rect.right > bar.right + 1
+          );
+        }),
+      ).toBe(false);
+      await card.locator('h3 a').evaluate((element) => element.blur());
+    }
+  }
+});
+
 test('primary pill settles into its shadow and presses flat', async ({ page }) => {
   await page.goto('/');
   const button = page.locator('.button--primary[data-magnetic]');
