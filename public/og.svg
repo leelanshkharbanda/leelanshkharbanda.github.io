@@ -1,29 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="0.8" fill="#d8d1c1"/>
+      <circle cx="2" cy="2" r="0.9" fill="#d8d1c1"/>
     </pattern>
   </defs>
   <rect width="1200" height="630" fill="#f6f2e7"/>
   <rect width="1200" height="630" fill="url(#dots)"/>
-  <rect x="0" y="0" width="72" height="630" fill="#1d1e19"/>
-  <rect x="72" y="0" width="8" height="630" fill="#a9341a"/>
-  <g fill="#5c5a50" font-family="monospace" font-size="18" letter-spacing="3">
-    <text x="132" y="86">LEELANSH KHARBANDA / PERSONAL PROJECT LAB</text>
-    <text x="132" y="530">B.TECH ECE · IIIT DELHI</text>
+
+  <!-- Top eyebrow -->
+  <circle cx="88" cy="96" r="8" fill="#ff8567" stroke="#1d1e19" stroke-width="3"/>
+  <text x="110" y="103" fill="#5c5a50" font-family="ui-monospace, Menlo, Monaco, monospace" font-size="18" font-weight="600" letter-spacing="2">B.TECH ECE · IIIT DELHI</text>
+
+  <!-- Main title with lime highlight -->
+  <rect x="76" y="294" width="376" height="30" rx="15" fill="#dfff68"/>
+  <g fill="#1d1e19" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="-2">
+    <text x="80" y="220" font-size="82">Hey, I’m</text>
+    <text x="80" y="314" font-size="82">Leelansh.</text>
   </g>
-  <g fill="#1d1e19" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="-4">
-    <text x="126" y="224" font-size="68">I make small systems</text>
-    <text x="126" y="318" font-size="68">so I can see what</text>
-    <text x="126" y="412" font-size="68">they’re doing.</text>
-  </g>
-  <rect x="800" y="148" width="90" height="28" rx="14" fill="#dfff68" stroke="#1d1e19" stroke-width="3"/>
-  <rect x="820" y="176" width="296" height="250" rx="28" fill="#d9c9ff" stroke="#1d1e19" stroke-width="4"/>
-  <g fill="none" stroke-linecap="square" stroke-linejoin="miter">
-    <path d="M840 314h40l20-78 38 142 30-104 24 40h84" stroke="#a9341a" stroke-width="9"/>
-    <path d="M840 356h250" stroke="#116b60" stroke-width="4"/>
-  </g>
-  <g fill="#116b60" font-family="monospace" font-size="16" letter-spacing="2">
-    <text x="820" y="544">SIGNAL / SYSTEM / ROUGH EDGES</text>
-  </g>
+
+  <!-- Clean subtitle -->
+  <text x="82" y="392" fill="#5c5a50" font-family="Arial, Helvetica, sans-serif" font-size="28">Signal processing, computer architecture,</text>
+  <text x="82" y="432" fill="#5c5a50" font-family="Arial, Helvetica, sans-serif" font-size="28">and software projects.</text>
+
+  <!-- Bottom URL pill -->
+  <rect x="80" y="492" width="368" height="50" rx="25" fill="#ffdc63" stroke="#1d1e19" stroke-width="3"/>
+  <text x="110" y="524" fill="#1d1e19" font-family="ui-monospace, Menlo, Monaco, monospace" font-size="18" font-weight="700">leelanshkharbanda.github.io</text>
+
+  <!-- Right-side dark signal card matching the hero widget -->
+  <rect x="772" y="138" width="346" height="360" rx="28" fill="#d9c9ff" stroke="#1d1e19" stroke-width="4" transform="rotate(3 945 318)"/>
+  <rect x="748" y="122" width="356" height="366" rx="26" fill="#1d1e19" stroke="#1d1e19" stroke-width="4"/>
+  <line x1="748" y1="176" x2="1104" y2="176" stroke="#606356" stroke-width="2"/>
+  <text x="774" y="156" fill="#c7c9bc" font-family="ui-monospace, Menlo, Monaco, monospace" font-size="14" letter-spacing="1">01 / CHANNEL SKETCH</text>
+  <line x1="776" y1="398" x2="1076" y2="398" stroke="#f5f1e6" stroke-width="6"/>
+  <line x1="776" y1="398" x2="1076" y2="398" stroke="#ff785a" stroke-width="2" stroke-dasharray="6 8"/>
+  <path d="M 824 274 L 1034 252" fill="none" stroke="#dfff68" stroke-width="4"/>
+  <path d="M 824 274 L 929 398 L 1034 252" fill="none" stroke="#ff785a" stroke-width="3" stroke-dasharray="8 6"/>
+  <circle cx="929" cy="398" r="6" fill="#ff785a"/>
+  <circle cx="824" cy="274" r="16" fill="#dfff68" stroke="#1d1e19" stroke-width="3"/>
+  <circle cx="1034" cy="252" r="16" fill="#ff785a" stroke="#1d1e19" stroke-width="3"/>
+  <text x="824" y="314" text-anchor="middle" fill="#d8dbce" font-family="ui-monospace, Menlo, Monaco, monospace" font-size="13">TX</text>
+  <text x="1034" y="292" text-anchor="middle" fill="#d8dbce" font-family="ui-monospace, Menlo, Monaco, monospace" font-size="13">RX</text>
+  <text x="776" y="454" fill="#dfff68" font-family="ui-monospace, Menlo, Monaco, monospace" font-size="18" font-weight="700">DSP · ARCH · SYSTEMS</text>
 </svg>
