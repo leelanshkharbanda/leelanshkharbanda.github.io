@@ -10,9 +10,10 @@ interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  viewTransitions?: boolean;
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, viewTransitions = false } = Astro.props;
 const origin = Astro.site!;
 const canonical = new URL(Astro.url.pathname, origin);
 const socialImage = new URL('/og.png?v=2', origin);
@@ -64,6 +65,30 @@ const structuredData = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    {viewTransitions && (
+      <>
+        <style id="view-transition-mode">
+          @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+            @view-transition {
+              navigation: auto;
+            }
+          }
+        </style>
+        <script is:inline>
+          const syncViewTransition = () => {
+            const style = document.getElementById('view-transition-mode');
+            if (!style) return;
+            let reduced = document.documentElement.dataset.motion === 'reduced';
+            try {
+              reduced = reduced || localStorage.getItem('portfolio-motion') === 'reduced';
+            } catch {}
+            style.disabled = reduced;
+          };
+          syncViewTransition();
+          window.addEventListener('portfolio-motion-change', syncViewTransition);
+        </script>
+      </>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#main-content">

@@ -686,6 +686,13 @@ address {
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
+  view-transition-name: none;
+}
+
+.project-card:hover .project-visual__root,
+.project-card:focus-within .project-visual__root,
+.case-body > .project-visual__root {
+  view-transition-name: var(--visual-transition-name, none);
 }
 
 .project-visual__root svg {

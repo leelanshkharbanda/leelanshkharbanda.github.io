@@ -38,7 +38,7 @@ const projectDatum = `P-${String(Math.max(0, currentIndex) + 1).padStart(2, '0')
 const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padStart(2, '0')}`);
 ---
 
-<BaseLayout title={pageTitle} description={description}>
+<BaseLayout title={pageTitle} description={description} viewTransitions>
   <article class={`case-study case-study--${data.depth}`}>
     <header class="case-hero page-shell">
       <a class="back-link" href="/work/">
@@ -89,6 +89,7 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
           diagram={data.diagram}
           alt={data.diagramAlt}
           caption={data.diagramCaption}
+          transitionName={`project-${project.id}`}
         />
       )}
 

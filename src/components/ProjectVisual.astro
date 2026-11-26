@@ -21,9 +21,10 @@ interface Props {
   alt: string;
   caption: string;
   preview?: boolean;
+  transitionName?: string;
 }
 
-const { id, diagram, alt, caption, preview = false } = Astro.props;
+const { id, diagram, alt, caption, preview = false, transitionName } = Astro.props;
 const safeId =
   id
     .trim()
@@ -98,6 +99,7 @@ const constellationPlots: {
     tabindex="0"
     aria-label={alt}
     aria-describedby={scrollDescriptionId}
+    style={transitionName ? `--visual-transition-name: ${transitionName};` : undefined}
   >
     <span class="sr-only" id={scrollDescriptionId}>
       If the schematic is wider than its frame, use Left and Right Arrow keys or scroll

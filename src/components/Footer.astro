@@ -52,6 +52,7 @@ import { site } from '../data/site';
         // Session-only preference is sufficient when storage is unavailable.
       }
       syncMotionControl();
+      window.dispatchEvent(new Event('portfolio-motion-change'));
     });
   }
 
