@@ -251,6 +251,45 @@ test('quiet and footer links match hover accent on keyboard focus', async ({ pag
   await expect(footer).toHaveCSS('transition-duration', '0s');
 });
 
+test('project titles match hover color and underline on keyboard focus', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/');
+  const title = page.locator('#project-chronos-dsp h3 a');
+  const previous = page.locator('.playground-comparison a').last();
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  await expect(title).toHaveCSS('color', 'rgb(29, 30, 25)');
+  await expect(title).toHaveCSS('text-decoration-line', 'none');
+  await title.hover();
+  await expect(title).toHaveCSS('color', 'rgb(169, 52, 26)');
+  await expect(title).toHaveCSS('text-decoration-line', 'underline');
+  await page.mouse.move(0, 0);
+  await expect(title).toHaveCSS('color', 'rgb(29, 30, 25)');
+  await expect(title).toHaveCSS('text-decoration-line', 'none');
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  await expect(title).toBeFocused();
+  await expect(title).toHaveCSS('color', 'rgb(169, 52, 26)');
+  await expect(title).toHaveCSS('text-decoration-line', 'underline');
+  await expect(title).toHaveCSS('outline-width', '3px');
+  await title.evaluate((element) => element.blur());
+  await expect(title).toHaveCSS('color', 'rgb(29, 30, 25)');
+  await expect(title).toHaveCSS('text-decoration-line', 'none');
+  await expect(title).toHaveCSS('transition-duration', '0.16s');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await title.hover();
+  await expect(title).toHaveCSS('color', 'rgb(169, 52, 26)');
+  await expect(title).toHaveCSS('transition-duration', '0s');
+  await page.mouse.move(0, 0);
+  await expect(title).toHaveCSS('text-decoration-line', 'none');
+  await previous.focus();
+  await page.keyboard.press(tabKey);
+  await expect(title).toBeFocused();
+  await expect(title).toHaveCSS('color', 'rgb(169, 52, 26)');
+  await expect(title).toHaveCSS('text-decoration-line', 'underline');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

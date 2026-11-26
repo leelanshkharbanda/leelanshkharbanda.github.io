@@ -36,6 +36,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile SignalToy/TraceInspector rest, hover, focus, and route screenshots were inspected. Accents are clear, focus rings remain visible, and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `8718664` and pushed to `main`.
+- Pages deployment run `45884034936` completed successfully.
+- Live verification returned HTTP 200 with focused SignalToy reset in lime and TraceInspector Next in coral.
+
 ## Next candidates
 
 1. Audit remaining card/link hover treatments for keyboard parity rather than adding new motion.

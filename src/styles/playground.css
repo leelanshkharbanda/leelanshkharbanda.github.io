@@ -847,9 +847,12 @@ h3 {
   text-decoration-color: var(--play-blue);
   text-decoration-thickness: 0.12em;
   text-underline-offset: 0.08em;
+  transition: color 160ms ease;
 }
 
-.project-card h3 a:hover {
+.project-card h3 a:hover,
+.project-card h3 a:focus-visible {
+  color: var(--signal);
   text-decoration-line: underline;
 }
 
@@ -1759,6 +1762,7 @@ h3 {
   .site-footer a,
   .signal-toy__controls button,
   .trace-inspector__controls button,
+  .project-card h3 a,
   .arrow-link span,
   .back-link__arrow,
   .project-card,
@@ -1788,6 +1792,7 @@ html[data-motion='reduced'] .quiet-link,
 html[data-motion='reduced'] .site-footer a,
 html[data-motion='reduced'] .signal-toy__controls button,
 html[data-motion='reduced'] .trace-inspector__controls button,
+html[data-motion='reduced'] .project-card h3 a,
 html[data-motion='reduced'] .arrow-link span,
 html[data-motion='reduced'] .back-link__arrow,
 html[data-motion='reduced'] .project-card,
