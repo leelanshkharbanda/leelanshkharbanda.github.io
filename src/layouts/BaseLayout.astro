@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/playground.css';
+import '../styles/dithering.css';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../data/site';
@@ -68,6 +69,7 @@ const structuredData = {
       Skip to content
     </a>
     <div class="playground-cursor" aria-hidden="true"></div>
+    <canvas class="dither-field" data-dither-field aria-hidden="true"></canvas>
     <div class="datum-rail" aria-hidden="true">
       <span>LEELANSH KHARBANDA</span>
       <span>PROJECT PLAYGROUND / 2026</span>
@@ -79,6 +81,7 @@ const structuredData = {
     <Footer />
     <script>
       import '../scripts/playground';
+      import '../scripts/dithering-field';
     </script>
   </body>
 </html>

@@ -1,0 +1,63 @@
+.dither-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.34;
+  mix-blend-mode: multiply;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.project-card__stage .project-visual__root {
+  position: relative;
+  background-image: radial-gradient(rgb(246 242 231 / 16%) 1px, transparent 1.1px);
+  background-size: 6px 6px;
+  background-position: var(--dither-x, 0) var(--dither-y, 0);
+}
+
+.has-dither-motion .project-card__stage .project-visual__root::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: radial-gradient(rgb(246 242 231 / 58%) 1px, transparent 1.2px);
+  background-size: 4px 4px;
+  content: '';
+  opacity: 0.3;
+  -webkit-mask-image: radial-gradient(
+    circle 7rem at var(--dither-lens-x, 50%) var(--dither-lens-y, 50%),
+    #000 0,
+    rgb(0 0 0 / 70%) 35%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    circle 7rem at var(--dither-lens-x, 50%) var(--dither-lens-y, 50%),
+    #000 0,
+    rgb(0 0 0 / 70%) 35%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dither-field {
+    opacity: 0.22;
+  }
+}
+
+html[data-motion='reduced'] .dither-field {
+  opacity: 0.22;
+}
+
+@media print {
+  .dither-field {
+    display: none;
+  }
+}
