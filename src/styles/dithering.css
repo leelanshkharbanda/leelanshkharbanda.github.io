@@ -44,12 +44,45 @@ main,
 }
 
 .project-jump a {
+  position: relative;
+  display: inline-flex;
   min-height: 2.75rem;
+  align-items: center;
+  padding-inline: 0.55rem 0.95rem;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.project-jump a::after {
+  position: absolute;
+  top: 50%;
+  right: 0.3rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--ink);
+  content: '';
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6);
+  transition:
+    opacity 160ms ease,
+    transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .project-jump a[aria-current='true'] {
   background: var(--play-green);
   box-shadow: 2px 2px 0 var(--ink);
+}
+
+.project-jump a[aria-current='true']::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.project-jump a:hover,
+.project-jump a:focus-visible {
+  background: var(--play-yellow);
 }
 
 .project-card__stage .project-visual__root {

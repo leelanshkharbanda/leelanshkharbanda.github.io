@@ -37,6 +37,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile route, rest, mid-tick, settled, pointer, and reset screenshots were inspected. No clipping, overlap, layout shift, or contrast change was introduced.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `97bfc94` and pushed to `main`.
+- Pages deployment run `45859793494` completed successfully.
+- Live verification returned HTTP 200, a working readout tick to 257 units, class cleanup after settling, and no animation under reduced motion.
+
 ## Next candidates
 
 1. Refine the work-index jump controls so the active project reads more clearly on both pointer and keyboard navigation.
