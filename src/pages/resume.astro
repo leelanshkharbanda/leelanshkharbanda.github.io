@@ -3,7 +3,7 @@ import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { featuredProjects } from '../data/curation';
 import { requireProjectEntries } from '../data/projects';
-import { evidenceLabels, roleLabels, site, statusLabels } from '../data/site';
+import { roleLabels, site, statusLabels } from '../data/site';
 import { toolkit } from '../data/toolkit';
 
 const entries = await Promise.all(featuredProjects.map((slug) => getEntry('projects', slug)));
@@ -44,9 +44,8 @@ const description =
     <section class="resume-section" aria-labelledby="resume-profile-title">
       <h2 id="resume-profile-title">Profile</h2>
       <p>
-        ECE undergraduate working across signal processing, computer architecture, hardware-counter
-        telemetry, and local-first software. I like building small simulations and tools, and
-        keeping notes on how they work.
+        ECE student at IIIT Delhi. I work on signals, computer architecture, and local-first
+        software. Most of what’s here is a simulation, prototype, or team project.
       </p>
     </section>
 
@@ -69,22 +68,21 @@ const description =
           : project.data.teamSize
             ? `${roleLabels[project.data.role]} · ${project.data.teamSize} people`
             : roleLabels[project.data.role];
+        const shortTitle = project.data.title.split(':')[0];
 
         return (
           <article class="resume-project">
             <div class="resume-project__heading">
-              <h3>{project.data.title}</h3>
-              <p>
-                {statusLabels[project.data.status]} · {evidenceLabels[project.data.evidenceClass]}
-              </p>
+              <h3>{shortTitle}</h3>
+              <p>{statusLabels[project.data.status]}</p>
             </div>
             <p class="resume-project__role">{credit}</p>
             {project.data.statusNote && (
               <p class="resume-project__note">{project.data.statusNote}</p>
             )}
-            <p>{project.data.question}</p>
+            <p>{project.data.summary}</p>
             <p class="resume-project__stack">{project.data.stack.join(' · ')}</p>
-            <a href={`/work/${project.id}/`}>Project notes →</a>
+            <a href={`/work/${project.id}/`}>Notes →</a>
           </article>
         );
       })}

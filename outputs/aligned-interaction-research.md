@@ -1,0 +1,68 @@
+# Aligned interaction research
+
+**Research date:** 2026-11-26. **Scope:** read-only review of live pages, first-party writeups, public source, and served implementation. These are mechanism references, not permission to reuse code, assets, wording, or visual identities. This is not a conformance audit of the reference sites.
+
+## Recommendation
+
+Use one bounded **evidence lens**, not a site-wide spectacle: an original project trace or diagram is shown first as ordered dots; pointer, keyboard focus, or an explicit control resolves a small region to clean linework. The default is static. The effect should explain a project’s signal path, constraint, or evidence class and then get out of the way.
+
+Awwwards weights Design 40%, Usability 30%, Creativity 20%, and Content 10%. That is useful evaluation context—not an accessibility standard—and supports spending effort on legibility, navigation, and substance alongside the signature interaction. [Awwwards evaluation system](https://www.awwwards.com/about-evaluation/)
+
+## 1. Rauno Freiberg — restrained composition and inspectable interaction craft
+
+- **Status:** Awwwards **Honorable Mention, 2025-09-01**, for *Portfolio 2025*. Awwwards highlights Hero Reveal, Horizontal Scroll, Philosophy, Contact, and Minimap. The recognition applies to the 2025 edition; the current homepage is a later, simpler composition. [Awwwards record](https://www.awwwards.com/sites/portfolio-2025)
+- **Exact URLs / accessed 2026-11-26:** <https://rauno.me/>; <https://rauno.me/craft/interaction-design>; <https://rauno.me/craft/vercel>; <https://github.com/raunofreiberg/interfaces>
+- **Observable mechanism:** The current home uses large identity typography, short navigation, an inline email-copy state, and six terse “Make it…” lines. The interaction-design essay pairs plain observations with working radial-menu, swipe, morphing, and scroll-landmark specimens. Freiberg’s first-party Vercel writeup describes progressive CSS/SVG/GLSL layering, skipping the shader on low-powered devices, and pausing decorative loops for reduced motion. His interface guidelines also call for short interaction durations, offscreen loop pausing, touch-specific behavior, and explicit labels.
+- **Why it fits:** The persona is a maker explaining craft, not an agency selling packages. The copy is brief and unceremonious; the interaction studies make technical care visible without requiring a full-screen 3D world.
+- **Original adaptation:** Build a **datum minimap** for Index / Work / Evidence / Contact and a folio row that expands into one original project diagram on focus or click. Use the six-line rhythm only as inspiration for short, concrete statements about the work—never as reusable prose.
+- **Accessibility / reduced motion:** Keep real links and buttons, visible focus, arrow-key navigation, and a normal vertical reading order. Reduced motion removes horizontal transforms and specimen animation; all rows remain reachable without hover or dragging. Decorative layers must not intercept pointer events.
+
+## 2. Tim Roussilhe — monochrome project folios with deliberate activation
+
+- **Status:** Awwwards **Site of the Day, 2017-07-10**, overall 7.27/10 and Developer Award 6.6/10 for the 2017 portfolio. The live site is now the 2026 edition, so the award is historical context rather than a claim about the current build. [Awwwards record](https://www.awwwards.com/sites/tim-roussilhe-portfolio)
+- **Exact URLs / accessed 2026-11-26:** <https://timroussilhe.com/>; first-party served [JavaScript](https://timroussilhe.com/static/js/main.28b111ef.js), [CSS](https://timroussilhe.com/static/css/main.31a97307.css), and [source map](https://timroussilhe.com/static/js/main.28b111ef.js.map)
+- **Observable mechanism:** The current portfolio is a vertical sequence of year/title/client/role rows. Source-mapped `WorkItem` code waits about 0.75 seconds after a project enters the viewport, then uses GSAP masks and a title shift to reveal a video; leaving the viewport reverses the state and pauses playback. Hover/click opens project metadata. Mobile renders a reduced set of items. The Pixi scene caps DPR at 2.
+- **Why it fits:** It reads as one design engineer’s selected work, with explicit roles and collaboration credits. The palette is restrained, the copy is direct—“I take my work seriously but not myself”—and motion is attached to specific work rather than to a service pitch.
+- **Original adaptation:** Use **folio rows** with a small original trace or diagram that expands after deliberate hover, focus, or click. Keep year, role, evidence class, and source link visible in DOM text. Do not autoplay video; a poster frame and case-study link are enough.
+- **Accessibility / reduced motion:** No page-specific `prefers-reduced-motion` branch was found in the inspected current source map/CSS. Do not copy that omission: snap open/closed states for reduced motion, make focus equivalent to hover, use 44 px primary targets, and keep video optional with captions/transcript when used.
+
+## 3. Maxime Heckel — ordered dithering as a teachable engineering material
+
+- **Status:** Technically strong personal engineering portfolio and first-party teaching reference; no award claim is needed.
+- **Exact URLs / accessed 2026-11-26:** <https://maximeheckel.com/>; <https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/>; [visualizer source](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/main/core/components/MDX/Widgets/Retro/DitheringVisualizer/DitheringVisualizer.tsx); [ordered shader source](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/main/core/components/MDX/Widgets/Retro/ordered.ts); [served portfolio scene](https://maximeheckel.com/_next/static/immutable/chunks/390m96ui6oo__.js)
+- **Observable mechanism:** The article’s visualizer has an “Enable Dithering” switch, 2×2/4×4/8×8 Bayer controls, and per-cell luminance/threshold readouts. The current portfolio scene is related but distinct: an 8 px halftone grid maps luminance to three dot radii, adds animated fractal noise, and displaces UVs inside a cursor-centered radius. A control moves among halftone, blueprint, and neon states. The served scene uses adaptive DPR, disables float controls for reduced motion, and sets the render loop to `never` when the scene is no longer active.
+- **Why it fits:** Dithering is connected to Heckel’s own shader practice, writing, and unfinished experiments. The page admits craft and learning rather than presenting a generic “creative developer” package.
+- **Original adaptation:** Add one **Dither Bench** inside a relevant case study: original project screenshot/trace → 4×4 ordered dots → clean schematic. Expose only algorithm, cell size, and source artifact. Keep a numerical legend and before/after explanation; do not turn the whole portfolio into a retro filter.
+- **Accessibility / reduced motion:** Use native switch/radio controls, keyboard access, and DOM readouts instead of tooltip-only values. Default to a precomputed static comparison; make motion opt-in, stop it offscreen/hidden, cap DPR, and keep all text outside canvas. Avoid high-contrast full-field noise flicker.
+
+## 4. Evan Wallace — technical work presented plainly, with the diagram as the demo
+
+- **Status:** Technically strong personal software/graphics portfolio; included for evidence and interaction design, not awards.
+- **Exact URLs / accessed 2026-11-26:** <https://madebyevan.com/>; <https://madebyevan.com/dft/>; <https://madebyevan.com/fsm/>; <https://github.com/evanw/webgl-filter>
+- **Observable mechanism:** The homepage is a quiet, script-free list of dated work with concise explanations and direct demo/source links. The DFT demo synchronizes three canvas plots—spatial signal, frequency weights, and reconstructed signal—while pointer position in the middle plot changes the included frequency cutoff. The FSM designer supports double-click to add states, shift-drag to add arrows, dragging to arrange, Delete to remove, and PNG/SVG/LaTeX export.
+- **Why it fits:** The work itself is the interaction; there is no service menu or availability funnel. Descriptions state purpose and limits plainly. Original diagrams and functional demos carry more credibility than decorative motion.
+- **Original adaptation:** Build a **Trace Explorer** for Chronos-DSP: raw hardware trace → spectrum → reconstructed/interpreted view, linked by one native range control and a few documented presets. Draw the diagrams from project-owned data, with source and simulation/measurement labels.
+- **Accessibility / reduced motion:** The reference DFT cutoff is mouse-only and its function field uses `eval`; the FSM’s meaningful nodes live in canvas. Do not inherit those constraints. Use presets plus a native range, no arbitrary code execution, keyboard-operable SVG/DOM nodes, explicit state announcements, and a static table/text equivalent. No autoplay is necessary.
+
+## 5. Bartosz Ciechanowski — original diagrams, progressive disclosure, and a global pause
+
+- **Status:** Technically strong interactive science/engineering reference. This is an article site rather than a portfolio, included because its diagram model is unusually well aligned.
+- **Exact URLs / accessed 2026-11-26:** <https://ciechanow.ski/mechanical-watch/>; <https://ciechanow.ski/gears/>; first-party [base script](https://ciechanow.ski/js/base.js) and [watch implementation](https://ciechanow.ski/js/watch.js)
+- **Observable mechanism:** The watch article builds one mechanism through many original, color-coded 3D diagrams. Readers drag to rotate, use sliders to explode or scrub time, switch component views, and advance through assembly stages. A prominent “globally pause” control calls `set_paused` on every animated drawer. The prose is calm, specific, and lightly conversational.
+- **Why it fits:** It demonstrates how interaction can reveal an engineering mechanism rather than decorate a landing page. The diagrams and labels are the content, and each control answers a real explanatory question.
+- **Original adaptation:** Create a four-stage **Signal Path Inspector**—question → artifact → mechanism → evidence class/limit—with Previous/Next controls and an optional exploded view. Use ordered dots only for the transition from raw trace to clean schematic. Reuse the explanatory discipline, not the visual identity or implementation.
+- **Accessibility / reduced motion:** A manual global pause is a good pattern, but no OS reduced-motion initialization was found in the inspected scripts. Initialize paused for `prefers-reduced-motion`, use native buttons/ranges with visible values, provide keyboard alternatives to every drag/scrub, and accompany canvases with concise text descriptions.
+
+## Shared implementation constraints
+
+1. **Static first.** Ship a precomputed dithered image or SVG/DOM diagram and the full case study without JavaScript. Enhance only when useful. Canvas is a bitmap and does not expose its drawn objects semantically. [MDN Canvas accessibility](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
+2. **Reduced motion means removal, not slower motion.** Honor the OS setting in CSS and JavaScript, listen for changes, and replace the lens with a static resolved view. Non-essential interaction-triggered motion should also be disableable; WCAG 2.2 SC 2.3.3 is Level AAA and is a useful stricter target. [MDN prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion); [WCAG 2.3.3](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)
+3. **No uncontrolled loops.** Automatically moving content that runs over five seconds beside other content needs pause/stop/hide under SC 2.2.2 (A). Prefer one visible motion control and stop rendering when hidden or offscreen. [WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)
+4. **No flicker.** Avoid full-field, high-contrast noise transitions; stay within the three-flash rule and thresholds. [WCAG 2.3.1](https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html)
+5. **Protect legibility.** Ordinary text stays on solid surfaces at 4.5:1 (3:1 for large text); controls, focus/state indicators, and meaningful diagram parts need 3:1. When dithering is authored at the source, WCAG’s contrast definition uses the average dithered RGB values—but that does not justify placing text over moving dots. [WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html); [WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+6. **Zoom and reflow.** Preserve 200% text resize and a 320 CSS px single-column reading path; diagrams may have their own two-dimensional viewport without forcing the whole page to scroll in two directions. [WCAG 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html); [WCAG 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)
+7. **Avoid service-selling cues.** No budget calculator, package menu, client-logo wall, “hire me” funnel, or full-screen world as the primary navigation. Keep role, project question, artifact, evidence, limits, and source links primary.
+
+## Bottom line
+
+The strongest synthesis is **Freiberg’s restraint + Roussilhe’s project-row discipline + Heckel’s material-level dithering + Wallace/Ciechanowski’s explanatory diagrams**. The differentiator is not the dithering algorithm alone; it is making the algorithm resolve an original piece of engineering evidence while the ordinary, accessible page remains complete without it.

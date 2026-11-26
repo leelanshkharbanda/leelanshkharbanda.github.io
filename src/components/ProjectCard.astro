@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { evidenceLabels, roleLabels, statusLabels } from '../data/site';
+import { roleLabels, statusLabels } from '../data/site';
 import ProjectVisual from './ProjectVisual.astro';
 
 interface Props {
@@ -73,6 +73,7 @@ const projectExperiments: Record<string, string> = {
 
 const { project, index, variant = 'standard', showVisual = true } = Astro.props;
 const data = project.data;
+const shortTitle = data.title.split(':')[0];
 const note = projectNotes[project.id] ?? {
   label: 'open the notebook',
   preview: 'project → notes → source',
@@ -103,14 +104,12 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
     <div class="project-card__meta">
       <span>{statusLabels[data.status]}</span>
       <span>{credit}</span>
-      <span>{evidenceLabels[data.evidenceClass]}</span>
     </div>
     <p class="project-card__play-label">{note.label}</p>
     <h3>
-      <a href={`/work/${project.id}/`}>{data.title}</a>
+      <a href={`/work/${project.id}/`}>{shortTitle}</a>
     </h3>
     {data.statusNote && <p class="project-card__status-note">{data.statusNote}</p>}
-    <p class="project-card__question">{data.question}</p>
     <p class="project-card__summary">{data.summary}</p>
     <details class="project-card__experiment">
       <summary>{note.label}</summary>
@@ -121,16 +120,13 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
         <li>{item}</li>
       ))}
     </ul>
-    <p class="project-card__limit">
-      <strong>Limit:</strong> {data.limits[0]}
-    </p>
     <div class="project-card__actions">
       <a class="arrow-link" href={`/work/${project.id}/`}>
-        Project notes <span aria-hidden="true">→</span>
+        Notes <span aria-hidden="true">→</span>
       </a>
       {demoLink && (
         <a class="arrow-link" href={demoLink.url} target="_blank" rel="noreferrer noopener">
-          Try live demo <span aria-hidden="true">↗</span>
+          Demo <span aria-hidden="true">↗</span>
           <span class="sr-only"> (opens in a new tab)</span>
         </a>
       )}
@@ -146,7 +142,7 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
   {showVisual && data.diagram !== 'none' && (
     <div class="project-card__stage">
       <span class="project-card__preview-label" aria-hidden="true">
-        PEEK / ORIGINAL SCHEMATIC
+        SKETCH
       </span>
       <ProjectVisual
         id={`card-${project.id}`}

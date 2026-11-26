@@ -1,7 +1,7 @@
 ---
 title: 'Modulation Studio: a browser signal lab'
 question: 'What happens to a signal when you add noise and try to recover it?'
-summary: 'A two-person static web lab that simulates analog and digital modulation, applies noise and fading, recovers signals, and exposes spectra, constellations, and error metrics in the browser.'
+summary: 'A two-person browser lab for simulated modulation, channel impairments, receiver recovery, and error metrics.'
 recruiterSummary: 'I contributed to a two-person browser DSP lab spanning simulated modulation, channel impairments, receiver controls, plots, exports, and tests. Its live demo returned HTTP 200 on 2026-11-25, while the latest Pages workflow failed during artifact lookup; the case study keeps availability, test evidence, and simulation claims separate.'
 metaDescription: 'A two-person browser DSP lab for simulated modulation, channel impairments, receiver recovery, plots, and error metrics.'
 status: 'live-demo'

@@ -1,7 +1,7 @@
 ---
 title: 'RISC-V Assembler and Simulator'
 question: 'What register and memory state changes after each instruction?'
-summary: 'A four-person Python project that makes an RV32I subset visible through assembly encoding, execution traces, and memory dumps.'
+summary: 'A four-person Python assembler and functional simulator for an RV32I subset.'
 recruiterSummary: 'This four-person team project turns a supported subset of RV32I assembly into machine code and an inspectable functional execution. I contributed within the shared team rather than claiming sole ownership of the assembler, simulator, or instruction coverage. The repository documents label resolution, 32 registers, byte-addressed memory, and trace output. Its value is pedagogical: a learner can connect an instruction’s encoding to the next program-counter and register state. The artifact is source and example output, not evidence of complete RV32I conformance or hardware performance.'
 metaDescription: 'A four-person Python RV32I-subset assembler and functional simulator with instruction traces, register state, and memory inspection.'
 status: archived

@@ -16,6 +16,26 @@ main,
   z-index: 1;
 }
 
+.resume-page,
+.work-section,
+.about-story,
+.about-threads,
+.leadership-section,
+.contact-section,
+.case-body {
+  background: var(--paper);
+  box-shadow: 0 0 0 100vmax var(--paper);
+}
+
+.project-jump a {
+  min-height: 2.75rem;
+}
+
+.project-jump a[aria-current='true'] {
+  background: var(--play-green);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
 .project-card__stage .project-visual__root {
   position: relative;
   background-image: radial-gradient(rgb(246 242 231 / 16%) 1px, transparent 1.1px);
@@ -46,6 +66,64 @@ main,
   pointer-events: none;
 }
 
+@media (max-width: 640px) {
+  .case-body .table-scroll {
+    overflow-x: visible;
+  }
+
+  .case-body table,
+  .case-body .trace-static-details table {
+    min-width: 0;
+  }
+
+  .case-body thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .case-body tbody,
+  .case-body tr,
+  .case-body th,
+  .case-body td {
+    display: block;
+    width: 100%;
+  }
+
+  .case-body tbody tr {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .case-body tbody th {
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .case-body tbody td {
+    border-right: 0;
+    padding-top: 0.4rem;
+  }
+
+  .case-body tbody td::before {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--secondary);
+    content: attr(data-label);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .trace-static-details tbody td::before {
+    color: var(--dark-secondary);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dither-field {
     opacity: 0.22;
@@ -59,5 +137,16 @@ html[data-motion='reduced'] .dither-field {
 @media print {
   .dither-field {
     display: none;
+  }
+
+  .resume-page,
+  .work-section,
+  .about-story,
+  .about-threads,
+  .leadership-section,
+  .contact-section,
+  .case-body {
+    background: transparent !important;
+    box-shadow: none !important;
   }
 }

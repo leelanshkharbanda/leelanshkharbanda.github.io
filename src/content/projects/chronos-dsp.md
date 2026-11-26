@@ -1,7 +1,7 @@
 ---
 title: 'Chronos-DSP: from geometry to simulated IQ'
 question: 'What changes when transmitters, receivers, and walls move around a QPSK signal?'
-summary: 'An Elixir/Phoenix and Rust simulation for moving transmitters, receivers, and walls around a QPSK signal. It includes a dashboard and a headless API.'
+summary: 'An Elixir/Phoenix and Rust simulation for moving transmitters, receivers, and walls around a QPSK signal.'
 recruiterSummary: 'I built Chronos-DSP as a personal software simulation across an Elixir/Phoenix control plane and Rust NIF data plane. It makes geometric propagation inspectable from scene geometry to simulated QPSK and BER, with deterministic seeds and CI evidence; it does not claim RF calibration or hard-real-time guarantees.'
 metaDescription: 'A personal Elixir, Phoenix, and Rust geometric-channel simulation with deterministic QPSK, tests, and stated limits.'
 status: 'released'

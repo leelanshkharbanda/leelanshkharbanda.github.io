@@ -1,7 +1,7 @@
 ---
 title: 'Life OS: local records, adaptive recommendations'
 question: 'Can a desktop app keep records local and still make recommendations from context?'
-summary: 'A three-person Tauri 2 prototype with local SQLite records, ONNX and LanceDB memory, and recommendations from a contextual bandit. Model files need to be set up locally; some integrations use the network.'
+summary: 'A three-person Tauri prototype with local SQLite records, ONNX/LanceDB memory, and a contextual bandit.'
 recruiterSummary: 'I contributed to a three-person local-first desktop prototype connecting React and Tauri workflows to Rust commands, SQLite persistence, ONNX inference, LanceDB recall, and uncertainty-aware action selection. It remains an unreleased team prototype with required model provisioning and optional network integrations; the case study separates source-level implementation from user or productivity evidence.'
 metaDescription: 'A three-person local-first desktop prototype using Tauri, React, Rust, SQLite, ONNX, LanceDB, and contextual recommendations.'
 status: 'prototype'

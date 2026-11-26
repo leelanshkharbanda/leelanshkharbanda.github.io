@@ -1,7 +1,7 @@
 ---
 title: 'HPC-Boost v2: four counters and a routing check'
 question: 'Can four CPU performance-counter events separate malware from benign workloads without leaking binary identity into validation?'
-summary: 'A team project on choosing four CPU performance counters, validating on held-out binaries, and checking whether per-binary routing helps.'
+summary: 'A team project testing four CPU performance counters, grouped validation, and per-binary routing.'
 recruiterSummary: 'HPC-Boost asks whether a small set of CPU performance counters can support malware detection under a four-event budget. My contribution is framed as participation in the two-person project listed on my résumé, not sole authorship of the repository. The later v2 study used real-PMU traces, binary-grouped validation, and training-only subset selection. Its fixed-subset result is measured dataset evidence; the per-binary conditioning result is a negative finding that prevented an unjustified routing layer. The imported earlier report remains separate.'
 metaDescription: 'Four-event PMU selection, binary-grouped validation, measured fixed-subset results, and a per-binary routing check.'
 status: research

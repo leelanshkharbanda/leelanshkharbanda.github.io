@@ -66,17 +66,13 @@ test('every route preserves core content without JavaScript', async ({ browser }
   await page.getByText('Static stage ledger', { exact: true }).click();
   await expect(page.locator('.trace-static-details tbody tr')).toHaveCount(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
-  const scroller = page.locator('.trace-static-details .table-scroll');
-  await scroller.focus();
-  const scrollability = await scroller.evaluate((element) => ({
+  const table = page.locator('.trace-static-details table');
+  const dimensions = await table.evaluate((element) => ({
     clientWidth: element.clientWidth,
     scrollWidth: element.scrollWidth,
   }));
-  expect(scrollability.scrollWidth).toBeGreaterThan(scrollability.clientWidth);
-  await scroller.evaluate((element) => {
-    element.scrollLeft = 64;
-  });
-  expect(await scroller.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+  await expect(table).toContainText('Establish the symbol stream');
   await page.goto('/resume/');
   await expect(page.locator('.resume-project')).toHaveCount(5);
   await context.close();

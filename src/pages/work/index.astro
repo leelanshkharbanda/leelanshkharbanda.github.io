@@ -47,7 +47,7 @@ const description =
     </div>
   </section>
 
-  <nav class="project-jump page-shell" aria-label="Jump to a project">
+  <nav class="project-jump page-shell" aria-label="Jump to a project" data-project-jump>
     <span>Projects</span>
     {allProjects.map((project, index) => (
       <a href={`#project-${project.id}`}>

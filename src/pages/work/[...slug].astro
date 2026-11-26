@@ -141,8 +141,8 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
                       <th scope="row">
                         {stage.datum} · {stage.label}
                       </th>
-                      <td>{stage.change}</td>
-                      <td>
+                      <td data-label="What changes">{stage.change}</td>
+                      <td data-label="Illustrative metrics">
                         {stage.metrics.map((metric) => (
                           <span class="trace-static-metric">
                             {metric.label}: {formatSignalMetric(metric)}
@@ -186,10 +186,10 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
                       <span class="evidence-id">{evidenceIds[index]}</span>
                       {result.claim}
                     </th>
-                    <td>{result.value}</td>
-                    <td>{evidenceLabels[result.evidenceClass]}</td>
-                    <td>{result.method}</td>
-                    <td>
+                    <td data-label="Value">{result.value}</td>
+                    <td data-label="Evidence class">{evidenceLabels[result.evidenceClass]}</td>
+                    <td data-label="Method">{result.method}</td>
+                    <td data-label="Source">
                       <a href={result.source} target="_blank" rel="noreferrer noopener">
                         {evidenceIds[index]} · Open source <span aria-hidden="true">↗</span>
                       </a>

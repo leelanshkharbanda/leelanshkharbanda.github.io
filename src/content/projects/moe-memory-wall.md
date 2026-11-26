@@ -1,7 +1,7 @@
 ---
 title: 'MoE Memory Wall: Prefetching Experts Under an HBM Budget'
 question: 'When expert weights exceed HBM capacity, can training-free prediction and prefetching reduce decode stalls without changing routing?'
-summary: 'A group coursework simulation of expert prediction, HBM caching, and prefetching across TinyMoE prose/code, Mixtral-calibrated, and uniform routing under a constrained memory budget.'
+summary: 'A group simulation of expert prediction, HBM caching, and prefetching under a memory budget.'
 recruiterSummary: "MoE Memory Wall is group coursework about hiding expert-weight loads when a mixture-of-experts model exceeds HBM capacity. I take credit as a participant in Group 24's shared study rather than sole author of every component. The repository combines modified C++ simulators, Python predictors, and a discrete-event memory timeline. It compares TinyMoE prose/code, Mixtral-calibrated, and uniform routing. The headline 1.27× result is the TinyMoE-prose workload at C=64, a Simulation Result against on-demand plus LRU, not a hardware measurement. The work reports where prefetching helps, where it does not, and how extra traffic constrains the benefit."
 metaDescription: 'MoE Memory Wall coursework: simulated expert prediction and prefetching under an HBM budget, with routing-sensitive results and explicit limits.'
 status: coursework

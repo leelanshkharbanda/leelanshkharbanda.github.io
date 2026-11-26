@@ -18,14 +18,14 @@ const description =
 <BaseLayout title={site.name} description={description}>
   <section class="playground-hero page-shell" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="play-kicker">Hello, I’m Leelansh — welcome to my bench</p>
+      <p class="play-kicker">Hello, I’m Leelansh.</p>
       <h1 id="hero-title">
         <span>I make small systems</span>
         <span class="hero-highlight">so I can see what they’re doing.</span>
       </h1>
       <p class="hero-intro">
-        I’m an ECE student interested in signals, tiny instructions, and local-first software. This
-        is where I keep the projects I’m working on and taking apart.
+        I’m an ECE student at IIIT Delhi. I work on signals, computer architecture, and local-first
+        software.
       </p>
       <a class="hero-project-callout" href="/work/chronos-dsp/">
         <span>Latest project</span>
@@ -41,7 +41,7 @@ const description =
         </a>
       </div>
       <nav class="hero-project-strip" aria-label="Featured projects">
-        <span>Fresh from the bench</span>
+        <span>Projects</span>
         <a href="/work/chronos-dsp/">
           01 / Chronos-DSP <span aria-hidden="true">↗</span>
         </a>
@@ -64,8 +64,7 @@ const description =
     {projects.map((project) => (
       <a href={`/work/${project.id}/`}>
         <span>{project.data.title.split(':')[0]}</span>
-        <strong>{project.data.question}</strong>
-        <span>{project.data.results[0]?.value ?? project.data.summary}</span>
+        <strong>{project.data.summary}</strong>
       </a>
     ))}
   </nav>
@@ -74,8 +73,8 @@ const description =
     <SectionHeading
       id="PLAY / 01"
       headingId="work-title"
-      title="Things I make so I can see how they tick."
-      intro="Three recent projects, with notes on what I tried, what worked, and what didn’t."
+      title="Projects"
+      intro="Recent work. Notes and source are linked."
     />
     <div class="project-grid">
       {projects.map((project, index) => (
@@ -96,21 +95,12 @@ const description =
 
   <section class="about-preview" aria-labelledby="about-preview-title">
     <div class="page-shell about-preview__inner">
-      <SectionHeading
-        id="PLAY / 02"
-        headingId="about-preview-title"
-        title="Why I keep opening the box."
-        intro="Different projects, same interest: what changed inside the system."
-      />
+      <SectionHeading id="PLAY / 02" headingId="about-preview-title" title="About me" />
       <div class="about-preview__body">
         <div>
           <p>
-            I’m an ECE undergraduate at IIIT Delhi. I move between signal processing, computer
-            architecture, hardware-counter telemetry, and local-first software because each one
-            gives me a different hidden process to trace, model, and explain.
-          </p>
-          <p>
-            The notes also say who did the work, what was simulated, and what’s still uncertain.
+            I’m an ECE undergraduate at IIIT Delhi. I work on signal processing, computer
+            architecture, hardware-counter telemetry, and local-first software.
           </p>
           <a class="arrow-link" href="/about/">
             More about me <span aria-hidden="true">→</span>
@@ -129,12 +119,7 @@ const description =
   </section>
 
   <section id="contact" class="contact-section page-shell" aria-labelledby="contact-title">
-    <SectionHeading
-      id="PLAY / 03"
-      headingId="contact-title"
-      title="Say hello."
-      intro="Email is fine."
-    />
+    <SectionHeading id="PLAY / 03" headingId="contact-title" title="Say hello." />
     <ContactBlock />
   </section>
 </BaseLayout>
