@@ -428,6 +428,26 @@ address {
   text-decoration: none;
 }
 
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-link__arrow {
+  transition: transform 160ms ease;
+}
+
+.back-link:focus-visible .back-link__arrow {
+  transform: translateX(-3px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .back-link:hover .back-link__arrow {
+    transform: translateX(-3px);
+  }
+}
+
 .hero {
   display: grid;
   min-height: calc(100svh - 4.75rem);

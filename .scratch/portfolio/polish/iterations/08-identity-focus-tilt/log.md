@@ -35,6 +35,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile rest, hover, focus, and route screenshots were inspected. The mark stays inside its fixed footprint and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `a567f61` and pushed to `main`.
+- Pages deployment run `45872449887` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on the identity link and the expected 8° mark rotation.
+
 ## Next candidates
 
 1. Give back links the same arrow-focus nudge as project arrow links if their markup shares the same component.

@@ -196,6 +196,59 @@ test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo)
   await expect(arrow).toHaveCSS('transform', 'none');
 });
 
+test('back links nudge their arrow on hover and keyboard focus', async ({ page }, testInfo) => {
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  for (const route of ['/work/chronos-dsp/', '/resume/']) {
+    await page.goto(route);
+    const link = page.locator('.back-link').first();
+    const arrow = link.locator('.back-link__arrow');
+    const translation = () =>
+      arrow.evaluate((element) => {
+        const transform = getComputedStyle(element).transform;
+        return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).e;
+      });
+
+    await expect.poll(translation).toBe(0);
+    await link.hover();
+    await expect.poll(translation).toBeLessThan(-2.5);
+    await page.mouse.move(0, 0);
+    await expect.poll(translation).toBe(0);
+    await page.getByRole('link', { name: 'Skip to content' }).focus();
+    for (let step = 0; step < 6; step += 1) {
+      await page.keyboard.press(tabKey);
+    }
+    await expect(link).toBeFocused();
+    await expect(link).toHaveCSS('outline-width', '3px');
+    await expect.poll(translation).toBeLessThan(-2.5);
+    await link.evaluate((element) => element.blur());
+    await expect.poll(translation).toBe(0);
+  }
+
+  await page.goto('/resume/');
+  const link = page.locator('.back-link').first();
+  const arrow = link.locator('.back-link__arrow');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await link.hover();
+  await expect(arrow).toHaveCSS('transform', 'none');
+  await page.getByRole('link', { name: 'Skip to content' }).focus();
+  for (let step = 0; step < 6; step += 1) {
+    await page.keyboard.press(tabKey);
+  }
+  await expect(link).toBeFocused();
+  await expect(arrow).toHaveCSS('transform', 'none');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await link.hover();
+  await expect(arrow).toHaveCSS('transform', 'none');
+  await link.evaluate((element) => element.blur());
+  await page.getByRole('link', { name: 'Skip to content' }).focus();
+  for (let step = 0; step < 6; step += 1) {
+    await page.keyboard.press(tabKey);
+  }
+  await expect(link).toBeFocused();
+  await expect(arrow).toHaveCSS('transform', 'none');
+});
+
 test('mobile menu summary presses flat and shows open/focus state', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

@@ -42,7 +42,10 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
   <article class={`case-study case-study--${data.depth}`}>
     <header class="case-hero page-shell">
       <a class="back-link" href="/work/">
-        ← Back to work
+        <span class="back-link__arrow" aria-hidden="true">
+          ←
+        </span>{' '}
+        Back to work
       </a>
       <p class="eyebrow">
         {projectDatum} · {statusLabels[data.status]}
