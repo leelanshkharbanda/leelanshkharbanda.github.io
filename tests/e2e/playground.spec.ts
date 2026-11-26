@@ -153,3 +153,56 @@ test('project cards keep diagram captions and evidence inside their bounds', asy
     }
   }
 });
+
+test('project diagram stages do not leave empty space below captions', async ({ page }) => {
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/work/']) {
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      const gaps = await page.locator('.project-visual__root').evaluateAll((figures) =>
+        figures.map((figure) => {
+          const caption = figure.querySelector('figcaption');
+          const stage = figure.closest('.project-card__stage');
+          if (!caption || !stage) return 0;
+          return stage.getBoundingClientRect().bottom - caption.getBoundingClientRect().bottom;
+        }),
+      );
+      expect(Math.max(...gaps), `${route} at ${width}px`).toBeLessThanOrEqual(32);
+    }
+  }
+});
+
+test('project preview notes do not cover diagram captions', async ({ page }) => {
+  for (const width of [768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/work/']) {
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      const overlaps = await page.locator('.project-card').evaluateAll((cards) =>
+        cards.flatMap((card) => {
+          const note = card.querySelector('.project-card__preview-note');
+          if (!note) return [];
+          const noteRect = note.getBoundingClientRect();
+          return [
+            ...card.querySelectorAll('.project-visual__caption-text, .project-visual__evidence'),
+          ]
+            .map((element) => {
+              const rect = element.getBoundingClientRect();
+              const width = Math.max(
+                0,
+                Math.min(noteRect.right, rect.right) - Math.max(noteRect.left, rect.left),
+              );
+              const height = Math.max(
+                0,
+                Math.min(noteRect.bottom, rect.bottom) - Math.max(noteRect.top, rect.top),
+              );
+              return width * height;
+            })
+            .filter((area) => area > 16);
+        }),
+      );
+      expect(overlaps, `${route} at ${width}px`).toEqual([]);
+    }
+  }
+});

@@ -865,7 +865,7 @@ h3 {
 .project-card__stage {
   position: relative;
   min-width: 0;
-  align-self: stretch;
+  align-self: start;
   border: 2px solid var(--ink);
   border-radius: 1rem;
   background: var(--ink);
@@ -909,8 +909,8 @@ h3 {
 
 .project-card__preview-note {
   position: absolute;
+  top: 0.8rem;
   right: 0.8rem;
-  bottom: 0.8rem;
   z-index: 2;
   max-width: calc(100% - 1.6rem);
   border: 1.5px solid var(--ink);
@@ -938,7 +938,7 @@ h3 {
 
 .project-card__stage .project-visual__root {
   height: auto;
-  min-height: 100%;
+  min-height: 0;
   border: 0;
   border-radius: 0.9rem;
 }
@@ -1176,7 +1176,7 @@ h3 {
 }
 
 .project-list .project-card__stage {
-  min-height: 25rem;
+  min-height: 0;
 }
 
 .project-list .project-card h3 {
@@ -1486,18 +1486,6 @@ h3 {
 
   .project-list .project-card .project-card__stage {
     order: 0;
-  }
-
-  .project-list .project-card__stage {
-    min-height: 0;
-  }
-
-  .project-card__stage {
-    align-self: start;
-  }
-
-  .project-card__stage .project-visual__root {
-    min-height: 0;
   }
 
   .archive-grid,

@@ -23,12 +23,8 @@ test('work index tracks the current project and supports arrow keys', async ({ p
   });
   await expect(nav.locator('a[href="#project-hpc-boost"]')).toHaveAttribute('aria-current', 'true');
 
-  await page.locator('#project-modulation-studio').evaluate((element) => {
-    window.scrollTo({
-      top: element.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.2,
-      behavior: 'instant',
-    });
-  });
+  await nav.locator('a[href="#project-modulation-studio"]').click();
+  await expect(page).toHaveURL(/#project-modulation-studio$/);
   await expect(nav.locator('a[href="#project-modulation-studio"]')).toHaveAttribute(
     'aria-current',
     'true',
