@@ -1725,6 +1725,7 @@ h3 {
 
   .button,
   .mobile-nav summary,
+  .arrow-link span,
   .project-card,
   .project-card__stage,
   .about-thread,
@@ -1746,6 +1747,7 @@ html[data-motion='reduced'] .signal-toy__readouts strong {
 
 html[data-motion='reduced'] .button,
 html[data-motion='reduced'] .mobile-nav summary,
+html[data-motion='reduced'] .arrow-link span,
 html[data-motion='reduced'] .project-card,
 html[data-motion='reduced'] .project-card__stage,
 html[data-motion='reduced'] .about-thread,

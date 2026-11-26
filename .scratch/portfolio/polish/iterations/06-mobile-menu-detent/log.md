@@ -35,6 +35,12 @@ Date: 2026-11-26
 - Fresh mobile rest, active, focus, open, and route screenshots were inspected. The focus ring remains visible and the menu stays within the viewport.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `be77628` and pushed to `main`.
+- Pages deployment run `45868674409` completed successfully.
+- Live verification returned HTTP 200 with the expected 2 px press transform, flat shadow, yellow active color, and open Menu state.
+
 ## Next candidates
 
 1. Give arrow links the same 4 px nudge on keyboard focus that they already have on hover.

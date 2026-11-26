@@ -405,7 +405,8 @@ address {
   transition: transform 160ms ease;
 }
 
-.arrow-link:hover span {
+.arrow-link:hover span,
+.arrow-link:focus-visible span {
   transform: translateX(4px);
 }
 

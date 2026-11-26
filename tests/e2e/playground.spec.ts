@@ -109,6 +109,47 @@ test('preview sticker stays contained at narrow widths and 200% text', async ({ 
   }
 });
 
+test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();
+  const title = page.locator('#project-chronos-dsp h3 a');
+  const arrow = link.locator('span').first();
+  const translation = () =>
+    arrow.evaluate((element) => {
+      const transform = getComputedStyle(element).transform;
+      return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).e;
+    });
+
+  await expect.poll(translation).toBe(0);
+  await link.hover();
+  await expect.poll(translation).toBeGreaterThan(3.5);
+  await page.mouse.move(0, 0);
+  await expect.poll(translation).toBe(0);
+
+  await title.focus();
+  await page.keyboard.press(testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab');
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('outline-style', 'solid');
+  await expect(link).toHaveCSS('outline-width', '3px');
+  await expect.poll(translation).toBeGreaterThan(3.5);
+  await link.evaluate((element) => element.blur());
+  await expect.poll(translation).toBe(0);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await link.hover();
+  await expect(arrow).toHaveCSS('transform', 'none');
+  await title.focus();
+  await page.keyboard.press(testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab');
+  await expect(arrow).toHaveCSS('transform', 'none');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await link.hover();
+  await expect(arrow).toHaveCSS('transform', 'none');
+  await title.focus();
+  await page.keyboard.press(testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab');
+  await expect(arrow).toHaveCSS('transform', 'none');
+});
+
 test('mobile menu summary presses flat and shows open/focus state', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

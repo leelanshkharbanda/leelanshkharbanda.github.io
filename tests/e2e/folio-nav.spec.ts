@@ -19,6 +19,7 @@ test('work index tracks the current project and supports arrow keys', async ({ p
   await expect(links.nth(1)).toHaveAttribute('aria-current', 'true');
 
   await page.locator('#project-hpc-boost').evaluate((element) => {
+    document.documentElement.style.scrollBehavior = 'auto';
     element.scrollIntoView({ block: 'center' });
   });
   await expect(nav.locator('a[href="#project-hpc-boost"]')).toHaveAttribute('aria-current', 'true');
