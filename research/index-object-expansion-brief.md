@@ -44,12 +44,13 @@ P-08 · Tasveer: A Campus Media Archive — Team project
 
 Shelf labels: `The project shelf · 5 deep dives + 3 archive records`, `8 PROJECT RECORDS`, `DEEP DIVES`, `SIDE DRAWER`, `Earlier work, still on the bench.` Flags: Released / Prototype / Live demo / Research / Coursework / Archive. They are evidence descriptors, not job titles.
 
-## Borrowed interactions — exactly two
+## Borrowed interactions — superseded (see Wayfinder #29)
 
-1. Scroll-linked playhead readout in the Index section. A 2px mono hairline over the index rows, `aria-hidden="true"`, implemented with `@supports (animation-timeline: scroll())` and `@media (prefers-reduced-motion: no-preference)`. No content gating, no images, no JS. Final frame under `reduce` or no support: line at 100% or absent.
-2. Letter-spread on non-navigation index entry titles only. Introduce `--dur-base: 220ms` and a new `.index-entry__title` hook as explicit build steps (they are net-new CSS, not existing tokens). Use `.index-entry__title:hover, .index-entry__title:focus-visible { letter-spacing: .08em; }` with that token. `:focus-visible` parity is inherent; under `reduce`, transition-duration `.01ms`. The title sits in a `min-width:0; overflow:hidden; text-overflow:ellipsis` wrapper so the spread cannot move header/nav or overflow at 320px / 1280-at-400%.
+The two interactions originally specified here were both removed after review. The playhead was `aria-hidden` scroll-hairline theatre that duplicated the browser scrollbar and named no state. The letter-spread on `.index-entry__title` was rejected by the user as bad UX; it changed type metrics on hover and conveyed nothing. Neither is implemented. Do not treat this section as a build requirement.
 
-Everything else studied was rejected: bar-wipe/JAZZ menu, annotations layer, wet-paint smear, JazzKeys keyboard play, randomized hover thumbnails, click-to-expand slide. Reasons: navigation movement, licensed assets, pointer-only WebGL, key hijacking, unpredictable content positions, and hidden content respectively. No code, fonts, assets, copy, constants or class names from those sites are reused.
+The shipped interaction is the fifth-seat arbiter's ruling on #32: one real scope filter (All / Deep dives / Archive) using native `aria-pressed` buttons, an `aria-live` count, and the `hidden` attribute so out-of-scope rows leave view, tab order and the accessibility tree together. Out-of-scope rows are never dimmed, and no named-section readout or playhead replaces them. Details: `research/index-object-polish-interactions.md` and `.scratch/map-index-object-polish.md`.
+
+Everything else studied was rejected: bar-wipe/JAZZ menu, annotations layer, wet-paint smear, JazzKeys keyboard play, randomized hover thumbnails, click-to-expand slide, hover notes/audio, WebGL liquid typography and expanding navigation. Reasons: navigation movement, licensed assets, pointer-only WebGL, key hijacking, unpredictable content positions, hidden content and type-metric changes. No code, fonts, assets, copy, constants or class names from those sites are reused.
 
 ## Nonchalant voice
 

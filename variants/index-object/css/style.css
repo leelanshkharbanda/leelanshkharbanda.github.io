@@ -48,6 +48,9 @@ body {
 /* Mono is reserved for numeric / data labels and is never below 14px. */
 .mono { font-family: var(--mono); font-size: 0.875rem; line-height: 1.4; }
 .eyebrow-cluster { display: inline-block; white-space: nowrap; }
+.eyebrow-cluster:not(:last-child)::after {
+  content: "\00B7"; display: inline-block; margin-inline: 0.6rem; color: var(--muted);
+}
 
 .skip-link {
   position: absolute; left: 0.75rem; top: -5rem; z-index: 100;
@@ -87,7 +90,7 @@ a { color: inherit; }
   border-bottom: 2px solid transparent;
 }
 .site-nav a:hover, .site-nav a:focus-visible { border-bottom-color: var(--ink); }
-.site-nav a[aria-current="true"] { border-bottom-color: var(--accent); color: var(--accent); }
+.site-nav a[aria-current="location"] { border-bottom-color: var(--accent); color: var(--accent); }
 
 /* Cover — unchanged abstraction */
 .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--rule); padding-block: clamp(3rem, 8vw, 7rem) 0; }
@@ -137,32 +140,18 @@ a { color: inherit; }
 /* Single canonical eight-entry index */
 .shelf-lede { max-width: 46rem; margin: -0.5rem 0 1.5rem; color: var(--muted); }
 
-/* Interaction 1 — scroll-linked decorative playhead. The base rule is the final
-   frame (100%) so reduced-motion and no-support states stay complete, never partial. */
-.index-playhead { position: relative; height: 2px; margin: 0 0 1.5rem; background: var(--rule); } /* visible static baseline track */
-.index-playhead::after {
-  content: ""; position: absolute; inset: 0;
-  background: var(--ink);
-  transform-origin: left center;
-  transform: scaleX(1); /* final frame under reduce / no support */
+/* Scope lens — a real filter. Out-of-scope rows use [hidden]: gone from view, tab order and AT. */
+.scope-lens { margin: 0 0 1.5rem; }
+.scope-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.scope-button {
+  min-height: 44px; min-width: 44px; padding: 0.5rem 0.9rem;
+  border: 2px solid var(--ink); border-bottom-width: 3px;
+  background: var(--paper); color: var(--ink); font-size: 1rem; font-family: inherit; cursor: pointer;
 }
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: scroll()) {
-    .index-playhead::after {
-      animation: index-playhead linear both;
-      animation-timeline: scroll(root block);
-    }
-  }
-}
-@keyframes index-playhead {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
+.scope-button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-bottom-width: 5px; }
+.scope-status { min-block-size: 1.5rem; margin: 0.6rem 0 1rem; color: var(--muted); }
+html.no-js .scope-lens { display: none; }
 
-.index-group { margin: 0 0 2rem; }
-.index-group:last-child { margin-bottom: 0; }
-.index-group-label { margin: 0 0 0.75rem; color: var(--muted); font-weight: 700; letter-spacing: 0.12em; }
-.index-group-note { margin: -0.35rem 0 1rem; color: var(--muted); }
 .index-list { display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; background: var(--rule); border: 1px solid var(--rule); }
 .index-entry { min-width: 0; background: var(--paper); }
 .index-entry:hover, .index-entry:focus-within { background: var(--paper-2); }
@@ -180,7 +169,9 @@ a { color: inherit; }
   font-family: var(--display); font-size: 1.0625rem; line-height: 1.3; font-weight: 600;
   white-space: nowrap;
 }
-.index-flag { justify-self: end; padding: 0.25rem 0.5rem; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; }
+.index-row-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.5rem; justify-self: end; }
+.index-flag { padding: 0.25rem 0.5rem; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; }
+.index-scope-tag { padding: 0.25rem 0.5rem; border: 1px solid var(--ink); color: var(--ink); font-weight: 700; white-space: nowrap; }
 
 /* Project record pages — five blocks in order */
 .project-head {
@@ -289,7 +280,7 @@ a { color: inherit; }
 }
 @media (max-width: 700px) {
   .index-entry__link { grid-template-columns: auto minmax(0, 1fr); }
-  .index-flag { grid-column: 2; justify-self: start; }
+  .index-row-meta { grid-column: 2; justify-self: start; }
   .ledger-row { grid-template-columns: minmax(0, 1fr); }
   /* Council fix: long labels wrap instead of clipping at narrow widths. */
   .index-entry__title-wrap { white-space: normal; overflow: visible; text-overflow: clip; }
@@ -304,8 +295,8 @@ a { color: inherit; }
   section { scroll-margin-top: 8rem; }
   .head-inner { align-items: flex-start; }
   .site-nav { width: 100%; }
-  /* Fixed three-column rhythm: five links wrap 3 + 2, never a lone orphan. */
-  .site-nav ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+  /* Four canonical links share one row at 320+; no orphaned nav item. */
+  .site-nav ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
   .site-nav a { padding-inline: 0.35rem; font-size: 0.9375rem; }
   .hero-numeral, .nf-numeral, .project-numeral { display: none; }
 }
@@ -316,13 +307,17 @@ a { color: inherit; }
 }
 
 @media (forced-colors: active) {
-  .hero-numeral, .nf-numeral, .project-numeral, .index-entry__num { display: none; }
+  .hero-numeral, .nf-numeral, .project-numeral { display: none; }
+  /* F07: keep the numeral grid slot even in forced colors — never display:none. */
+  .index-entry__num { visibility: hidden; }
   .index-entry, .index-list, .index-flag, .about-plaque, .contact-list a, .principle,
   .block-figure svg, .ledger, .text-note, .route-list { border: 1px solid CanvasText; }
-  .index-playhead { border: 1px solid CanvasText; }
-  .index-playhead::after { background: CanvasText; }
   .hero-facts dl > div + div, .section-head, .block-head, .block { border-color: CanvasText; }
   .block-link, .route-list a, .foot-inner a, .button { border: 2px solid CanvasText; }
-  .site-nav a[aria-current="true"] { color: CanvasText; border-bottom-color: Highlight; }
+  .site-nav a[aria-current="location"] { color: CanvasText; border-bottom-color: Highlight; }
+  .eyebrow-cluster:not(:last-child)::after { color: CanvasText; }
+  .scope-button { border: 2px solid CanvasText; color: CanvasText; background: Canvas; }
+  .scope-button[aria-pressed="true"] { border: 4px solid Highlight; color: CanvasText; background: Canvas; }
+  .index-scope-tag { border: 1px solid CanvasText; color: CanvasText; }
   :focus-visible { outline: 3px solid Highlight; }
 }

@@ -76,6 +76,18 @@ rsync -a variants/index-object/ ./
 git add -A && git commit -m "promote: Index Object to root" && git push
 ```
 
+## Production polish (added 2026-11-26)
+
+The two earlier borrowed interactions are gone. The hover letter-spread was bad UX (type distortion with no payoff), and the scroll playhead duplicated the browser scrollbar. Both were rejected by the user and by council.
+
+The shipped interaction is one real scope filter on the project index: All / Deep dives / Archive. It uses native `aria-pressed` buttons, a polite live count, and the `hidden` attribute so out-of-scope records leave the view, tab order and accessibility tree together. Out-of-scope rows are never dimmed. An earlier fixed-height version left dead gaps and was rejected by the fifth-seat arbiter; the list now collapses naturally, with only user-initiated reflow.
+
+Also fixed: duplicate Projects/Index nav targets, forced-colors grid overflow, eyebrow separators leading wrapped lines, internal jargon in visitor copy, stale 404 copy, and external links missing `target="_blank" rel="noopener noreferrer"`. The expansion brief was formally amended so no signed-off interaction remains unimplemented.
+
+Final local council: art director 9.7, visitor 9.45 before publication (blocked only on live URL), frontend 9.7, accessibility 9.6 — all dimensions >=9.0 and zero site findings. Evidence: 33 screenshots in `.scratch/elevation-shots/index-object-polish/`, full edge results in `.scratch/index-object-polish/results.md`, research in `research/index-object-polish-interactions.md`, and the arbiter ruling on Wayfinder #32.
+
+Root v2 remains untouched. The promotion command in the previous section still applies.
+
 ## Editing locally
 
 Open `index.html` directly, or serve the folder with any static server. The site needs no build step. Push to `main` to publish.
