@@ -1,30 +1,28 @@
 export const toolkit = [
   {
     label: 'Languages',
-    items: ['Rust', 'JavaScript', 'Python', 'C++', 'Elixir', 'Java', 'SQL'],
+    items: ['Rust', 'JavaScript', 'TypeScript', 'Python', 'C++', 'Elixir', 'Java', 'SQL'],
   },
   {
-    label: 'Systems & frameworks',
-    items: ['Phoenix', 'Tauri 2', 'React 19', 'SQLx / SQLite', 'ONNX Runtime', 'LanceDB'],
-  },
-  {
-    label: 'Domains & methods',
+    label: 'Frameworks & tools',
     items: [
-      'Signal processing',
-      'Geometric channel modeling',
-      'FFT & constellation analysis',
-      'Hardware-counter experiments',
-      'Memory-system simulation',
-      'Grouped validation',
+      'Phoenix / LiveView',
+      'Tauri 2',
+      'React 19',
+      'SQLx / SQLite',
+      'ONNX Runtime',
+      'LanceDB',
     ],
   },
   {
-    label: 'Practices',
+    label: 'Areas',
     items: [
-      'Source-linked narratives',
-      'Reproducible experiment notes',
-      'Explicit collaboration credit',
-      'Text alternatives for technical visuals',
+      'Signal processing & DSP',
+      'Ray & channel modeling',
+      'FFT & constellations',
+      'CPU performance counters',
+      'Memory-system simulation',
+      'XGBoost & ML systems',
     ],
   },
 ] as const;

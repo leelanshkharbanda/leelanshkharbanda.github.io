@@ -11,71 +11,59 @@ import { site } from '../data/site';
 
 const entries = await Promise.all(homepageProjects.map((slug) => getEntry('projects', slug)));
 const projects = requireProjectEntries(homepageProjects, entries);
+const quickHooks: Record<string, string> = {
+  'chronos-dsp': '2D wireless channel simulator in Elixir and Rust.',
+  'life-os': 'Local desktop app with SQLite, embeddings, and a contextual bandit.',
+  'modulation-studio': 'Browser DSP lab for testing modulation, noise, and constellations.',
+};
 const description =
-  'Projects by Leelansh Kharbanda: signal paths, computer architecture, hardware-counter experiments, and local-first tools.';
+  'Portfolio of Leelansh Kharbanda, ECE undergrad at IIIT Delhi. Signal processing, computer architecture, hardware telemetry, and software.';
 ---
 
 <BaseLayout title={site.name} description={description}>
   <section class="playground-hero page-shell" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="play-kicker">Hello, I’m Leelansh.</p>
+      <p class="play-kicker">B.Tech ECE · IIIT Delhi</p>
       <h1 id="hero-title">
-        <span>I make small systems</span>
-        <span class="hero-highlight">so I can see what they’re doing.</span>
+        <span>Hey, I’m</span>
+        <span class="hero-highlight">Leelansh.</span>
       </h1>
       <p class="hero-intro">
-        I’m an ECE student at IIIT Delhi. I work on signals, computer architecture, and local-first
-        software.
+        I’m an ECE undergrad at IIIT Delhi. I build software around signal processing, computer
+        architecture, ML systems, and desktop apps.
       </p>
       <a class="hero-project-callout" href="/work/chronos-dsp/">
         <span>Latest project</span>
-        <strong>Chronos-DSP: geometry → simulated IQ</strong>
-        <span>Project notes →</span>
+        <strong>Chronos-DSP — 2D wireless channel simulator</strong>
+        <span>Read more →</span>
       </a>
       <div class="hero-actions">
         <a class="button button--primary" data-magnetic href="#selected-work">
-          Selected projects <span aria-hidden="true">↓</span>
+          Projects <span aria-hidden="true">↓</span>
         </a>
         <a class="button button--secondary" data-magnetic href="/about/">
           About me <span aria-hidden="true">→</span>
         </a>
       </div>
-      <nav class="hero-project-strip" aria-label="Featured projects">
-        <span>Projects</span>
-        <a href="/work/chronos-dsp/">
-          01 / Chronos-DSP <span aria-hidden="true">↗</span>
-        </a>
-        <a href="/work/life-os/">
-          02 / Life OS <span aria-hidden="true">↗</span>
-        </a>
-        <a href="/work/modulation-studio/">
-          03 / Modulation Studio <span aria-hidden="true">↗</span>
-        </a>
-      </nav>
     </div>
 
     <div class="hero-toy-wrap">
-      <p class="toy-sticker">a tiny signal sketch</p>
+      <p class="toy-sticker">drag tx or rx</p>
       <SignalToy />
     </div>
   </section>
 
-  <nav class="playground-comparison page-shell" aria-label="Project comparison">
+  <nav class="playground-comparison page-shell" aria-label="Featured projects">
     {projects.map((project) => (
       <a href={`/work/${project.id}/`}>
         <span>{project.data.title.split(':')[0]}</span>
-        <strong>{project.data.summary}</strong>
+        <strong>{quickHooks[project.id] ?? project.data.summary}</strong>
       </a>
     ))}
   </nav>
 
   <section id="selected-work" class="work-section page-shell" aria-labelledby="work-title">
-    <SectionHeading
-      id="PLAY / 01"
-      headingId="work-title"
-      title="Projects"
-      intro="Recent work. Notes and source are linked."
-    />
+    <SectionHeading id="01" headingId="work-title" title="Projects" intro="A few recent builds." />
     <div class="project-grid">
       {projects.map((project, index) => (
         <ProjectCard
@@ -95,18 +83,19 @@ const description =
 
   <section class="about-preview" aria-labelledby="about-preview-title">
     <div class="page-shell about-preview__inner">
-      <SectionHeading id="PLAY / 02" headingId="about-preview-title" title="About me" />
+      <SectionHeading id="02" headingId="about-preview-title" title="About" />
       <div class="about-preview__body">
         <div>
           <p>
-            I’m an ECE undergraduate at IIIT Delhi. I work on signal processing, computer
-            architecture, hardware-counter telemetry, and local-first software.
+            I’m studying ECE at IIIT Delhi (batch of 2028). Outside classes, I mostly build DSP
+            tools, low-level architecture simulators, and desktop apps, and help run Tasveer, our
+            campus media society.
           </p>
           <a class="arrow-link" href="/about/">
             More about me <span aria-hidden="true">→</span>
           </a>
         </div>
-        <ul class="theme-list" aria-label="Recurring project themes">
+        <ul class="theme-list" aria-label="Areas of interest">
           {site.themes.map((theme, index) => (
             <li>
               <span class="datum-label">0{index + 1}</span>
@@ -119,7 +108,7 @@ const description =
   </section>
 
   <section id="contact" class="contact-section page-shell" aria-labelledby="contact-title">
-    <SectionHeading id="PLAY / 03" headingId="contact-title" title="Say hello." />
+    <SectionHeading id="03" headingId="contact-title" title="Contact" />
     <ContactBlock />
   </section>
 </BaseLayout>

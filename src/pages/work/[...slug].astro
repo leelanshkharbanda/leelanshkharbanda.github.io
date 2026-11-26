@@ -6,7 +6,7 @@ import TraceInspector from '../../components/react/TraceInspector.tsx';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { archiveProjects, featuredProjects } from '../../data/curation';
 import { SIGNAL_STAGES, formatSignalMetric } from '../../lib/signal-model';
-import { evidenceLabels, roleLabels, statusLabels } from '../../data/site';
+import { roleLabels, statusLabels } from '../../data/site';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => !data.draft);
@@ -45,33 +45,25 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
         ← Back to work
       </a>
       <p class="eyebrow">
-        Project record {projectDatum} · {statusLabels[data.status]}
+        {projectDatum} · {statusLabels[data.status]}
       </p>
       <h1>{data.title}</h1>
-      <p class="case-hero__question">{data.question}</p>
       <p class="case-hero__summary">{data.summary}</p>
 
       <dl class="case-facts">
         <div>
-          <dt>Role</dt>
+          <dt>Team</dt>
           <dd>{credit}</dd>
         </div>
         <div>
-          <dt>Evidence class</dt>
-          <dd>{evidenceLabels[data.evidenceClass]}</dd>
-        </div>
-        <div>
-          <dt>Checked</dt>
-          <dd>{data.checkedOn}</dd>
+          <dt>Status</dt>
+          <dd>{statusLabels[data.status]}</dd>
         </div>
         <div>
           <dt>Stack</dt>
           <dd>{data.stack.join(' · ')}</dd>
         </div>
       </dl>
-
-      {data.statusNote && <p class="case-status-note">{data.statusNote}</p>}
-      {data.creditNote && <p class="case-status-note">{data.creditNote}</p>}
 
       <div class="case-links">
         {data.links.map((link) => (
@@ -94,45 +86,29 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
           diagram={data.diagram}
           alt={data.diagramAlt}
           caption={data.diagramCaption}
-          evidenceIds={evidenceIds}
         />
       )}
 
       {project.id === 'chronos-dsp' && (
         <section class="trace-section" aria-labelledby="trace-title">
           <div class="trace-section__heading">
-            <p class="datum-label">INTERACTIVE SKETCH</p>
-            <h2 id="trace-title">Signal path sketch</h2>
+            <p class="datum-label">INTERACTIVE</p>
+            <h2 id="trace-title">Signal path</h2>
             <p>
-              Four stages of an illustrative signal path. The controls change the view, not a live
-              Chronos-DSP session.
+              Step through the four stages to see how the QPSK constellation shifts from source to
+              output.
             </p>
           </div>
-          <TraceInspector client:visible />
-          <ol class="trace-summary">
-            <li>
-              <strong>Source:</strong> a deterministic QPSK symbol stream.
-            </li>
-            <li>
-              <strong>Channel:</strong> illustrative multipath delay, attenuation, and noise.
-            </li>
-            <li>
-              <strong>Receiver:</strong> hard QPSK symbol decisions from simulated IQ; the portfolio
-              fixture’s phase correction is illustrative, not a Chronos synchronizer.
-            </li>
-            <li>
-              <strong>Output:</strong> constellation and bit-error observations.
-            </li>
-          </ol>
+          <TraceInspector client:idle />
           <details class="trace-static-details">
-            <summary>Static stage ledger</summary>
-            <div class="table-scroll" tabindex="0" aria-label="Static signal-stage ledger">
+            <summary>Stage table</summary>
+            <div class="table-scroll" tabindex="0" aria-label="Signal stage table">
               <table>
                 <thead>
                   <tr>
                     <th scope="col">Stage</th>
                     <th scope="col">What changes</th>
-                    <th scope="col">Illustrative metrics</th>
+                    <th scope="col">Numbers</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,7 +118,7 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
                         {stage.datum} · {stage.label}
                       </th>
                       <td data-label="What changes">{stage.change}</td>
-                      <td data-label="Illustrative metrics">
+                      <td data-label="Numbers">
                         {stage.metrics.map((metric) => (
                           <span class="trace-static-metric">
                             {metric.label}: {formatSignalMetric(metric)}
@@ -156,27 +132,23 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
               </table>
             </div>
           </details>
-          <p class="trace-disclaimer">
-            Illustrative simulation · geometric channel concept · not hardware-measured.
-          </p>
         </section>
       )}
 
       {data.results.length > 0 && (
         <section class="evidence-ledger" aria-labelledby="ledger-title">
           <div class="evidence-ledger__heading">
-            <p class="datum-label">RESULTS</p>
-            <h2 id="ledger-title">Results and sources</h2>
+            <p class="datum-label">HIGHLIGHTS</p>
+            <h2 id="ledger-title">Results &amp; links</h2>
           </div>
           <section class="table-scroll" tabindex="0" aria-label="Project results">
             <table>
               <thead>
                 <tr>
+                  <th scope="col">Item</th>
                   <th scope="col">Result</th>
-                  <th scope="col">Value</th>
-                  <th scope="col">Evidence class</th>
-                  <th scope="col">Method</th>
-                  <th scope="col">Source</th>
+                  <th scope="col">Notes</th>
+                  <th scope="col">Link</th>
                 </tr>
               </thead>
               <tbody>
@@ -186,12 +158,11 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
                       <span class="evidence-id">{evidenceIds[index]}</span>
                       {result.claim}
                     </th>
-                    <td data-label="Value">{result.value}</td>
-                    <td data-label="Evidence class">{evidenceLabels[result.evidenceClass]}</td>
-                    <td data-label="Method">{result.method}</td>
-                    <td data-label="Source">
+                    <td data-label="Result">{result.value}</td>
+                    <td data-label="Notes">{result.method}</td>
+                    <td data-label="Link">
                       <a href={result.source} target="_blank" rel="noreferrer noopener">
-                        {evidenceIds[index]} · Open source <span aria-hidden="true">↗</span>
+                        {evidenceIds[index]} · Source <span aria-hidden="true">↗</span>
                       </a>
                     </td>
                   </tr>
@@ -205,19 +176,6 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
       <div class="prose">
         <Content />
       </div>
-
-      <section class="case-limits" aria-labelledby="limits-title">
-        <p class="datum-label">LIMITS</p>
-        <h2 id="limits-title">Limits</h2>
-        <ul>
-          {data.limits.map((limit) => (
-            <li>{limit}</li>
-          ))}
-        </ul>
-        <p class="case-next">
-          <strong>Next:</strong> {data.nextStep}
-        </p>
-      </section>
     </div>
 
     {nextProject && (

@@ -12,8 +12,7 @@ describe('public site facts', () => {
     expect(site.linkedin).toBe('https://linkedin.com/in/leelansh-kharbanda');
   });
 
-  it('keeps positioning specific to the verified domains', () => {
-    expect(site.positioning).toContain('small systems');
+  it('keeps themes specific to the verified domains', () => {
     expect(site.themes).toEqual([
       'Signal processing',
       'Computer architecture',

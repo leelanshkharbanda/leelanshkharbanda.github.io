@@ -11,22 +11,21 @@ import { toolkit } from '../data/toolkit';
 const entries = await Promise.all(homepageProjects.map((slug) => getEntry('projects', slug)));
 const threads = requireProjectEntries(homepageProjects, entries);
 const threadNotes: Record<string, string> = {
-  'chronos-dsp': 'geometry → simulated IQ',
-  'life-os': 'local records → recommendations',
-  'modulation-studio': 'source → impairment → recovery',
+  'chronos-dsp': 'Elixir + Rust channel sim',
+  'life-os': 'Tauri + SQLite + ONNX',
+  'modulation-studio': 'Browser DSP & constellations',
 };
-const description =
-  'About Leelansh Kharbanda: ECE undergraduate at IIIT Delhi working across signal processing, computer architecture, hardware telemetry, and local-first software.';
+const description = 'About Leelansh Kharbanda, B.Tech ECE undergrad at IIIT Delhi.';
 ---
 
 <BaseLayout title="About" description={description}>
   <section class="about-hero page-shell" aria-labelledby="page-title">
     <div>
       <p class="play-kicker">{site.education}</p>
-      <h1 id="page-title">I like taking the lids off.</h1>
+      <h1 id="page-title">About me.</h1>
       <p class="about-hero__intro">
-        My projects sit between software and hardware: signals, memory, instructions, and telemetry.
-        I like seeing how they behave.
+        ECE undergrad at IIIT Delhi. I spend most of my time building software around signal
+        processing, computer architecture, and systems.
       </p>
     </div>
     <div class="curiosity-map" aria-hidden="true">
@@ -45,13 +44,13 @@ const description =
           stroke-dasharray="8 7"
         />
         <path
-          d="M 88 117 C 159 254, 267 253, 332 250 S 406 224, 449 172"
+          d="M 105 145 C 165 248, 267 253, 332 250 S 406 224, 449 172"
           fill="none"
           stroke="#1d1e19"
           stroke-width="2"
         />
         <path
-          d="M 280 101 C 235 169, 184 212, 88 117"
+          d="M 268 140 C 232 184, 184 205, 118 134"
           fill="none"
           stroke="#c84627"
           stroke-width="3"
@@ -59,7 +58,7 @@ const description =
         <circle cx="85" cy="114" r="38" fill="#dfff68" stroke="#1d1e19" stroke-width="3" />
         <circle cx="285" cy="100" r="45" fill="#ffdc63" stroke="#1d1e19" stroke-width="3" />
         <circle cx="449" cy="172" r="34" fill="#ff8567" stroke="#1d1e19" stroke-width="3" />
-        <circle cx="88" cy="117" r="13" fill="#6072f5" stroke="#1d1e19" stroke-width="3" />
+        <circle cx="182" cy="212" r="13" fill="#6072f5" stroke="#1d1e19" stroke-width="3" />
         <circle cx="332" cy="250" r="24" fill="#f6f2e7" stroke="#1d1e19" stroke-width="3" />
         <path
           d="M 70 83 l 10 -18 M 98 68 l 7 -20 M 458 220 l 18 8"
@@ -68,51 +67,44 @@ const description =
           stroke-linecap="round"
         />
         <text x="85" y="120" text-anchor="middle" class="curiosity-map__text">
-          ASK
+          BUILD
         </text>
         <text x="285" y="106" text-anchor="middle" class="curiosity-map__text">
-          TRACE
+          TEST
         </text>
         <text x="449" y="178" text-anchor="middle" class="curiosity-map__text">
-          SHOW
+          SHIP
         </text>
       </svg>
-      <span class="curiosity-map__note">what changed?</span>
     </div>
   </section>
 
   <section class="about-story page-shell" aria-labelledby="story-title">
-    <SectionHeading id="FIELD NOTES" headingId="story-title" title="A bit about me" />
+    <SectionHeading id="01" headingId="story-title" title="Background" />
     <div class="about-story__grid">
       <div class="prose">
         <p>
-          I’m an ECE undergraduate at IIIT Delhi. Most projects here are simulations, prototypes, or
-          team work.
+          I’m studying Electronics and Communication Engineering at IIIT Delhi (2024–present). Most
+          of my projects sit somewhere between hardware concepts and software—wireless channel
+          simulators, CPU performance counter experiments, memory hierarchy models, and desktop
+          apps.
         </p>
-        <p>
-          I work on signals, computer architecture, hardware-counter telemetry, and local-first
-          software. The notes say what I built, what was simulated, and what’s still uncertain.
-        </p>
+        <p>Right now I’m writing a lot of Rust, Python, TypeScript, and Elixir.</p>
       </div>
-      <aside class="about-principles" aria-label="Working principles">
-        <p class="datum-label">HOW I WORK</p>
+      <aside class="about-principles" aria-label="Current interests">
+        <p class="datum-label">INTO RIGHT NOW</p>
         <ol>
-          <li>State the assumptions.</li>
-          <li>Show what changes.</li>
-          <li>Keep source and limits nearby.</li>
-          <li>Credit individual, team, and upstream work.</li>
+          <li>Wireless &amp; DSP simulations</li>
+          <li>Computer architecture &amp; PMUs</li>
+          <li>Rust, Elixir &amp; local desktop apps</li>
+          <li>Campus media &amp; events at Tasveer</li>
         </ol>
       </aside>
     </div>
   </section>
 
   <section class="about-threads page-shell" aria-labelledby="threads-title">
-    <SectionHeading
-      id="FOLLOW A THREAD"
-      headingId="threads-title"
-      title="A few projects"
-      intro="Signals, states, and local-first software."
-    />
+    <SectionHeading id="02" headingId="threads-title" title="Featured projects" />
     <div class="about-thread-grid">
       {threads.map((project) => {
         const data = project.data;
@@ -139,12 +131,7 @@ const description =
 
   <section class="toolkit-section" aria-labelledby="toolkit-title">
     <div class="page-shell">
-      <SectionHeading
-        id="BOX OF BITS"
-        headingId="toolkit-title"
-        title="Tools I reach for."
-        intro="Grouped by where they show up in projects."
-      />
+      <SectionHeading id="03" headingId="toolkit-title" title="Stack" />
       <div class="toolkit-grid">
         {toolkit.map((group) => (
           <div class="toolkit-group">
@@ -161,21 +148,15 @@ const description =
   </section>
 
   <section class="leadership-section page-shell" aria-labelledby="leadership-title">
-    <SectionHeading
-      id="OFF THE BENCH"
-      headingId="leadership-title"
-      title="People and stories"
-      intro="I also coordinate Tasveer, IIIT Delhi’s media society."
-    />
+    <SectionHeading id="04" headingId="leadership-title" title="Tasveer" />
     <div class="leadership-card">
       <div>
-        <p class="eyebrow">Tasveer · IIIT Delhi</p>
-        <h3>Coordinating a campus media archive</h3>
+        <p class="eyebrow">Media Society · IIIT Delhi</p>
+        <h3>Event lead &amp; coordinator</h3>
       </div>
       <p>
-        I coordinate Tasveer, IIIT Delhi's media society. The team's editorial site brings together
-        photo essays, event coverage, and the people behind the work. It is shared creative and web
-        work; this portfolio links to the live site without republishing society photography.
+        Outside coding, I help run Tasveer, IIIT Delhi’s media society—mostly handling event
+        coordination and keeping our photo-essay website up to date.
       </p>
       <a
         class="arrow-link"
@@ -190,7 +171,7 @@ const description =
   </section>
 
   <section id="contact" class="contact-section page-shell" aria-labelledby="contact-title">
-    <SectionHeading id="SAY HELLO" headingId="contact-title" title="Say hello." />
+    <SectionHeading id="05" headingId="contact-title" title="Contact" />
     <ContactBlock />
   </section>
 </BaseLayout>

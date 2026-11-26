@@ -66,18 +66,14 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
     >
       <header className="trace-inspector__header">
         <div>
-          <p className="trace-inspector__eyebrow">Chronos-DSP / signal sketch</p>
+          <p className="trace-inspector__eyebrow">Chronos-DSP</p>
           <h2 className="trace-inspector__heading" id={headingId}>
-            Trace sketch
+            Signal stages
           </h2>
-          <p className="trace-inspector__introduction">
-            One fixed, illustrative signal fixture from source geometry to simulated output.
-          </p>
+          <p className="trace-inspector__introduction">{FIXTURE_NOTICE}</p>
         </div>
         <p className="trace-inspector__evidence-label">{SIMULATION_LABEL}</p>
       </header>
-
-      <p className="trace-inspector__notice">{FIXTURE_NOTICE}</p>
 
       <div
         className="trace-inspector__controls"
@@ -116,7 +112,7 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
 
       {!isHydrated && (
         <p className="trace-inspector__loading">
-          Static source stage shown. Stage controls become available when the island loads.
+          Showing the first stage statically until controls load.
         </p>
       )}
 
@@ -178,11 +174,11 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
           </dl>
 
           <p className="trace-inspector__source-note">
-            Mechanism source:{' '}
+            Code:{' '}
             <a className="trace-inspector__source-link" href={CHRONOS_SOURCE_URL}>
-              Chronos-DSP repository
+              Chronos-DSP on GitHub
             </a>
-            . This fixture explains stage relationships; it does not reproduce repository output.
+            .
           </p>
         </div>
 
@@ -309,13 +305,7 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
             </text>
           </svg>
           <figcaption className="trace-inspector__figure-caption">
-            <span>
-              The active row, datum, metric ledger, and constellation update together. Values change
-              immediately; no trace animation or autoplay is used.
-            </span>
-            <span className="visual-scroll-cue" aria-hidden="true">
-              Scroll →
-            </span>
+            <span>Active stage, numbers, and constellation update together.</span>
           </figcaption>
         </figure>
       </div>

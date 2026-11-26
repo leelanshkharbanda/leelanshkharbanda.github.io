@@ -3,19 +3,12 @@ import AxeBuilder from '@axe-core/playwright';
 
 test('playground opens with a personal project hook', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('I make small systems');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Leelansh');
   await expect(page.getByRole('link', { name: /Latest project/ })).toHaveAttribute(
     'href',
     '/work/chronos-dsp/',
   );
   await expect(page.locator('.playground-comparison a')).toHaveCount(3);
-});
-
-test('project experiments reveal project-specific insight', async ({ page }) => {
-  await page.goto('/');
-  const experiment = page.locator('#project-chronos-dsp .project-card__experiment');
-  await experiment.locator('summary').click();
-  await expect(experiment).toContainText('direct and reflected paths');
 });
 
 test('signal toy supports keyboard movement and reversible motion', async ({ page }) => {
@@ -73,39 +66,15 @@ test('touch drag keeps the toy, range, and reset in sync', async ({ browser, bro
   await context.close();
 });
 
-test('visual scrollers stay keyboard accessible at 320px and 200% text', async ({ page }) => {
+test('diagrams remain accessible and clean at 320px and 200% text', async ({ page }) => {
   const largeText = 'html { font-size: 200% !important; }';
-  await page.setViewportSize({ width: 320, height: 720 });
-  await page.goto('/');
-  await page.addStyleTag({ content: largeText });
-  const preview = page.locator('.project-visual__root').first();
-  await expect(preview).toHaveAttribute('tabindex', '0');
-  expect(await preview.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
-  await preview.focus();
-  await page.keyboard.press('ArrowRight');
-  await expect(preview).toBeFocused();
-  expect(await preview.evaluate((element) => getComputedStyle(element).outlineWidth)).toBe('3px');
-  expect(await preview.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
-  await page.keyboard.press('ArrowLeft');
-  expect(await preview.evaluate((element) => element.scrollLeft)).toBe(0);
-
-  await page.goto('/work/chronos-dsp/');
-  await page.addStyleTag({ content: largeText });
-  const trace = page.locator('.trace-inspector__figure');
-  await expect(trace).toHaveAttribute('tabindex', '0');
-  await expect(trace).toHaveAttribute('aria-label', 'Interactive signal path and constellation');
-  expect(await trace.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
-  await trace.focus();
-  await page.keyboard.press('ArrowRight');
-  await expect(trace).toBeFocused();
-  expect(await trace.evaluate((element) => getComputedStyle(element).outlineWidth)).toBe('3px');
-  expect(await trace.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
-  await page.keyboard.press('ArrowLeft');
-  expect(await trace.evaluate((element) => element.scrollLeft)).toBe(0);
-
   for (const route of ['/', '/work/', '/work/chronos-dsp/']) {
+    await page.setViewportSize({ width: 320, height: 720 });
     await page.goto(route);
     await page.addStyleTag({ content: largeText });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      320,
+    );
     const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter((violation) =>
       ['serious', 'critical'].includes(violation.impact ?? ''),

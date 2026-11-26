@@ -1,6 +1,5 @@
 ---
 import {
-  SIMULATION_LABEL,
   generateConstellationPoints,
   projectConstellationPoint,
   type ConstellationPoint,
@@ -21,11 +20,10 @@ interface Props {
   diagram: ProjectDiagram;
   alt: string;
   caption: string;
-  evidenceIds?: string[];
   preview?: boolean;
 }
 
-const { id, diagram, alt, caption, evidenceIds = [], preview = false } = Astro.props;
+const { id, diagram, alt, caption, preview = false } = Astro.props;
 const safeId =
   id
     .trim()
@@ -89,8 +87,6 @@ const constellationPlots: {
     points: generateConstellationPoints('receiver', { count: 32 }),
   },
 ];
-
-const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation';
 ---
 
 {diagram !== 'none' && (
@@ -164,11 +160,11 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             ILLUSTRATIVE / SEEDED
           </text>
 
-          <circle class="project-visual__node-fill" cx="92" cy="122" r="15" />
-          <text class="project-visual__node-label" x="92" y="127" text-anchor="middle">
+          <circle class="project-visual__node-fill" cx="92" cy="126" r="15" />
+          <text class="project-visual__node-label" x="92" y="131" text-anchor="middle">
             TX
           </text>
-          <text class="project-visual__micro" x="92" y="158" text-anchor="end">
+          <text class="project-visual__micro" x="92" y="96" text-anchor="middle">
             SOURCE
           </text>
 
@@ -182,26 +178,26 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
           <path
             class="project-visual__path"
-            d="M 107 116 L 294 116"
+            d="M 107 120 L 294 120"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path project-visual__path--dashed"
-            d="M 107 122 L 196 78 L 352 88 L 294 122"
+            d="M 107 126 L 196 78 L 352 88 L 294 126"
             marker-end={`url(#${traceArrowId})`}
           />
           <path
             class="project-visual__path project-visual__path--dotted"
-            d="M 107 128 L 246 166 L 352 150 L 294 128"
+            d="M 107 132 L 246 164 L 352 150 L 294 132"
             marker-end={`url(#${traceArrowId})`}
           />
 
-          <circle class="project-visual__node-fill" cx="310" cy="122" r="15" />
-          <text class="project-visual__node-label" x="310" y="127" text-anchor="middle">
+          <circle class="project-visual__node-fill" cx="310" cy="126" r="15" />
+          <text class="project-visual__node-label" x="310" y="131" text-anchor="middle">
             RX
           </text>
-          <text class="project-visual__micro" x="310" y="158" text-anchor="end">
-            RECEIVER POSITION
+          <text class="project-visual__micro" x="310" y="96" text-anchor="middle">
+            RECEIVER
           </text>
 
           <path class="project-visual__rule" d="M 430 76 L 430 164" />
@@ -297,7 +293,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             points="720,402 736,402 744,388 752,416 760,374 768,426 776,390 784,414 792,402 812,402 828,402 836,390 844,414 852,378 860,422 868,394 876,410 884,402 904,402"
           />
           <text class="project-visual__micro" x="40" y="408">
-            MODEL BOUNDARY / NOT A RADIO CAPTURE
+            BASEBAND SIMULATION
           </text>
         </g>
       )}
@@ -472,7 +468,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             (optional)
           </text>
           <text class="project-visual__micro" x="754" y="344">
-            NOT FULLY OFFLINE
+            OPTIONAL NETWORK
           </text>
           <path
             class="project-visual__connector project-visual__connector--dashed"
@@ -536,7 +532,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             marker-end={`url(#${arrowId})`}
           />
           <text class="project-visual__micro" x="40" y="352">
-            CONCEPTUAL SIGNAL VIEWS / NOT CHRONOS-DSP RECORDED OUTPUT
+            QPSK CONSTELLATION PIPELINE
           </text>
         </g>
       )}
@@ -769,7 +765,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
             RV32I SUBSET / FUNCTIONAL TRACE
           </text>
           <text class="project-visual__micro" x="920" y="44" text-anchor="end">
-            NOT CYCLE-ACCURATE
+            FUNCTIONAL EXECUTION
           </text>
 
           <rect class="project-visual__panel" x="40" y="72" width="230" height="304" rx="2" />
@@ -889,14 +885,6 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
 
     <figcaption class="project-visual__caption">
       <span class="project-visual__caption-text">{caption}</span>
-      {!preview && <span class="project-visual__rights">Original portfolio schematic</span>}
-      {evidenceIds.length > 0 && (
-        <span class="project-visual__evidence">Results: {evidenceIds.join(' · ')}</span>
-      )}
-      {isSignalDiagram && <span class="project-visual__evidence">{SIMULATION_LABEL}</span>}
-      <span class="visual-scroll-cue" aria-hidden="true">
-        Scroll →
-      </span>
     </figcaption>
   </figure>
 )}

@@ -11,9 +11,9 @@ const diagramProjects = [
 
 const diagramLinks: Record<string, [number, number, number, number][]> = {
   'chronos-dsp': [
-    [107, 116, 294, 116],
-    [107, 122, 294, 122],
-    [107, 128, 294, 128],
+    [107, 120, 294, 120],
+    [107, 126, 294, 126],
+    [107, 132, 294, 132],
     [430, 102, 518, 102],
     [126, 180, 126, 268],
     [346, 180, 346, 268],
@@ -197,7 +197,7 @@ test('trace inspector connectors terminate at the next stage', async ({ page }) 
   }
 });
 
-test('project diagrams keep intrinsic readable width in narrow containers', async ({ page }) => {
+test('project diagrams fit inside their containers without horizontal cutoff', async ({ page }) => {
   for (const route of ['/', '/work/', ...diagramProjects.map((slug) => `/work/${slug}/`)]) {
     await page.goto(route);
     for (const width of [320, 390, 768, 1024, 1100, 1101, 1440]) {
@@ -206,6 +206,7 @@ test('project diagrams keep intrinsic readable width in narrow containers', asyn
         figures.map((figure) => {
           const svg = figure.querySelector('svg')!;
           return {
+            boxWidth: figure.getBoundingClientRect().width,
             clientWidth: figure.clientWidth,
             scrollWidth: figure.scrollWidth,
             svgWidth: svg.getBoundingClientRect().width,
@@ -213,15 +214,18 @@ test('project diagrams keep intrinsic readable width in narrow containers', asyn
         }),
       );
       for (const diagram of dimensions) {
-        if (diagram.clientWidth >= 960) continue;
-        expect(diagram.svgWidth, `${route} at ${width}px`).toBeGreaterThanOrEqual(960);
-        expect(diagram.scrollWidth, `${route} at ${width}px`).toBeGreaterThanOrEqual(960);
+        expect(diagram.svgWidth, `${route} at ${width}px`).toBeLessThanOrEqual(
+          diagram.boxWidth + 0.5,
+        );
+        expect(diagram.scrollWidth, `${route} at ${width}px`).toBeLessThanOrEqual(
+          diagram.clientWidth + 1,
+        );
       }
     }
   }
 });
 
-test('trace inspector keeps intrinsic readable width at every breakpoint', async ({ page }) => {
+test('trace inspector fits inside its container at every breakpoint', async ({ page }) => {
   await page.goto('/work/chronos-dsp/');
   for (const width of [320, 390, 641, 768, 1024, 1101, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -233,9 +237,8 @@ test('trace inspector keeps intrinsic readable width at every breakpoint', async
         svgWidth: svg.getBoundingClientRect().width,
       };
     });
-    if (dimensions.clientWidth >= 720) continue;
-    expect(dimensions.svgWidth, `${width}px`).toBeGreaterThanOrEqual(720);
-    expect(dimensions.scrollWidth, `${width}px`).toBeGreaterThanOrEqual(720);
+    expect(dimensions.svgWidth, `${width}px`).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+    expect(dimensions.scrollWidth, `${width}px`).toBeLessThanOrEqual(dimensions.clientWidth + 1);
   }
 });
 
@@ -305,23 +308,21 @@ test('shared formatting regressions stay fixed', async ({ page }) => {
     'border-bottom-color',
     'rgb(255, 133, 103)',
   );
-  await expect(page.locator('.trace-inspector__figure .visual-scroll-cue')).toBeVisible();
-  await expect(page.locator('.trace-inspector__figure')).toHaveAttribute(
-    'aria-describedby',
-    /scroll-description$/,
-  );
-
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
-  await expect(page.locator('.visual-scroll-cue').first()).toBeVisible();
-  await expect(page.locator('.project-visual__caption').first()).toContainText('Scroll');
-  await expect(page.locator('.project-visual__root').first()).toHaveAttribute(
-    'aria-describedby',
-    /scroll-description$/,
-  );
 
   await page.goto('/resume/');
   await expect(page.locator('.resume-toolkit p').first()).toHaveCSS('font-size', '15.2px');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/');
+  const cardOrder = await page.locator('.project-list .project-card').evaluateAll((cards) =>
+    cards.map((card) => {
+      const heading = card.querySelector('h3');
+      const stage = card.querySelector('.project-card__stage');
+      if (!heading || !stage) return true;
+      return heading.getBoundingClientRect().top < stage.getBoundingClientRect().top;
+    }),
+  );
+  expect(cardOrder).toEqual([true, true, true, true, true]);
 
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto('/missing-record/');
@@ -420,18 +421,17 @@ test('signal toy remains positioned without JavaScript and readable on mobile', 
   await expect(page.locator('.signal-toy__handle-label').first()).toHaveCSS('font-size', '16px');
   await expect(page.locator('[data-toy-direct]')).toHaveText('267 units');
   await expect(page.locator('[data-toy-echo]')).toHaveText('365 units');
-  await expect(page.locator('.toy-sticker')).toHaveText('a tiny signal sketch');
+  await expect(page.locator('.toy-sticker')).toHaveText('drag tx or rx');
   await expect(page.locator('.signal-toy__handle-label').first()).toHaveText('TX / SOURCE');
 
   await page.goto('/work/life-os/');
   await expect(page.locator('.project-visual__transcript')).toBeVisible();
-  await expect(page.locator('.visual-scroll-cue')).toBeVisible();
   const dimensions = await page.locator('.project-visual__root').evaluate((figure) => ({
     clientWidth: figure.clientWidth,
     scrollWidth: figure.scrollWidth,
     svgWidth: figure.querySelector('svg')!.getBoundingClientRect().width,
   }));
-  expect(dimensions.svgWidth).toBeGreaterThanOrEqual(960);
-  expect(dimensions.scrollWidth).toBeGreaterThanOrEqual(960);
+  expect(dimensions.svgWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
   await context.close();
 });

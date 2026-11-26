@@ -41,7 +41,7 @@ test('dither field renders and responds without covering project content', async
   expect(errors).toEqual([]);
 });
 
-test('dither lens stays pointer-aligned while a diagram scrolls', async ({ page }) => {
+test('dither lens tracks pointer coordinates on project visuals', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
   await page.addStyleTag({
@@ -52,7 +52,6 @@ test('dither lens stays pointer-aligned while a diagram scrolls', async ({ page 
   await visual.scrollIntoViewIfNeeded();
   const bounds = await visual.boundingBox();
   expect(bounds).not.toBeNull();
-  expect(await visual.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
   await page.mouse.move(bounds!.x + 120, bounds!.y + 100);
   await expect
     .poll(async () =>
@@ -61,19 +60,17 @@ test('dither lens stays pointer-aligned while a diagram scrolls', async ({ page 
       ),
     )
     .toBeGreaterThan(0);
-  const initialLensX = Number.parseFloat(
+  const firstLensX = Number.parseFloat(
     await visual.evaluate((element) => element.style.getPropertyValue('--dither-lens-x')),
   );
 
-  await visual.evaluate((element) => {
-    element.scrollLeft = 160;
-  });
+  await page.mouse.move(bounds!.x + 220, bounds!.y + 100);
   await expect
     .poll(async () => {
       const lensX = Number.parseFloat(
         await visual.evaluate((element) => element.style.getPropertyValue('--dither-lens-x')),
       );
-      return Math.abs(lensX - initialLensX - 160) < 1;
+      return Math.abs(lensX - firstLensX - 100) < 2;
     })
     .toBe(true);
 });

@@ -661,19 +661,15 @@ address {
   container-type: inline-size;
   min-width: 0;
   margin: 0;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
+  overflow: hidden;
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
-  scrollbar-color: var(--dark-secondary) var(--ink);
-  scrollbar-width: thin;
 }
 
 .project-visual__root svg {
   display: block;
   width: 100%;
-  min-width: 960px;
   height: auto;
 }
 
@@ -984,8 +980,16 @@ address {
   border-top: 4px solid var(--signal);
 }
 
+.contact-block__main {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .contact-block__email {
-  display: inline-block;
+  display: block;
+  max-width: 100%;
   overflow-wrap: anywhere;
   font-family: var(--display);
   font-size: clamp(1.65rem, 4vw, 3.5rem);
@@ -1232,7 +1236,7 @@ address {
 
 .toolkit-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   border: 1px solid var(--rule);
   background: var(--rule);
@@ -1305,7 +1309,7 @@ address {
 
 .case-facts {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   margin: 2.5rem 0 0;
   border: 1px solid var(--rule);
@@ -1399,12 +1403,6 @@ address {
   max-width: 60ch;
   margin: 0;
   color: var(--dark-secondary);
-}
-
-.trace-inspector__root {
-  min-width: 0;
-  border: 1px solid var(--dark-secondary);
-  background: color-mix(in srgb, var(--ink) 92%, white);
 }
 
 .trace-inspector__root {
@@ -1654,17 +1652,13 @@ address {
   container-type: inline-size;
   min-width: 0;
   margin: 0;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
+  overflow: hidden;
   padding: 1rem;
-  scrollbar-color: var(--dark-secondary) var(--ink);
-  scrollbar-width: thin;
 }
 
 .trace-inspector__svg {
   display: block;
   width: 100%;
-  min-width: 720px;
   height: auto;
 }
 
@@ -1859,6 +1853,12 @@ tbody tr:last-child td {
   border-bottom: 0;
 }
 
+@media (min-width: 641px) {
+  .evidence-ledger td:last-child a {
+    white-space: nowrap;
+  }
+}
+
 .case-limits {
   max-width: 72ch;
   padding: 1.5rem;
@@ -1968,6 +1968,7 @@ tbody tr:last-child td {
 }
 
 .resume-section h2 {
+  max-width: none;
   margin-bottom: 1rem;
   font-family: var(--mono);
   font-size: 0.78rem;

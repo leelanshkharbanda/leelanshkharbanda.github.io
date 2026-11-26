@@ -34,7 +34,7 @@ describe('illustrative signal model', () => {
       'output',
     ]);
     expect(SIGNAL_STAGES.map((stage) => stage.index)).toEqual([0, 1, 2, 3]);
-    expect(SIMULATION_LABEL).toBe('Illustrative simulation · not hardware-measured');
+    expect(SIMULATION_LABEL).toBe('Interactive simulation');
   });
 
   it('generates deterministic values from the same seed and stage', () => {

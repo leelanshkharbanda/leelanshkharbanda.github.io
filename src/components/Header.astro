@@ -5,9 +5,9 @@ const path = Astro.url.pathname;
 const isWork = path.startsWith('/work');
 const links = [
   { href: '/work/', label: 'Projects', current: isWork },
-  { href: '/about/', label: 'About me', current: path === '/about/' },
+  { href: '/about/', label: 'About', current: path === '/about/' },
   { href: '/resume/', label: 'Résumé', current: path === '/resume/' },
-  { href: '/#contact', label: 'Say hello', current: false },
+  { href: '/#contact', label: 'Say hi', current: false },
 ];
 ---
 

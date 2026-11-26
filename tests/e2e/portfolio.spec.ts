@@ -26,7 +26,7 @@ const routes = [
 test('home orients the visitor and shows exactly three selected projects', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Leelansh Kharbanda/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('I make small systems');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Leelansh');
   await expect(page.locator('#selected-work .project-card')).toHaveCount(3);
   await expect(page.getByRole('link', { name: 'Résumé', exact: true }).first()).toBeVisible();
   await expect(page.locator('a[href^="mailto:leelansh24319@iiitd.ac.in"]').first()).toBeVisible();
@@ -41,11 +41,10 @@ test('work index preserves the five plus three curation model', async ({ page })
 });
 
 for (const slug of projectSlugs) {
-  test(`${slug} has a direct, evidence-bearing case study route`, async ({ page }) => {
+  test(`${slug} has a direct case study route`, async ({ page }) => {
     await page.goto(`/work/${slug}/`);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(page.getByRole('link', { name: /Back to work/ })).toBeVisible();
-    await expect(page.locator('.case-limits h2')).toHaveText('Limits');
     await expect(page.locator('.case-links a').first()).toHaveAttribute('href', /github\.com/);
   });
 }
@@ -63,7 +62,7 @@ test('every route preserves core content without JavaScript', async ({ browser }
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto('/work/chronos-dsp/');
   await expect(page.locator('.project-visual__root')).toBeVisible();
-  await page.getByText('Static stage ledger', { exact: true }).click();
+  await page.getByText('Stage table', { exact: true }).click();
   await expect(page.locator('.trace-static-details tbody tr')).toHaveCount(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
   const table = page.locator('.trace-static-details table');
@@ -248,8 +247,8 @@ test('signal sketch advances, reports, and resets without autoplay', async ({ pa
 test('unknown routes return a useful 404 page', async ({ page }) => {
   const response = await page.goto('/missing-record/');
   expect(response?.status()).toBe(404);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('does not resolve');
-  await expect(page.getByRole('link', { name: 'Browse work' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Page not found');
+  await expect(page.locator('#main-content').getByRole('link', { name: 'Projects' })).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
   await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
 });
@@ -275,7 +274,7 @@ test('failed JavaScript chunks leave the static case study usable', async ({ pag
   await page.goto('/work/chronos-dsp/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.project-visual__root')).toBeVisible();
-  await page.getByText('Static stage ledger', { exact: true }).click();
+  await page.getByText('Stage table', { exact: true }).click();
   await expect(page.locator('.trace-static-details tbody tr')).toHaveCount(4);
   await expect(page.getByRole('link', { name: /Back to work/ })).toBeVisible();
 });
@@ -328,7 +327,7 @@ test('indexable routes have no serious or critical axe violations', async ({ pag
   for (const route of routes) {
     await page.goto(route);
     if (route === '/work/chronos-dsp/') {
-      await page.getByText('Static stage ledger', { exact: true }).click();
+      await page.getByText('Stage table', { exact: true }).click();
     }
     const results = await new AxeBuilder({ page }).analyze();
     for (const violation of results.violations) {

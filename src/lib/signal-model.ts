@@ -54,9 +54,8 @@ export interface SignalSnapshot {
   readonly points: readonly ConstellationPoint[];
 }
 
-export const SIMULATION_LABEL = 'Illustrative simulation · not hardware-measured';
-export const FIXTURE_NOTICE =
-  'Fixed values for this portfolio sketch; not recorded Chronos-DSP output.';
+export const SIMULATION_LABEL = 'Interactive simulation';
+export const FIXTURE_NOTICE = 'Sample QPSK signal across the four pipeline stages.';
 
 export const DEFAULT_SEED = 0x4348524f;
 export const DEFAULT_POINT_COUNT = 64;

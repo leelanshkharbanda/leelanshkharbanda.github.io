@@ -1,14 +1,13 @@
 export const site = {
   name: 'Leelansh Kharbanda',
   initials: 'LK',
-  positioning: 'I make small systems so I can see what they’re doing.',
+  positioning: 'ECE undergrad building signal sims, systems tools, and software.',
   introduction:
-    'Signal paths, tiny instructions, memory movement, and local-first tools. This is where I keep the experiments—including the ones that didn’t work.',
+    'Signal processing, computer architecture, hardware counters, and local desktop apps.',
   education: 'B.Tech ECE · IIIT Delhi',
   email: 'leelansh24319@iiitd.ac.in',
   github: 'https://github.com/leelanshkharbanda',
   linkedin: 'https://linkedin.com/in/leelansh-kharbanda',
-  evidenceChecked: '2026-11-25',
   themes: [
     'Signal processing',
     'Computer architecture',
@@ -18,7 +17,7 @@ export const site = {
 } as const;
 
 export const roleLabels = {
-  individual: 'Personal project',
+  individual: 'Solo',
   'team-project': 'Team project',
   'team-research': 'Team research',
   'team-coursework': 'Group coursework',
@@ -31,11 +30,4 @@ export const statusLabels = {
   research: 'Research',
   coursework: 'Coursework',
   archived: 'Archive',
-} as const;
-
-export const evidenceLabels = {
-  artifact: 'Artifact / source evidence',
-  simulation: 'Simulation result',
-  measured: 'Measured dataset result',
-  mixed: 'Mixed evidence',
 } as const;

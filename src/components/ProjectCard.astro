@@ -10,73 +10,22 @@ interface Props {
   showVisual?: boolean;
 }
 
-const projectNotes: Record<string, { label: string; preview: string; color: string }> = {
-  'chronos-dsp': {
-    label: 'make some waves',
-    preview: 'geometry → simulated IQ',
-    color: 'var(--play-blue)',
-  },
-  'life-os': {
-    label: 'keep the good stuff local',
-    preview: 'local records → recommendations',
-    color: 'var(--play-green)',
-  },
-  'modulation-studio': {
-    label: 'mess with the signal',
-    preview: 'source → impairment → recovery',
-    color: 'var(--play-yellow)',
-  },
-  'hpc-boost': {
-    label: 'four counters, no per-binary router',
-    preview: 'PMU traces → held-out binaries',
-    color: 'var(--play-coral)',
-  },
-  'moe-memory-wall': {
-    label: 'move experts, mind the budget',
-    preview: 'experts → bounded HBM cache',
-    color: 'var(--play-lilac)',
-  },
-  'riscv-simulator': {
-    label: 'watch the registers change',
-    preview: 'assembly → register state',
-    color: 'var(--play-blue)',
-  },
-  'university-erp': {
-    label: 'give every role its lane',
-    preview: 'roles → services → schemas',
-    color: 'var(--play-green)',
-  },
-  tasveer: {
-    label: 'tell the campus story',
-    preview: 'stories → people → shared credit',
-    color: 'var(--play-yellow)',
-  },
-};
-
-const projectExperiments: Record<string, string> = {
-  'chronos-dsp':
-    'Move one wall and the direct and reflected paths stop agreeing. The toy above is a sketch, not recorded Chronos-DSP output.',
-  'life-os':
-    'Trace one recommendation from local record to embedding to bandit to explanation. The model files still have to be provisioned locally.',
-  'modulation-studio':
-    'Add noise and the constellation spreads before the error rate becomes obvious. The live project lets you inspect that change directly.',
-  'hpc-boost':
-    'Per-binary conditioning added only 0.0045 balanced accuracy on this corpus, so the project didn’t add a router.',
-  'moe-memory-wall':
-    'At C=64, TinyMoE-prose reached 1.27× in simulation while uniform routing stayed at 1.00×.',
-  'riscv-simulator':
-    'Step through one instruction and watch the program counter, registers, and memory change together.',
-  'university-erp':
-    'Follow one role through the desktop UI and see where authentication ends and ERP state begins.',
-  tasveer: 'Browse from an event story to the people who shot, edited, wrote, and coordinated it.',
+const projectNotes: Record<string, { preview: string; color: string }> = {
+  'chronos-dsp': { preview: 'geometry → IQ', color: 'var(--play-blue)' },
+  'life-os': { preview: 'SQLite → embeddings → bandit', color: 'var(--play-green)' },
+  'modulation-studio': { preview: 'signal → noise → recovery', color: 'var(--play-yellow)' },
+  'hpc-boost': { preview: '4 PMU counters → XGBoost', color: 'var(--play-coral)' },
+  'moe-memory-wall': { preview: 'experts → HBM cache', color: 'var(--play-lilac)' },
+  'riscv-simulator': { preview: 'assembly → registers', color: 'var(--play-blue)' },
+  'university-erp': { preview: 'auth + ERP schemas', color: 'var(--play-green)' },
+  tasveer: { preview: 'campus media archive', color: 'var(--play-yellow)' },
 };
 
 const { project, index, variant = 'standard', showVisual = true } = Astro.props;
 const data = project.data;
 const shortTitle = data.title.split(':')[0];
 const note = projectNotes[project.id] ?? {
-  label: 'open the notebook',
-  preview: 'project → notes → source',
+  preview: 'project notes',
   color: 'var(--play-yellow)',
 };
 const datum = `P-${String(index + 1).padStart(2, '0')}`;
@@ -98,23 +47,17 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
 >
   <div class="project-card__content">
     <div class="project-card__datum">
-      <span class="sr-only">Project record </span>
+      <span class="sr-only">Project </span>
       {datum}
     </div>
     <div class="project-card__meta">
       <span>{statusLabels[data.status]}</span>
       <span>{credit}</span>
     </div>
-    <p class="project-card__play-label">{note.label}</p>
     <h3>
       <a href={`/work/${project.id}/`}>{shortTitle}</a>
     </h3>
-    {data.statusNote && <p class="project-card__status-note">{data.statusNote}</p>}
     <p class="project-card__summary">{data.summary}</p>
-    <details class="project-card__experiment">
-      <summary>{note.label}</summary>
-      <p>{projectExperiments[project.id]}</p>
-    </details>
     <ul class="tag-list" aria-label="Technologies used">
       {data.stack.slice(0, 4).map((item) => (
         <li>{item}</li>
@@ -122,17 +65,17 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
     </ul>
     <div class="project-card__actions">
       <a class="arrow-link" href={`/work/${project.id}/`}>
-        Notes <span aria-hidden="true">→</span>
+        Read more <span aria-hidden="true">→</span>
       </a>
       {demoLink && (
         <a class="arrow-link" href={demoLink.url} target="_blank" rel="noreferrer noopener">
-          Demo <span aria-hidden="true">↗</span>
+          Live demo <span aria-hidden="true">↗</span>
           <span class="sr-only"> (opens in a new tab)</span>
         </a>
       )}
       {primaryLink && (
         <a class="quiet-link" href={primaryLink.url} target="_blank" rel="noreferrer noopener">
-          Source <span aria-hidden="true">↗</span>
+          GitHub <span aria-hidden="true">↗</span>
           <span class="sr-only"> (opens in a new tab)</span>
         </a>
       )}
@@ -141,9 +84,10 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
 
   {showVisual && data.diagram !== 'none' && (
     <div class="project-card__stage">
-      <span class="project-card__preview-label" aria-hidden="true">
-        SKETCH
-      </span>
+      <div class="project-card__stage-bar" aria-hidden="true">
+        <span class="project-card__preview-label">DIAGRAM</span>
+        <span class="project-card__preview-note">{note.preview}</span>
+      </div>
       <ProjectVisual
         id={`card-${project.id}`}
         diagram={data.diagram}
@@ -151,9 +95,6 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
         caption={data.diagramCaption}
         preview={true}
       />
-      <span class="project-card__preview-note" aria-hidden="true">
-        {note.preview}
-      </span>
     </div>
   )}
 </article>

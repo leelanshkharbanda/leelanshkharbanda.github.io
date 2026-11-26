@@ -8,8 +8,7 @@ import { toolkit } from '../data/toolkit';
 
 const entries = await Promise.all(featuredProjects.map((slug) => getEntry('projects', slug)));
 const projects = requireProjectEntries(featuredProjects, entries);
-const description =
-  'Print-friendly résumé for Leelansh Kharbanda, B.Tech ECE student at IIIT Delhi, with selected software and hardware engineering projects.';
+const description = 'Résumé for Leelansh Kharbanda, B.Tech ECE student at IIIT Delhi.';
 ---
 
 <BaseLayout title="Résumé" description={description}>
@@ -44,8 +43,8 @@ const description =
     <section class="resume-section" aria-labelledby="resume-profile-title">
       <h2 id="resume-profile-title">Profile</h2>
       <p>
-        ECE student at IIIT Delhi. I work on signals, computer architecture, and local-first
-        software. Most of what’s here is a simulation, prototype, or team project.
+        B.Tech ECE undergrad at IIIT Delhi working on signal processing, computer architecture, ML
+        systems, and local-first desktop software.
       </p>
     </section>
 
@@ -77,21 +76,18 @@ const description =
               <p>{statusLabels[project.data.status]}</p>
             </div>
             <p class="resume-project__role">{credit}</p>
-            {project.data.statusNote && (
-              <p class="resume-project__note">{project.data.statusNote}</p>
-            )}
             <p>{project.data.summary}</p>
             <p class="resume-project__stack">{project.data.stack.join(' · ')}</p>
-            <a href={`/work/${project.id}/`}>Notes →</a>
+            <a href={`/work/${project.id}/`}>Read more →</a>
           </article>
         );
       })}
     </section>
 
     <section class="resume-section" aria-labelledby="resume-toolkit-title">
-      <h2 id="resume-toolkit-title">Toolkit</h2>
+      <h2 id="resume-toolkit-title">Skills</h2>
       <div class="resume-toolkit">
-        {toolkit.slice(0, 3).map((group) => (
+        {toolkit.map((group) => (
           <div>
             <h3>{group.label}</h3>
             <p>{group.items.join(' · ')}</p>
@@ -105,7 +101,9 @@ const description =
       <div class="resume-entry">
         <div>
           <h3>Tasveer — The Media Society of IIIT Delhi</h3>
-          <p>Event lead and coordinator; shared editorial, coverage, and web work.</p>
+          <p>
+            Event lead and coordinator; managed campus events, coverage, and the society website.
+          </p>
         </div>
       </div>
     </section>
