@@ -40,6 +40,12 @@ Date: 2026-11-27
 - Fresh rest, mid-pulse, reflected-arrival, received, desktop, touch-mobile, and 320px/200% screenshots were inspected under `screenshots/after/`.
 - Release reviewer approved the complete diff, regression coverage, budget reporting, and fresh browser evidence.
 
+## Release
+
+- Committed as `5e9d377` and pushed to `main`.
+- Pages deployment run `45910681182` completed successfully.
+- Live verification returned HTTP 200, a working `REFLECTED / RX` arrival state, final `RX / BOTH` state, unchanged 267/365 unit readouts, and no page errors.
+
 ## Next candidates
 
 1. Give the Chronos-DSP case-study stage controls a matching transmit/arrival acknowledgment only if the hero pulse remains stable in production.
