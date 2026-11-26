@@ -51,7 +51,7 @@ limits:
 nextStep: 'Validate the timeline against a timing-accurate memory model or real GPU traces, then test routing traces from a broader set of Mixtral workloads.'
 diagram: memory-grid
 diagramAlt: 'Memory-grid schematic showing off-chip experts, a bounded HBM cache, predicted copies, demand priority, and decode stalls.'
-diagramCaption: 'Original schematic of the simulated memory system; cache capacity and routing predictability determine whether prefetching helps.'
+diagramCaption: 'A sketch of off-chip experts, a bounded HBM cache, and predicted copies.'
 depth: medium
 visualRights: original
 checkedOn: '2026-11-25'
@@ -70,22 +70,22 @@ A Python discrete-event timeline added the missing memory behavior: a per-layer 
 
 ## Contribution and credit
 
-This is Group 24 coursework, not an individual systems claim. I participated in the shared implementation and evaluation, while the repository does not provide a complete map from each simulator patch, predictor, or report section to one member. The work also builds on upstream LLMSimulator, Duplex, and SSD-offloading, and reimplements ideas from ST-MoE and APEX. Credit therefore stays with the group for its integrated study, with upstream simulators and published methods named rather than presented as inventions of this project.
+This is Group 24 coursework. I took part in the shared implementation and evaluation. The repository doesn’t map each simulator patch, predictor, or report section to one member. It builds on LLMSimulator, Duplex, and SSD-offloading, and reimplements ideas from ST-MoE and APEX.
 
-## Artifact
+## Source
 
-The repository contains the modified C++ simulators, Python predictor and timeline packages, routing workloads, unit tests, generated CSV/JSONL results, figures, and midterm/final reports. The [generated results](https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project/blob/main/RESULTS.md) are the best entry point because every latency ratio is tied to a workload, batch size, capacity, and baseline. `run_final.sh` connects the pipeline, while `tests/test_prefetch.py` checks closed-form timeline cases, causality, and I/O. The original memory-grid schematic summarizes the same cache-and-copy boundary without substituting for the source tables.
+The repository contains the modified C++ simulators, Python predictor and timeline packages, routing workloads, unit tests, generated results, figures, and reports. The [generated results](https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project/blob/main/RESULTS.md) list each latency ratio with its workload, batch size, capacity, and baseline. `run_final.sh` connects the pipeline, while `tests/test_prefetch.py` checks closed-form timeline cases, causality, and I/O.
 
-## Results and evidence
+## Results
 
-At `C = 64`, batch 1 on the simulated H100-class platform, TinyMoE-recorded routing reduced mean latency from 21.18 ms to 16.65 ms per token: **1.27×**, a **Simulation Result** relative to on-demand plus LRU. Mixtral-calibrated routing moved from 23.10 ms to 22.19 ms, or **1.04×**. Uniform routing stayed at 24.73 ms for both policies, or **1.00×**. These means cover 16 sequence groups and 191 decode steps in the [results table](https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project/blob/main/RESULTS.md).
+At `C = 64`, batch 1 on the simulated H100-class platform, TinyMoE-recorded routing reduced mean latency from 21.18 ms to 16.65 ms per token: a simulated **1.27×** result relative to on-demand plus LRU. Mixtral-calibrated routing moved from 23.10 ms to 22.19 ms, or **1.04×**. Uniform routing stayed at 24.73 ms for both policies, or **1.00×**. These means cover 16 sequence groups and 191 decode steps in the [results table](https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project/blob/main/RESULTS.md).
 
-The comparison is deliberately routing-sensitive. TinyMoE’s stronger locality lets prediction overlap useful copies; calibrated routing offers a smaller benefit; uniform routing gives the throttle no signal to exploit. The same table reports additional DRAM-to-HBM traffic, so lower latency is not a free win. The 1.27× figure is the TinyMoE-prose result at this capacity (TinyMoE-code: 1.266×), not a general Mixtral or GPU result.
+TinyMoE’s stronger locality lets prediction overlap useful copies; calibrated routing offers a smaller benefit; uniform routing gives the throttle no signal to exploit. Prefetching also added DRAM-to-HBM traffic. The 1.27× figure is the TinyMoE-prose result at this capacity (TinyMoE-code: 1.266×), not a general Mixtral or GPU result.
 
-## Limits and non-claims
+## Limits
 
-Both simulators are analytical roofline models without DRAM timing. TinyMoE is small and its locality is likely stronger than Mixtral’s. Mixtral-calibrated routing matches published temporal statistics, but its speculative gate is the generator’s own conditional mean—an idealized predictor, not a real Mixtral router. The study also assumes one copy engine, decode-only execution, and no expert compression or quantization. Consequently, it does not establish measured Mixtral performance, measured GPU speedup, or production inference behavior.
+Both simulators are analytical roofline models without DRAM timing. TinyMoE is small and its locality is likely stronger than Mixtral’s. Mixtral-calibrated routing matches published temporal statistics, but its speculative gate is the generator’s own conditional mean—an idealized predictor, not a real Mixtral router. The study also assumes one copy engine, decode-only execution, and no expert compression or quantization. It doesn’t measure Mixtral performance, GPU speedup, or production inference.
 
-## Reproducibility and next step
+## Reproduction
 
 On Linux, `run_final.sh` builds the modified simulator, regenerates deterministic synthetic workloads, uses the committed TinyMoE traces, runs the experiments, and invokes validation checks. The repository documents its C++, CMake, and Python requirements and the external corpora needed only for retraining. The next step is to compare the timeline with a timing-accurate memory model or real GPU traces, then repeat the capacity sweep with a broader set of recorded Mixtral workloads.

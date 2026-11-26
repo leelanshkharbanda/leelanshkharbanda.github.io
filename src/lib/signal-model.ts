@@ -56,7 +56,7 @@ export interface SignalSnapshot {
 
 export const SIMULATION_LABEL = 'Illustrative simulation · not hardware-measured';
 export const FIXTURE_NOTICE =
-  'Fixed illustrative values for this portfolio visual; not recorded Chronos-DSP output.';
+  'Fixed values for this portfolio sketch; not recorded Chronos-DSP output.';
 
 export const DEFAULT_SEED = 0x4348524f;
 export const DEFAULT_POINT_COUNT = 64;
@@ -84,7 +84,7 @@ export const SIGNAL_STAGES: readonly SignalStage[] = [
     label: 'Source',
     summary: 'Scene geometry, QPSK symbols, and a repeatable seed establish the starting state.',
     detail:
-      'This fixed fixture uses 64 symbols and three candidate paths. It makes the stage relationship inspectable without recreating a particular Chronos-DSP scene.',
+      'This fixed fixture uses 64 symbols and three candidate paths to show how the stages relate. It does not recreate a particular Chronos-DSP scene.',
     change: 'Establish the symbol stream, candidate paths, and deterministic starting seed.',
     output: 'Seeded source symbols',
     scatter: 0,
@@ -102,7 +102,7 @@ export const SIGNAL_STAGES: readonly SignalStage[] = [
     label: 'Channel',
     summary: 'Candidate paths and illustrative impairment spread and rotate the source symbols.',
     detail:
-      'The scatter is a bounded visual metaphor for multipath and impairment. It is not the numerical output of the Chronos-DSP renderer or a calibrated radio channel.',
+      'The scatter is a visual sketch of multipath and impairment, not numerical output from the Chronos-DSP renderer or a calibrated radio channel.',
     change: 'Introduce conceptual path impairment while keeping the fixture deterministic.',
     output: 'Impaired simulated symbols',
     scatter: 0.38,
@@ -126,7 +126,7 @@ export const SIGNAL_STAGES: readonly SignalStage[] = [
     label: 'Receiver',
     summary: 'Decision boundaries recover a simulated symbol stream from the impaired view.',
     detail:
-      'The view reduces scatter and removes the illustrative rotation. It demonstrates the role of receiver decisions; it does not validate a synchronizer or receiver design.',
+      'The view reduces scatter and removes the illustrative rotation to show receiver decisions. It does not validate a synchronizer or receiver design.',
     change: 'Apply conceptual decision and phase correction to the simulated symbols.',
     output: 'Recovered symbol decisions',
     scatter: 0.16,
@@ -148,9 +148,9 @@ export const SIGNAL_STAGES: readonly SignalStage[] = [
     index: 3,
     datum: 'TS-04',
     label: 'Output',
-    summary: 'Simulated IQ, path count, and an error metric become inspectable together.',
+    summary: 'Simulated IQ, path count, and an error metric update together.',
     detail:
-      'Two fixture bit errors in 128 bits produce an illustrative BER of 1.56%. This is not a Chronos-DSP benchmark, a hardware measurement, or a performance claim.',
+      'Two fixture bit errors in 128 bits produce an illustrative BER of 1.56%. This is a portfolio sketch, not Chronos-DSP output or a hardware measurement.',
     change: 'Collect the recovered symbols and illustrative error count into an output ledger.',
     output: 'IQ view and illustrative BER',
     scatter: 0.07,

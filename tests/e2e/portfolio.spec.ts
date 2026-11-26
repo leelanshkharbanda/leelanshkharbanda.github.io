@@ -45,7 +45,7 @@ for (const slug of projectSlugs) {
     await page.goto(`/work/${slug}/`);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(page.getByRole('link', { name: /Back to work/ })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Boundary conditions' })).toBeVisible();
+    await expect(page.locator('.case-limits h2')).toHaveText('Limits');
     await expect(page.locator('.case-links a').first()).toHaveAttribute('href', /github\.com/);
   });
 }
@@ -225,7 +225,7 @@ test('indexable routes have unique metadata', async ({ page }) => {
   expect(descriptions.size).toBe(routes.length);
 });
 
-test('Trace Inspector advances, reports, and resets without autoplay', async ({ page }) => {
+test('signal sketch advances, reports, and resets without autoplay', async ({ page }) => {
   await page.goto('/work/chronos-dsp/');
   const inspector = page.locator('.trace-inspector__root');
   const next = page.getByRole('button', { name: 'Next', exact: true });

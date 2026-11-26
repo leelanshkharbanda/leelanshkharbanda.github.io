@@ -71,6 +71,7 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
       </dl>
 
       {data.statusNote && <p class="case-status-note">{data.statusNote}</p>}
+      {data.creditNote && <p class="case-status-note">{data.creditNote}</p>}
 
       <div class="case-links">
         {data.links.map((link) => (
@@ -87,12 +88,6 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
     </header>
 
     <div class="page-shell case-body">
-      <aside class="case-summary" aria-label="Recruiter summary">
-        <p class="datum-label">SUMMARY</p>
-        <p>{data.recruiterSummary}</p>
-        {data.creditNote && <p class="case-summary__credit">{data.creditNote}</p>}
-      </aside>
-
       {data.diagram !== 'none' && (
         <ProjectVisual
           id={`case-${project.id}`}
@@ -106,11 +101,11 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
       {project.id === 'chronos-dsp' && (
         <section class="trace-section" aria-labelledby="trace-title">
           <div class="trace-section__heading">
-            <p class="datum-label">INTERACTIVE EVIDENCE</p>
-            <h2 id="trace-title">Inspect the signal path</h2>
+            <p class="datum-label">INTERACTIVE SKETCH</p>
+            <h2 id="trace-title">Signal path sketch</h2>
             <p>
-              Move through four stages of an illustrative signal path. The controls change the view,
-              not a live Chronos-DSP session.
+              Four stages of an illustrative signal path. The controls change the view, not a live
+              Chronos-DSP session.
             </p>
           </div>
           <TraceInspector client:visible />
@@ -170,17 +165,17 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
       {data.results.length > 0 && (
         <section class="evidence-ledger" aria-labelledby="ledger-title">
           <div class="evidence-ledger__heading">
-            <p class="datum-label">EVIDENCE LEDGER</p>
-            <h2 id="ledger-title">Claims, conditions, and sources</h2>
+            <p class="datum-label">RESULTS</p>
+            <h2 id="ledger-title">Results and sources</h2>
           </div>
-          <section class="table-scroll" tabindex="0" aria-label="Project evidence ledger">
+          <section class="table-scroll" tabindex="0" aria-label="Project results">
             <table>
               <thead>
                 <tr>
-                  <th scope="col">Claim</th>
-                  <th scope="col">Value or observation</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Value</th>
                   <th scope="col">Evidence class</th>
-                  <th scope="col">Method and conditions</th>
+                  <th scope="col">Method</th>
                   <th scope="col">Source</th>
                 </tr>
               </thead>
@@ -212,15 +207,15 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
       </div>
 
       <section class="case-limits" aria-labelledby="limits-title">
-        <p class="datum-label">BOUNDARY CONDITIONS</p>
-        <h2 id="limits-title">Boundary conditions</h2>
+        <p class="datum-label">LIMITS</p>
+        <h2 id="limits-title">Limits</h2>
         <ul>
           {data.limits.map((limit) => (
             <li>{limit}</li>
           ))}
         </ul>
         <p class="case-next">
-          <strong>Next useful step:</strong> {data.nextStep}
+          <strong>Next:</strong> {data.nextStep}
         </p>
       </section>
     </div>
@@ -228,7 +223,7 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
     {nextProject && (
       <nav class="next-project" aria-label="Next project">
         <div class="page-shell next-project__inner">
-          <p class="datum-label">NEXT RECORD</p>
+          <p class="datum-label">NEXT PROJECT</p>
           <a href={`/work/${nextProject.id}/`}>
             <span>{nextProject.data.title}</span>
             <span aria-hidden="true">→</span>

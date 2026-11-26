@@ -1,9 +1,9 @@
 ---
 title: 'Modulation Studio: a browser signal lab'
-question: 'How can a browser make modulation, channel impairment, and receiver recovery inspectable in one interactive signal path?'
+question: 'What happens to a signal when you add noise and try to recover it?'
 summary: 'A two-person static web lab that simulates analog and digital modulation, applies noise and fading, recovers signals, and exposes spectra, constellations, and error metrics in the browser.'
 recruiterSummary: 'I contributed to a two-person browser DSP lab spanning simulated modulation, channel impairments, receiver controls, plots, exports, and tests. Its live demo returned HTTP 200 on 2026-11-25, while the latest Pages workflow failed during artifact lookup; the case study keeps availability, test evidence, and simulation claims separate.'
-metaDescription: 'Modulation Studio case study: a two-person browser DSP lab for simulated modulation, channel impairments, receiver recovery, plots, and error metrics.'
+metaDescription: 'A two-person browser DSP lab for simulated modulation, channel impairments, receiver recovery, plots, and error metrics.'
 status: 'live-demo'
 statusNote: 'Live URL reachable; latest Pages deploy failed.'
 role: 'team-project'
@@ -34,7 +34,7 @@ results:
   - claim: 'The live demo was reachable on the check date'
     value: 'HTTP 200 on 2026-11-25'
     evidenceClass: 'artifact'
-    method: 'Requested the public demo URL and recorded its HTTP status; availability does not establish that the latest commit was deployed.'
+    method: 'Requested the public demo URL and recorded its HTTP status.'
     source: 'https://leelanshkharbanda.github.io/Modulation-Studio/'
   - claim: 'The latest workflow passed CI but failed the Pages deployment step'
     value: '66 tests passed; deploy failed at artifact lookup'
@@ -55,7 +55,7 @@ limits:
 nextStep: 'Repair and verify the Pages artifact handoff, then add seeded end-to-end checks that assert plots, exports, and BER/SER against fixed reference cases.'
 diagram: 'constellation'
 diagramAlt: 'Original constellation diagram showing simulated symbols before and after channel impairment and receiver recovery.'
-diagramCaption: 'Modulation Studio links a generated symbol stream to simulated channel effects, receiver decisions, and constellation or error-metric views.'
+diagramCaption: 'A sketch of symbols before and after simulated channel effects and receiver decisions.'
 depth: 'flagship'
 visualRights: 'original'
 checkedOn: '2026-11-25'
@@ -68,7 +68,7 @@ Modulation and demodulation are usually taught as separate equations, plots, and
 
 The product constraint is immediacy. A learner should be able to choose a scheme, introduce an impairment, and compare transmitted, received, and demodulated signals without installing a numerical stack or configuring a backend. The application is a static site with a JavaScript signal core, Canvas-based views, local presets, and export tools.
 
-The evidence constraint is equally important. Every waveform and channel effect is simulated. The demo can show that the application is reachable and interactive, while tests can check implementation behavior; neither establishes physical radio performance, user learning, or adoption. Deployment health is a third, separate question because a live URL may continue serving an older successful build after a newer workflow fails.
+Every waveform and channel effect is simulated. The demo shows that the app is reachable, and tests check its behavior. Neither says how it performs on physical radio or how people learn from it. A live URL may also serve an older build after a newer workflow fails.
 
 ## Mechanism
 
@@ -82,33 +82,31 @@ Presets can be saved in browser local storage, comparison mode supports side-by-
 
 ## Contribution and credit
 
-I contributed within the verified two-person team to the shared browser signal lab, including the simulation pipeline, receiver controls, visualizations, exports, and tests. The project is not presented as sole authorship, and the portfolio does not convert repository ownership into a claim that every module was implemented individually.
+I contributed within a two-person team to the shared browser signal lab, including the simulation pipeline, receiver controls, visualizations, exports, and tests. The résumé verifies the team size, but public contributor history doesn’t provide a complete teammate-by-module split, so I don’t name collaborators or assign exclusive file ownership.
 
-The résumé verifies the team size. Public contributor history does not provide a complete teammate-by-module credit split, so this case study names no collaborators and assigns no exclusive file ownership. The contribution is intentionally scoped to the shared prototype and the evidence that can be inspected in source, tests, CI, and the demo.
+## Source
 
-## Artifact
+The [source repository](https://github.com/leelanshkharbanda/Modulation-Studio) contains the static entry point, signal and channel modules, receiver logic, Canvas renderers, UI controllers, presets, exports, and tests. The [signal-processing core](https://github.com/leelanshkharbanda/Modulation-Studio/blob/master/js/signal-core.js) covers channel impairment, error metrics, and adaptive receiver-state estimation.
 
-The [source repository](https://github.com/leelanshkharbanda/Modulation-Studio) contains the static entry point, signal-generation and channel modules, receiver logic, Canvas renderers, UI controllers, preset and export code, and test suites. The [signal-processing core](https://github.com/leelanshkharbanda/Modulation-Studio/blob/master/js/signal-core.js) is a compact review entry point for channel impairment, error metrics, and adaptive receiver-state estimation.
+The [live demo](https://leelanshkharbanda.github.io/Modulation-Studio/) is the interactive version. The repository also includes unit, smoke, and accessibility tests. The demo and tests are separate checks.
 
-The [live demo](https://leelanshkharbanda.github.io/Modulation-Studio/) provides the interactive artifact. The repository also includes unit, smoke, and accessibility tests. Together these artifacts support a source-level review of the lab and a check that the public page is reachable; they should not be collapsed into a single claim that the latest deployment is healthy.
+## Results
 
-## Results and evidence
+On 2026-11-25, the public demo returned **HTTP 200**. That only describes the URL at that time; it doesn’t identify the served commit or say whether every control works.
 
-On 2026-11-25, the public demo returned **HTTP 200**. That is an availability observation at one URL and time. It does not identify which commit the browser received, prove that every control works, or establish a release or user base.
+The latest Pages workflow, run `45619690872`, passed **66 tests across 6 test files**. Its deploy job failed at artifact lookup with “No artifacts named github-pages were found.” The reachable site and the failed deployment are separate observations.
 
-The latest Pages workflow, run `45619690872`, tells a more specific story. Its CI job passed **66 tests across 6 test files**. Its deploy job failed at the GitHub Pages step: the log first reported successful artifact upload, then artifact-metadata lookup errors and “No artifacts named github-pages were found.” The case study therefore reports the CI result and deployment failure independently. A reachable site can coexist with a broken latest deployment.
+The lab can generate analog or digital signals, apply simulated impairments, inspect receiver decisions, and read spectra, constellations, BER, SER, or correlation. These are software simulations, not physical-channel measurements or learning outcomes.
 
-The substantive project result is simulation capability: a user can generate analog or digital signals, apply controlled impairments, inspect receiver decisions, and read spectra, constellations, BER, SER, or correlation. These outputs make the signal path inspectable. They are not measurements of a physical channel and are not evidence that the lab improves learning outcomes.
+## Limits
 
-## Limits and non-claims
+All waveforms, noise, fading, offsets, and recovered symbols are software-generated. There’s no over-the-air capture or hardware measurement. The simplified channel and adaptive receiver are teaching tools, not a complete communication-system model.
 
-All waveforms, noise, fading, offsets, and recovered symbols are software-generated. No over-the-air capture, hardware measurement, calibrated receiver, or physical-channel validation is claimed. The simplified channel and adaptive receiver are teaching mechanisms, not substitutes for a complete communication-system model.
+The latest Pages workflow failed during artifact lookup, so HTTP 200 doesn’t identify a fresh deployment. The tests check the code, not cross-browser performance or how people learn from it.
 
-The latest Pages workflow failed during artifact lookup, so HTTP 200 must not be described as a successful fresh deployment. Passing unit, smoke, and accessibility tests also does not prove cross-browser correctness, sustained performance, or real user comprehension. No adoption or learning metric is available.
+The résumé verifies the two-person contribution, but the repository doesn’t provide a complete module-level credit split. The adaptive receiver is bounded to the inspected signal window and estimation approach. The portfolio diagram is original.
 
-The two-person contribution is verified by the résumé, but the repository does not establish a complete module-level credit split. The adaptive receiver is bounded to the inspected signal window and estimation approach. Repository screenshots are not reused; the portfolio diagram is original.
-
-## Reproducibility and next step
+## Reproduction
 
 For local reproduction, install the repository's Bun dependencies and run `bun run dev`, or open the static entry point through a local server. `bun run test` executes the Vitest suites; `bun run build` assembles the static output. A useful manual check is to hold scheme and seed fixed, vary SNR, and record constellation, waveform, and BER/SER changes together.
 

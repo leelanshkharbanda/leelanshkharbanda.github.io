@@ -1,6 +1,6 @@
 ---
 title: 'University ERP System'
-question: 'How can role-based university workflows be separated cleanly in a desktop ERP?'
+question: 'How are administrator, instructor, and student workflows separated in a desktop ERP?'
 summary: 'A two-person academic Java Swing and MySQL project for role-separated administration, instruction, and student workflows.'
 recruiterSummary: 'University ERP is a two-person academic team project built as a Java Swing desktop application with Gradle and MySQL. I contributed within the coordinated team effort, without claiming individual ownership of every UI, service, or database component. The repository separates authentication and ERP data into two MySQL schemas and documents administrator, instructor, and student roles. It is useful evidence of multi-tier application structure and role-aware workflow design. It remains an academic artifact: no institutional adoption, business impact, production security, or reliability outcome is claimed.'
 metaDescription: 'A two-person academic University ERP built with Java Swing, Gradle, and separate MySQL authentication and ERP schemas.'
@@ -48,12 +48,12 @@ University ERP is a two-person academic project structured as a multi-tier Java 
 
 ## Contribution and credit
 
-The project was coordinated team work. I contributed within the two-person effort, but the repository does not justify assigning every UI panel, service method, or schema decision to one person. Credit therefore stays with the shared artifact: the desktop client, access-control and role-specific services, database scripts, and setup documentation. This archive entry deliberately avoids sole-authorship language.
+This was two-person team work. I contributed within the shared effort, but the repository doesn’t assign every UI panel, service method, or schema decision to one person. The desktop client, access-control and role-specific services, database scripts, and setup documentation are shared work.
 
-## Evidence
+## Source
 
-The source repository contains the Gradle project, Java services, authentication and ERP table scripts, seed data, and a setup guide. The guide documents Java 17+, MySQL 8, database creation, build commands, and seeded role accounts. Those materials are **artifact/source evidence** that the academic system was assembled and made runnable. They show structure and intended workflows, not measured outcomes. No custom visual is used for this entry.
+The source repository contains the Gradle project, Java services, authentication and ERP table scripts, seed data, and a setup guide. The guide covers Java 17+, MySQL 8, database creation, build commands, and seeded role accounts. The materials show the system’s structure and intended workflows. No custom visual is used for this entry.
 
 ## Limits
 
-This is an academic prototype, not an adopted university system. Seeded accounts and local database settings are demonstration fixtures, not a production security design. The repository establishes no business impact, user volume, load result, reliability target, or production readiness. A sound next step is to test role permissions end to end and document database migration and configuration handling before making any deployment claim.
+This is an academic prototype, not an adopted university system. Seeded accounts and local database settings are demonstration fixtures, not a production security design. There’s no user, load, reliability, or production-readiness study. A next step is to test role permissions end to end and document database migration and configuration.

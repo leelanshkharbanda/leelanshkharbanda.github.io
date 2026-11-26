@@ -1,13 +1,13 @@
 ---
-title: 'HPC-Boost v2: Choosing Four Counters, Then Saying No'
+title: 'HPC-Boost v2: four counters and a routing check'
 question: 'Can four CPU performance-counter events separate malware from benign workloads without leaking binary identity into validation?'
-summary: 'A version-qualified team research case study of fixed-subset selection, grouped validation, and the negative per-binary conditioning result.'
+summary: 'A team project on choosing four CPU performance counters, validating on held-out binaries, and checking whether per-binary routing helps.'
 recruiterSummary: 'HPC-Boost asks whether a small set of CPU performance counters can support malware detection under a four-event budget. My contribution is framed as participation in the two-person project listed on my résumé, not sole authorship of the repository. The later v2 study used real-PMU traces, binary-grouped validation, and training-only subset selection. Its fixed-subset result is measured dataset evidence; the per-binary conditioning result is a negative finding that prevented an unjustified routing layer. The imported earlier report remains separate.'
-metaDescription: 'HPC-Boost case study: four-event PMU selection, binary-grouped validation, measured fixed-subset results, and a negative conditioning finding.'
+metaDescription: 'Four-event PMU selection, binary-grouped validation, measured fixed-subset results, and a per-binary routing check.'
 status: research
 role: team-research
 creditLabel: 'Research record · v2 team size unverified'
-contribution: 'The résumé lists HPC-Boost as a two-person project but does not identify a version. This case study covers the later v2 artifacts; the public record does not verify v2 team composition or module-level ownership.'
+contribution: 'The résumé lists HPC-Boost as a two-person project but does not identify a version. This page covers the later v2 artifacts; the public record does not verify v2 team composition or module-level ownership.'
 creditNote: 'The two-person label applies only to the version-unspecified résumé entry. The imported report remains separate; v2 authorship is not inferred from repository ownership.'
 evidenceClass: mixed
 stack:
@@ -50,7 +50,7 @@ limits:
 nextStep: 'Re-run the documented gate on a more behaviorally diverse x86-64 malware corpus before revisiting per-binary conditioning.'
 diagram: counter-ledger
 diagramAlt: 'Counter-ledger schematic showing grouped PMU traces, candidate event subsets, training-only selection, and held-out binary evaluation.'
-diagramCaption: 'Original schematic of the v2 fixed-subset experiment; the per-binary branch ends at the negative conditioning gate.'
+diagramCaption: 'A sketch of fixed-subset selection and the per-binary routing check.'
 depth: medium
 visualRights: original
 checkedOn: '2026-11-25'
@@ -67,22 +67,22 @@ Collection cycled through 13 guest PMU events in separate-boot groups of at most
 
 ## Contribution and credit
 
-The résumé records HPC-Boost as a two-person project but does not identify a version. I therefore treat that label as evidence about the résumé entry, not as a blanket authorship claim for every file in the repository. The imported `hpc_boost_report.txt` names Varun Parashar, Aaditya Gupta, and Samriddh Singh and describes an earlier workflow; it is not the source of the v2 numbers below. Later v2 directories contain the collection, ranking, detector, oracle, and recommender artifacts discussed here. The public record does not provide a complete per-author module map, so this case study credits shared research work and does not infer sole ownership from repository presence.
+The résumé lists HPC-Boost as a two-person project without a version. This page covers the later v2 work. The imported `hpc_boost_report.txt` names Varun Parashar, Aaditya Gupta, and Samriddh Singh and describes an earlier workflow; it isn’t the source of the v2 numbers. The public record doesn’t provide a complete per-author map for v2.
 
-## Artifact
+## Source
 
-The primary artifact is the repository’s `hpc_boost_v2` tree: experiment drivers, ranking and detection modules, tests, committed result notes, and the per-binary gate paper. Start with `papers/hpc-boost-exp5-per-binary-gate.md`; its tables connect each claim to the routing ladder and selection procedure. The counter-ledger diagram is an original schematic of that flow: grouped trace features become candidate subsets, training data select one fixed set, and held-out binaries provide the evaluation. The earlier imported report is linked separately so readers can inspect it without confusing its authors or workflow with v2.
+The repository’s `hpc_boost_v2` tree contains the experiment drivers, ranking and detection modules, tests, result notes, and per-binary gate paper. `papers/hpc-boost-exp5-per-binary-gate.md` has the routing tables and selection procedure. The diagram sketches the flow: grouped trace features become candidate subsets, training data select one fixed set, and held-out binaries provide the evaluation. The earlier imported report is linked separately.
 
-## Results and evidence
+## Results
 
-All figures in this ledger are **Measured Results** from recorded hardware-counter runs, not synthetic detector scores. On the 45-binary corpus, the training-only fixed-four-event selector reported F1 0.889, balanced accuracy 0.886, and FPR 0.174. Those values come from the [v2 results memo](https://github.com/leelanshkharbanda/HPC_Boost/blob/main/hpc_boost_v2/experiments/exp5_recommender/RESULTS.md) and its five binary-grouped outer folds, with thresholds tuned only on training data at TPR 0.95.
+These are measured results from recorded hardware-counter runs, not synthetic detector scores. On the 45-binary corpus, the training-only fixed-four-event selector reported F1 0.889, balanced accuracy 0.886, and FPR 0.174. The values come from the [v2 results memo](https://github.com/leelanshkharbanda/HPC_Boost/blob/main/hpc_boost_v2/experiments/exp5_recommender/RESULTS.md) and five binary-grouped outer folds, with thresholds tuned only on training data at TPR 0.95.
 
-The negative result is equally important: moving from the post-hoc global-subset ceiling to per-binary oracle routing added only 0.0045 balanced accuracy, about 3% of total oracle headroom. Roughly 96% of the headroom came from choosing one good fixed subset. Because the per-binary number is an oracle ceiling, a learned conditioning model cannot exceed it on this corpus. The [gate paper](https://github.com/leelanshkharbanda/HPC_Boost/blob/main/papers/hpc-boost-exp5-per-binary-gate.md) therefore rejected a conditional recommender rather than presenting a null result as a win.
+The negative result: moving from the post-hoc global-subset ceiling to per-binary oracle routing added only 0.0045 balanced accuracy, about 3% of total oracle headroom. Roughly 96% of the headroom came from choosing one fixed subset. The [gate paper](https://github.com/leelanshkharbanda/HPC_Boost/blob/main/papers/hpc-boost-exp5-per-binary-gate.md) rejected a conditional recommender for this corpus.
 
-## Limits and non-claims
+## Limits
 
 The malware side is narrow: 18 Tsunami and 4 Kaiji binaries, with 23 benign workloads. A broader malware population might behave differently. The experiment covers one native x86-64 KVM/PMU setup, one XGBoost configuration, and one operating point. The chosen event set also varied across folds, so the named representative subset is not a uniquely optimal portable signature. Most importantly, these are dataset results from an offline study. They do not establish a deployed detector, operational false-positive costs, adversarial robustness, or real-world security impact.
 
-## Reproducibility and next step
+## Reproduction
 
-The v2 results memo records the exact command and dataset name, while the repository provides tests for the loader, ranking, gate, and recommender. The Track-1 CSV is not committed and must be obtained from the collection host, so a fresh clone is not by itself a complete reproduction package. The next honest step is to rerun the same grouped gate on a more behaviorally diverse x86-64 malware corpus. Only if per-binary conditioning then clears the documented headroom and value gates should a learned router be revisited.
+The v2 results memo records the command and dataset name, and the repository includes tests for the loader, ranking, gate, and recommender. The Track-1 CSV isn’t committed and must be obtained from the collection host, so a fresh clone isn’t a complete reproduction package. A next step is to rerun the grouped gate on a more behaviorally diverse x86-64 malware corpus before revisiting a learned router.

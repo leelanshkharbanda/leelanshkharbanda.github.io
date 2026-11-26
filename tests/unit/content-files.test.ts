@@ -49,23 +49,23 @@ describe('project content invariants', () => {
     );
   });
 
-  it('uses the required case-study and archive headings', () => {
+  it('uses the required project headings', () => {
     for (const file of files) {
       const content = readProject(file);
       const depth = content.match(/^depth:\s*(\w+)$/m)?.[1];
       if (depth === 'archive') {
         expect(content).toContain('## Context');
         expect(content).toContain('## Contribution and credit');
-        expect(content).toContain('## Evidence');
+        expect(content).toContain('## Source');
         expect(content).toContain('## Limits');
       } else {
         expect(content).toContain('## Context and constraints');
         expect(content).toContain('## Mechanism');
         expect(content).toContain('## Contribution and credit');
-        expect(content).toContain('## Artifact');
-        expect(content).toContain('## Results and evidence');
-        expect(content).toContain('## Limits and non-claims');
-        expect(content).toContain('## Reproducibility and next step');
+        expect(content).toContain('## Source');
+        expect(content).toContain('## Results');
+        expect(content).toContain('## Limits');
+        expect(content).toContain('## Reproduction');
       }
     }
   });

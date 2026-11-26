@@ -1,6 +1,6 @@
 ---
 title: 'RISC-V Assembler and Simulator'
-question: 'How does assembly become an inspectable sequence of register and memory states?'
+question: 'What register and memory state changes after each instruction?'
 summary: 'A four-person Python project that makes an RV32I subset visible through assembly encoding, execution traces, and memory dumps.'
 recruiterSummary: 'This four-person team project turns a supported subset of RV32I assembly into machine code and an inspectable functional execution. I contributed within the shared team rather than claiming sole ownership of the assembler, simulator, or instruction coverage. The repository documents label resolution, 32 registers, byte-addressed memory, and trace output. Its value is pedagogical: a learner can connect an instruction’s encoding to the next program-counter and register state. The artifact is source and example output, not evidence of complete RV32I conformance or hardware performance.'
 metaDescription: 'A four-person Python RV32I-subset assembler and functional simulator with instruction traces, register state, and memory inspection.'
@@ -44,12 +44,12 @@ RISC-V Assembler and Simulator is a four-person computer-organization project bu
 
 ## Contribution and credit
 
-The work is credited to the four-person team. I contributed within that shared effort, but the public files do not provide a reliable per-member map for every encoder, decoder, or memory operation. This entry therefore describes the combined artifact rather than assigning all assembler and simulator work individually. The instruction-trace diagram is a new portfolio schematic, not a screenshot or a claim about the original team’s visual assets.
+This was four-person team work. I contributed within the shared effort, but the public files don’t provide a reliable per-member map for every encoder, decoder, or memory operation. The instruction-trace diagram is a new portfolio schematic.
 
-## Evidence
+## Source
 
-The source repository includes `assembler.py`, simulator modules, an example assembly program, generated binary output, and usage instructions. A reader can assemble a program, load the resulting words, run the CPU, and inspect the execution trace and final memory state. That is **artifact/source evidence** of a functional learning tool. It demonstrates implementation and inspectability; it does not turn simulated state transitions into a hardware measurement.
+The source repository includes `assembler.py`, simulator modules, an example assembly program, generated binary output, and usage instructions. You can assemble a program, load the words, run the CPU, and inspect the execution trace and final memory state. It’s a functional learning tool, not a hardware measurement.
 
 ## Limits
 
-The supported instruction set is an RV32I subset, not complete RV32I. The documented simulator uses 64 KB of memory and has no privilege levels, floating-point support, or compressed instructions. It is also not cycle-accurate, so no timing, throughput, or hardware-efficiency claim follows from the trace. The next useful increment is a conformance-tested instruction subset with explicit expected register and memory states.
+The supported instruction set is an RV32I subset, not complete RV32I. The simulator uses 64 KB of memory and has no privilege levels, floating-point support, or compressed instructions. It isn’t cycle-accurate, so the trace doesn’t say anything about timing or throughput. A next step is a conformance-tested subset with explicit expected register and memory states.

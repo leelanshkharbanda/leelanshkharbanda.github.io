@@ -22,35 +22,33 @@ const description =
 <BaseLayout title="Work" description={description}>
   <section class="playground-page-hero page-shell" aria-labelledby="page-title">
     <div>
-      <p class="play-kicker">The project shelf · 5 deep dives + 3 archive records</p>
-      <h1 id="page-title">Pick a project. Poke a hole in it.</h1>
+      <p class="play-kicker">Five projects and three earlier ones</p>
+      <h1 id="page-title">Projects</h1>
       <p class="playground-page-hero__intro">
-        Each project starts with a question, then shows the moving parts, the source, and the
-        limits. Start with whatever looks interesting; every project has a direct route to its notes
-        and evidence.
+        Notes on what I built, how it works, and where the source is.
       </p>
     </div>
     <div class="project-stack" aria-hidden="true">
       <div class="project-stack__sheet">
         <span>PERSONAL SIMULATIONS</span>
         <strong>Signals, states &amp; systems</strong>
-        <span>Source-linked / limits included</span>
+        <span>Source and limits</span>
       </div>
       <div class="project-stack__sheet">
         <span>TEAM WORK</span>
         <strong>Built with other people</strong>
-        <span>Credit stays visible</span>
+        <span>Individual and team credit</span>
       </div>
       <div class="project-stack__sheet">
-        <span>8 PROJECT RECORDS</span>
-        <strong>The rough edges stay in</strong>
-        <span>Just the useful bits</span>
+        <span>EARLIER PROJECTS</span>
+        <strong>Some finished, some not</strong>
+        <span>Still here</span>
       </div>
     </div>
   </section>
 
   <nav class="project-jump page-shell" aria-label="Jump to a project">
-    <span>Pick a trail</span>
+    <span>Projects</span>
     {allProjects.map((project, index) => (
       <a href={`#project-${project.id}`}>
         {String(index + 1).padStart(2, '0')} / {project.data.title.split(':')[0]}
@@ -62,8 +60,8 @@ const description =
     <SectionHeading
       id="DEEP DIVES"
       headingId="featured-title"
-      title="The full project notebooks."
-      intro="Five case studies with enough room for the mechanism, the contribution, the evidence, and the parts that did not work."
+      title="Project notes"
+      intro="Five projects, with notes on the mechanism, my contribution, the results, and what didn’t work."
     />
     <div class="project-list">
       {featured.map((project, index) => (
@@ -82,8 +80,8 @@ const description =
       <SectionHeading
         id="SIDE DRAWER"
         headingId="archive-title"
-        title="Earlier work, still on the bench."
-        intro="Smaller or earlier team projects. Compact does not mean uncredited: the archive keeps the shared-work and evidence boundaries explicit."
+        title="Earlier projects"
+        intro="Smaller or earlier team projects, with credit and limits noted."
       />
       <div class="archive-grid">
         {archive.map((project, index) => (
@@ -102,8 +100,8 @@ const description =
     <SectionHeading
       id="SOURCE CODE"
       headingId="work-contact-title"
-      title="Want to follow the breadcrumbs?"
-      intro="My public GitHub profile is the index for the original repositories behind these records."
+      title="Source code"
+      intro="The original repositories are on GitHub."
     />
     <a
       class="button button--primary"

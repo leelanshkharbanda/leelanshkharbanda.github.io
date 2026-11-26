@@ -1,7 +1,7 @@
 ---
 title: 'Tasveer: A Campus Media Archive'
 question: "How can a campus media society's stories and team roles become an explorable editorial archive?"
-summary: "A coordinated, text-only archive entry for Tasveer's live editorial site, with shared credit and no reused photography."
+summary: "Tasveer's campus media site, with shared credit for editorial, events, and web work."
 recruiterSummary: 'Tasveer is coordinated team work for the media society of IIIT Delhi, combining an editorial website with event-lead and coordinator responsibilities. I contributed to the team effort and coordination rather than claiming sole authorship of the site or its media. The repository documents original HTML, CSS, JavaScript, shared content data, and role credits; the live site organizes photo essays and team stories into THE ROLL and THE CREW. Team size is not verified. This archive is intentionally text-only because repository control does not establish permission to reuse photography or photographer consent.'
 metaDescription: 'Tasveer archive: coordinated campus-media editorial work with a live site, shared role credits, and no reused photography.'
 status: live-demo
@@ -25,13 +25,13 @@ results:
   - claim: 'The editorial site is publicly reachable'
     value: 'HTTP 200 on 2026-11-25'
     evidenceClass: artifact
-    method: "The repository's GitHub Pages URL was requested on the checked date; availability is artifact evidence, not adoption or reliability evidence."
+    method: "Requested the repository's GitHub Pages URL on the checked date."
     source: 'https://leelanshkharbanda.github.io/tasveer/'
 limits:
   - "Repository ownership does not establish copyright permission or photographer consent for the site's media."
   - 'Team size is unverified, and role listings are not treated as a definitive headcount.'
   - 'No audience, adoption, editorial-impact, accessibility, or reliability metric is claimed from live availability alone.'
-nextStep: 'Confirm photographer consent and a complete credit ledger before promoting this entry or reusing any archive media.'
+nextStep: 'Confirm photographer consent and a complete credit ledger before reusing any archive media.'
 diagram: none
 diagramAlt: 'No project image is used; the Tasveer archive is represented by text and a live-site link.'
 diagramCaption: 'Text-only archive entry; society photography and portraits are not republished.'
@@ -47,12 +47,12 @@ Tasveer is the media society of IIIT Delhi, and its site turns campus stories in
 
 ## Contribution and credit
 
-This was coordinated team work. I contributed as an event lead and site coordinator, while creative, coverage, videography, post-production, events, PR, treasury, and web-development roles remain shared credits. Team size is not verified, so the role list is not converted into a headcount. The archive does not imply that I authored every page, photograph, or editorial decision; it records coordination and participation in the collective effort.
+This was coordinated team work. I contributed as an event lead and site coordinator, while creative, coverage, videography, post-production, events, PR, treasury, and web-development roles remain shared credits. Team size isn’t verified, so the role list isn’t a headcount.
 
-## Evidence
+## Source
 
-The repository provides original front-end source, shared content and credit data, setup instructions, and a public GitHub Pages link. The [live site](https://leelanshkharbanda.github.io/tasveer/) returned HTTP 200 on 2026-11-25. That is **artifact/source evidence** of a reachable editorial artifact, not proof of audience size or operational reliability. This portfolio entry is deliberately text-only and links out rather than embedding society media.
+The repository provides the front-end source, shared content and credit data, setup instructions, and a public GitHub Pages link. The [live site](https://leelanshkharbanda.github.io/tasveer/) returned HTTP 200 on 2026-11-25. This portfolio entry is text-only and links out rather than embedding society media.
 
 ## Limits
 
-Repository control does not establish copyright permission or photographer consent for the images, portraits, and archive material. No audience, adoption, editorial-impact, accessibility, or reliability metric is claimed from live availability alone. Before any media is reused or the project receives a deeper visual treatment, the credit ledger and permissions need to be confirmed with the people responsible for the work.
+Repository control doesn’t establish copyright permission or photographer consent for the images, portraits, and archive material. The live link doesn’t say anything about audience or reliability. Before any media is reused, the credit ledger and permissions need to be confirmed with the people responsible for the work.

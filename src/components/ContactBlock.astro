@@ -10,8 +10,8 @@ const { compact = false } = Astro.props;
 
 <div class={`contact-block${compact ? ' contact-block--compact' : ''}`}>
   <div class="contact-block__main">
-    <p class="eyebrow">Start a conversation</p>
-    <a class="contact-block__email" href={`mailto:${site.email}?subject=Portfolio%20inquiry`}>
+    <p class="eyebrow">Email</p>
+    <a class="contact-block__email" href={`mailto:${site.email}?subject=Portfolio`}>
       {site.email}
     </a>
     <button class="text-button copy-email" type="button" data-copy-email={site.email} hidden>

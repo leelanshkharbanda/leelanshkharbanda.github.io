@@ -25,9 +25,8 @@ const description =
       <p class="play-kicker">{site.education} · still asking how it works</p>
       <h1 id="page-title">I like taking the lids off.</h1>
       <p class="about-hero__intro">
-        My work sits between software and hardware: not because every project is a physical device,
-        but because signals, memory, instructions, and telemetry all become more useful when their
-        behavior can be inspected.
+        My projects sit between software and hardware: signals, memory, instructions, and telemetry.
+        I like seeing how they behave.
       </p>
     </div>
     <div class="curiosity-map" aria-hidden="true">
@@ -78,7 +77,7 @@ const description =
           SHOW
         </text>
       </svg>
-      <span class="curiosity-map__note">what changed? show me.</span>
+      <span class="curiosity-map__note">what changed?</span>
     </div>
   </section>
 
@@ -87,7 +86,7 @@ const description =
       id="FIELD NOTES"
       headingId="story-title"
       title="The questions keep changing. The habit doesn’t."
-      intro="I try to make the mechanism visible, then leave a clear trail back to the evidence."
+      intro="I like seeing what changed and keeping the notes close."
     />
     <div class="about-story__grid">
       <div class="prose">
@@ -104,27 +103,17 @@ const description =
           uncertainty, and feedback.
         </p>
         <p>
-          I care about the boundary around a claim as much as the claim itself. A simulation is not
-          a hardware measurement. A team artifact is not sole authorship. A live URL is not proof of
-          adoption. This portfolio keeps those distinctions visible and links each project back to
-          source, tests, releases, reports, or demos wherever the evidence exists.
+          The notes say what was simulated, who did the work, and what’s still uncertain. Each
+          project links to source, tests, or demos where they exist.
         </p>
       </div>
       <aside class="about-principles" aria-label="Working principles">
-        <p class="datum-label">RULES I TAPE TO THE LID</p>
+        <p class="datum-label">HOW I WORK</p>
         <ol>
-          <li>
-            <strong>Model the system.</strong> Make assumptions and boundaries explicit.
-          </li>
-          <li>
-            <strong>Expose the state.</strong> Let people inspect what changes and why.
-          </li>
-          <li>
-            <strong>Show the evidence.</strong> Keep source, tests, and limits close.
-          </li>
-          <li>
-            <strong>Credit the work.</strong> Separate individual, team, and upstream contributions.
-          </li>
+          <li>State the assumptions.</li>
+          <li>Show what changes.</li>
+          <li>Keep source and limits nearby.</li>
+          <li>Credit individual, team, and upstream work.</li>
         </ol>
       </aside>
     </div>
@@ -134,8 +123,8 @@ const description =
     <SectionHeading
       id="FOLLOW A THREAD"
       headingId="threads-title"
-      title="Rather read the work than the About page?"
-      intro="Fair enough. These three projects put the signals, states, and boundaries in concrete terms."
+      title="A few projects"
+      intro="Signals, states, and local-first software."
     />
     <div class="about-thread-grid">
       {threads.map((project) => {
@@ -166,7 +155,7 @@ const description =
         id="BOX OF BITS"
         headingId="toolkit-title"
         title="Tools I reach for."
-        intro="Grouped by how they appear in the project record—not by a proficiency score."
+        intro="Grouped by where they show up in projects."
       />
       <div class="toolkit-grid">
         {toolkit.map((group) => (
@@ -187,8 +176,8 @@ const description =
     <SectionHeading
       id="OFF THE BENCH"
       headingId="leadership-title"
-      title="Another kind of system: people and stories."
-      intro="Editorial coordination is another way to make complex work legible."
+      title="People and stories"
+      intro="I also coordinate Tasveer, IIIT Delhi’s media society."
     />
     <div class="leadership-card">
       <div>
@@ -216,8 +205,8 @@ const description =
     <SectionHeading
       id="SAY HELLO"
       headingId="contact-title"
-      title="Send a question worth following."
-      intro="A weird behavior, a half-finished idea, or a project worth opening up together."
+      title="Say hello."
+      intro="Email is fine."
     />
     <ContactBlock />
   </section>

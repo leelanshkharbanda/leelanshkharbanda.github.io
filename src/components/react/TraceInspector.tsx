@@ -65,12 +65,12 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
     >
       <header className="trace-inspector__header">
         <div>
-          <p className="trace-inspector__eyebrow">Chronos-DSP / evidence ledger</p>
+          <p className="trace-inspector__eyebrow">Chronos-DSP / signal sketch</p>
           <h2 className="trace-inspector__heading" id={headingId}>
-            Trace Inspector
+            Trace sketch
           </h2>
           <p className="trace-inspector__introduction">
-            Follow one fixed, illustrative signal fixture from source geometry to simulated output.
+            One fixed, illustrative signal fixture from source geometry to simulated output.
           </p>
         </div>
         <p className="trace-inspector__evidence-label">{SIMULATION_LABEL}</p>
@@ -81,7 +81,7 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
       <div
         className="trace-inspector__controls"
         role="group"
-        aria-label="Trace stage controls"
+        aria-label="Signal sketch controls"
         aria-busy={!isHydrated}
       >
         <button

@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 test('playground opens with a personal project hook', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('I make small systems');
-  await expect(page.getByRole('link', { name: /Current experiment/ })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: /Latest project/ })).toHaveAttribute(
     'href',
     '/work/chronos-dsp/',
   );
@@ -123,4 +123,33 @@ test('mobile project title precedes its schematic', async ({ page }) => {
   const title = await page.locator('#project-chronos-dsp h3').boundingBox();
   const stage = await page.locator('#project-chronos-dsp .project-card__stage').boundingBox();
   expect(title?.y).toBeLessThan(stage?.y ?? 0);
+});
+
+test('project cards keep diagram captions and evidence inside their bounds', async ({ page }) => {
+  for (const width of [320, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/work/']) {
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      for (const textScale of [100, 200]) {
+        if (textScale === 200) {
+          await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+        }
+        const clipped = await page.locator('.project-card').evaluateAll((cards) =>
+          cards.flatMap((card) => {
+            const bounds = card.getBoundingClientRect();
+            return [
+              ...card.querySelectorAll('.project-visual__caption-text, .project-visual__evidence'),
+            ]
+              .filter((element) => {
+                const rect = element.getBoundingClientRect();
+                return rect.top < bounds.top - 1 || rect.bottom > bounds.bottom + 1;
+              })
+              .map((element) => element.textContent?.trim());
+          }),
+        );
+        expect(clipped, `${route} at ${width}px and ${textScale}% text`).toEqual([]);
+      }
+    }
+  }
 });

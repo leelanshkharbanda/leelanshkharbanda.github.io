@@ -25,7 +25,7 @@ const description =
 
     <header class="resume-header">
       <div>
-        <p class="eyebrow">Résumé · Evidence checked {site.evidenceChecked}</p>
+        <p class="eyebrow">Résumé</p>
         <h1>{site.name}</h1>
         <p class="resume-header__positioning">{site.positioning}</p>
         <p>{site.education}</p>
@@ -45,9 +45,8 @@ const description =
       <h2 id="resume-profile-title">Profile</h2>
       <p>
         ECE undergraduate working across signal processing, computer architecture, hardware-counter
-        telemetry, and local-first software. I build systems and simulations that make technical
-        behavior inspectable, with explicit constraints, source-linked evidence, collaboration
-        credit, and limits.
+        telemetry, and local-first software. I like building small simulations and tools, and
+        keeping notes on how they work.
       </p>
     </section>
 
@@ -85,7 +84,7 @@ const description =
             )}
             <p>{project.data.question}</p>
             <p class="resume-project__stack">{project.data.stack.join(' · ')}</p>
-            <a href={`/work/${project.id}/`}>Case study and evidence →</a>
+            <a href={`/work/${project.id}/`}>Project notes →</a>
           </article>
         );
       })}

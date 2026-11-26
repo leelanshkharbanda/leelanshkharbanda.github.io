@@ -871,7 +871,7 @@ const isSignalDiagram = diagram === 'signal-path' || diagram === 'constellation'
       <span class="project-visual__caption-text">{caption}</span>
       {!preview && <span class="project-visual__rights">Original portfolio schematic</span>}
       {evidenceIds.length > 0 && (
-        <span class="project-visual__evidence">Evidence rows: {evidenceIds.join(' · ')}</span>
+        <span class="project-visual__evidence">Results: {evidenceIds.join(' · ')}</span>
       )}
       {isSignalDiagram && <span class="project-visual__evidence">{SIMULATION_LABEL}</span>}
     </figcaption>

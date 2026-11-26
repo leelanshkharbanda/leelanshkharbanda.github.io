@@ -12,7 +12,7 @@ import { site } from '../data/site';
 const entries = await Promise.all(homepageProjects.map((slug) => getEntry('projects', slug)));
 const projects = requireProjectEntries(homepageProjects, entries);
 const description =
-  'Leelansh Kharbanda’s personal project playground: signal paths, computer architecture, hardware-counter experiments, and local-first tools—including the rough edges.';
+  'Projects by Leelansh Kharbanda: signal paths, computer architecture, hardware-counter experiments, and local-first tools.';
 ---
 
 <BaseLayout title={site.name} description={description}>
@@ -24,17 +24,17 @@ const description =
         <span class="hero-highlight">so I can see what they’re doing.</span>
       </h1>
       <p class="hero-intro">
-        I’m an ECE student who likes signals, tiny instructions, and software that shows its work.
-        This is where I keep the projects I’m opening up, taking apart, and learning from.
+        I’m an ECE student interested in signals, tiny instructions, and local-first software. This
+        is where I keep the projects I’m working on and taking apart.
       </p>
       <a class="hero-project-callout" href="/work/chronos-dsp/">
-        <span>Current experiment</span>
+        <span>Latest project</span>
         <strong>Chronos-DSP: geometry → simulated IQ</strong>
-        <span>See what I built →</span>
+        <span>Project notes →</span>
       </a>
       <div class="hero-actions">
         <a class="button button--primary" data-magnetic href="#selected-work">
-          Open the project playground <span aria-hidden="true">↓</span>
+          Selected projects <span aria-hidden="true">↓</span>
         </a>
         <a class="button button--secondary" data-magnetic href="/about/">
           About me <span aria-hidden="true">→</span>
@@ -55,12 +55,12 @@ const description =
     </div>
 
     <div class="hero-toy-wrap">
-      <p class="toy-sticker">a tiny experiment — go on, move the dots</p>
+      <p class="toy-sticker">a tiny signal sketch — move the dots</p>
       <SignalToy />
     </div>
   </section>
 
-  <nav class="playground-comparison page-shell" aria-label="Compare featured projects">
+  <nav class="playground-comparison page-shell" aria-label="Project comparison">
     {projects.map((project) => (
       <a href={`/work/${project.id}/`}>
         <span>{project.data.title.split(':')[0]}</span>
@@ -75,7 +75,7 @@ const description =
       id="PLAY / 01"
       headingId="work-title"
       title="Things I make so I can see how they tick."
-      intro="Three projects, three ways into the same habit: follow the state, keep the evidence close, and say where the model stops."
+      intro="Three recent projects, with notes on what I tried, what worked, and what didn’t."
     />
     <div class="project-grid">
       {projects.map((project, index) => (
@@ -89,7 +89,7 @@ const description =
     </div>
     <div class="section-actions">
       <a class="arrow-link" href="/work/">
-        Browse all eight project records <span aria-hidden="true">→</span>
+        All projects <span aria-hidden="true">→</span>
       </a>
     </div>
   </section>
@@ -100,7 +100,7 @@ const description =
         id="PLAY / 02"
         headingId="about-preview-title"
         title="Why I keep opening the box."
-        intro="Different projects, one recurring question: what changed inside the system, and how can I show you?"
+        intro="Different projects, same interest: what changed inside the system."
       />
       <div class="about-preview__body">
         <div>
@@ -110,11 +110,10 @@ const description =
             gives me a different hidden process to trace, model, and explain.
           </p>
           <p>
-            I also care about the sticky notes around a claim: who did the work, what was simulated,
-            and what the evidence cannot tell us yet.
+            The notes also say who did the work, what was simulated, and what’s still uncertain.
           </p>
           <a class="arrow-link" href="/about/">
-            More about how I think <span aria-hidden="true">→</span>
+            More about me <span aria-hidden="true">→</span>
           </a>
         </div>
         <ul class="theme-list" aria-label="Recurring project themes">
@@ -133,8 +132,8 @@ const description =
     <SectionHeading
       id="PLAY / 03"
       headingId="contact-title"
-      title="Got a strange little system question?"
-      intro="I like emails that start with the problem, the weird behavior, or the thing you cannot quite explain yet."
+      title="Say hello."
+      intro="Email is fine."
     />
     <ContactBlock />
   </section>

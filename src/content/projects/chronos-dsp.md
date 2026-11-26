@@ -1,9 +1,9 @@
 ---
 title: 'Chronos-DSP: from geometry to simulated IQ'
-question: 'How can ray geometry become an inspectable, deterministic received-signal simulation without implying hardware accuracy?'
-summary: 'A personal Elixir/Phoenix and Rust simulation that turns transmitter, receiver, and wall geometry into multipath QPSK outputs, with a supervised dashboard, headless API, and audited test evidence.'
+question: 'What changes when transmitters, receivers, and walls move around a QPSK signal?'
+summary: 'An Elixir/Phoenix and Rust simulation for moving transmitters, receivers, and walls around a QPSK signal. It includes a dashboard and a headless API.'
 recruiterSummary: 'I built Chronos-DSP as a personal software simulation across an Elixir/Phoenix control plane and Rust NIF data plane. It makes geometric propagation inspectable from scene geometry to simulated QPSK and BER, with deterministic seeds and CI evidence; it does not claim RF calibration or hard-real-time guarantees.'
-metaDescription: 'Chronos-DSP case study: a personal Elixir, Phoenix, and Rust geometric-channel simulation with deterministic QPSK, tests, and explicit limits.'
+metaDescription: 'A personal Elixir, Phoenix, and Rust geometric-channel simulation with deterministic QPSK, tests, and stated limits.'
 status: 'released'
 role: 'individual'
 contribution: 'Designed and implemented the personal geometric-channel simulation, Phoenix/LiveView control plane, Rust NIF and Elixir reference path, deterministic DSP, APIs, exports, and test coverage.'
@@ -23,11 +23,11 @@ links:
   - label: 'v0.3.0 release'
     url: 'https://github.com/leelanshkharbanda/Chronos-DSP/releases/tag/v0.3.0'
     kind: 'release'
-  - label: 'Audited CI run'
+  - label: 'CI run'
     url: 'https://github.com/leelanshkharbanda/Chronos-DSP/actions/runs/45619704945'
     kind: 'tests'
 results:
-  - claim: 'Audited CI snapshot passed the Elixir and Rust suites'
+  - claim: 'CI snapshot passed the Elixir and Rust suites'
     value: '459 tests, 41 properties, and 6 Rust tests; 0 failures'
     evidenceClass: 'artifact'
     method: 'Read the successful CI run for commit c8ec0b0d5882; its log reports 41 properties and 459 tests with zero failures, plus six passing Rust tests.'
@@ -37,7 +37,7 @@ results:
     evidenceClass: 'artifact'
     method: 'Checked the public GitHub Releases page for the published tag and release metadata.'
     source: 'https://github.com/leelanshkharbanda/Chronos-DSP/releases/tag/v0.3.0'
-  - claim: 'Seeded scenes produce inspectable simulated signal outputs'
+  - claim: 'Seeded scenes produce repeatable simulated signal outputs'
     value: 'Complex-baseband IQ, received power, path count, and BER under stated geometry and noise assumptions'
     evidenceClass: 'simulation'
     method: 'Inspected the channel and DSP implementation plus the headless simulate contract; the outputs come from the software model rather than radio captures.'
@@ -47,10 +47,10 @@ limits:
   - 'There is no frequency-selective channel, antenna/link budget, OFDM, or FEC in the documented scope.'
   - 'Dirty-CPU scheduling and reference fallback do not establish hard-real-time deadlines or latency guarantees.'
   - 'Repository screenshots are not reused; portfolio visuals are original diagrams.'
-nextStep: 'Add an opt-in physical link-budget mode with explicit Friis terms and validate selected propagation cases against published reference data before making any RF-accuracy claim.'
+nextStep: 'Add an opt-in link-budget mode and compare a few propagation cases with published reference data.'
 diagram: 'signal-path'
 diagramAlt: 'Original signal-path diagram from scene geometry through multipath channel modeling and QPSK processing to simulated IQ and BER.'
-diagramCaption: 'Chronos-DSP separates geometric path construction from deterministic signal rendering so each modeling assumption remains inspectable.'
+diagramCaption: 'A sketch of scene geometry, multipath, and simulated QPSK output.'
 depth: 'flagship'
 visualRights: 'original'
 checkedOn: '2026-11-25'
@@ -61,7 +61,7 @@ draft: false
 
 Wireless-channel behavior is easy to discuss and difficult to see. A receiver moving past walls changes path length, reflection, blockage, diffraction, transmission loss, and Doppler together; a single BER number hides that sequence. Chronos-DSP started as a personal engineering question: could a small software model make that chain visible and repeatable without requiring radio hardware?
 
-The constraint was evidence discipline. This is a geometric-channel software simulation, not a capture system. Material losses are illustrative, the signal is QPSK over complex baseband samples, and the geometry is deliberately bounded. The useful artifact is therefore an inspectable model with explicit assumptions, deterministic noise, and tests—not a claim that the simulated channel matches a physical environment.
+This is a geometric-channel software simulation, not a capture system. Material losses are illustrative, the signal is QPSK over complex baseband samples, and the geometry is deliberately bounded. The model uses explicit assumptions, deterministic noise, and tests.
 
 The implementation also crosses a language boundary. Phoenix and LiveView provide session control and browser interaction, while Rust handles the numerical DSP path. A pure-Elixir reference renderer makes the numerical contract visible and provides a fallback when the native artifact is unavailable. That split creates a practical systems problem: both implementations must agree on sample order, interpolation, phase rotation, and random-number behavior.
 
@@ -77,34 +77,32 @@ Each browser connection owns a supervised simulation session. LiveView controls 
 
 ## Contribution and credit
 
-This is my personal project. I designed and implemented the geometry-to-signal architecture, the Phoenix/LiveView control plane, the Rust NIF and matching Elixir reference, deterministic DSP, supervised sessions, APIs, exports, and validation work. The portfolio treats the repository, release, tests, and CI logs as the evidence for that contribution rather than inferring scope from screenshots.
+This is my personal project. I designed and implemented the geometry-to-signal architecture, the Phoenix/LiveView control plane, the Rust NIF and matching Elixir reference, deterministic DSP, supervised sessions, APIs, exports, and validation work. The repository, release, tests, and CI logs show the scope of that work.
 
-No team-size field is asserted because the supplied project facts identify Chronos as personal work but do not provide a separate verified team count. The case study also avoids attributing third-party plotting assets or future planned physics work to the current implementation.
+## Source
 
-## Artifact
+The [source repository](https://github.com/leelanshkharbanda/Chronos-DSP) includes [v0.3.0](https://github.com/leelanshkharbanda/Chronos-DSP/releases/tag/v0.3.0). The channel models, DSP backends, supervision, API controllers, and tests are in the documented project layout. The browser dashboard is one interface to the model.
 
-The primary artifact is the [source repository](https://github.com/leelanshkharbanda/Chronos-DSP), with [v0.3.0](https://github.com/leelanshkharbanda/Chronos-DSP/releases/tag/v0.3.0) as the versioned release. A reviewer can trace the channel models, DSP backends, supervision, API controllers, and tests directly from the documented project layout. The browser dashboard is an interface to that source-level model; it is not the only way to inspect the system.
+CI run `45619704945` at commit `c8ec0b0d5882` is the checked snapshot. The release tag and snapshot are reported separately. For local reproduction, the repository provides pinned tool versions, `bin/setup`, `bin/test`, and `bin/smoke`.
 
-The audited evidence point is CI run `45619704945` at commit `c8ec0b0d5882`. The release tag and audited snapshot are reported separately rather than assumed to be identical. For local reproduction, the repository provides pinned tool versions, `bin/setup`, `bin/test`, and `bin/smoke`, covering dependency setup, Elixir and Rust checks, and a fresh-release readiness smoke test.
+## Results
 
-## Results and evidence
+The checked CI snapshot reports **459 tests, 41 properties, and 6 Rust tests, with zero failures**. The Elixir and Rust jobs both passed. These counts describe the checked suites, not physical-channel accuracy or latency.
 
-The audited CI snapshot reports **459 tests, 41 properties, and 6 Rust tests, with zero failures**. The Elixir job and Rust job both concluded successfully. These counts establish the size and status of the checked suites in that snapshot; they do not establish physical-channel accuracy, real-world adoption, or latency.
+The simulation produces repeatable outputs: path geometry, complex IQ samples, received power, and BER for a stated scene, seed, and noise setting. They come from the software model, not radio captures. The release and CI runs are separate implementation checks.
 
-The simulation produces deterministic, inspectable outputs: path geometry, complex IQ samples, received power, and BER for a stated scene, seed, and noise setting. That is simulation evidence. It supports claims about the implemented model and its repeatability, not claims about measured radio performance. The release and CI artifacts are implementation evidence of a different kind, which is why the frontmatter separates them by evidence class.
+Native and reference renderers share a contract, generated properties exercise geometry and packing invariants, and the API exposes the same model outputs used by the interface. The physical assumptions are still limited.
 
-The strongest engineering result is the explicit numerical boundary. Native and reference renderers share a contract, generated properties exercise geometry and packing invariants, and the API exposes the same model outputs used by the interface. This makes the project reviewable as software even where its physical assumptions remain limited.
-
-## Limits and non-claims
+## Limits
 
 Chronos is not calibrated RF software and contains no hardware measurement. The material catalogue and path losses are modeling choices. Diffraction uses a single knife-edge model rather than full uniform theory of diffraction, and the documented scope excludes frequency selectivity, antenna behavior, a complete link budget, OFDM, and forward error correction.
 
-The Phoenix session model and dirty-CPU NIF call do not prove hard-real-time performance. No deadline, worst-case latency, or throughput guarantee is claimed. Likewise, a deterministic seed makes a software run repeatable; it does not make the model empirically accurate.
+The Phoenix session model and dirty-CPU NIF call don’t establish hard-real-time performance, deadline latency, or throughput. A deterministic seed makes a software run repeatable; it doesn’t make the model empirically accurate.
 
 The named-scene store is capped and ephemeral by default, and the public API has documented authentication and rate-limiting gaps. Those constraints matter if the showcase is exposed beyond a single-user evaluation. Repository screenshots are not cleared for reuse, so this portfolio uses an original signal-path diagram instead.
 
-## Reproducibility and next step
+## Reproduction
 
 Start with the repository's `.tool-versions`, run `bin/setup`, and execute `bin/test` to exercise both language suites. Then launch `mix phx.server` and compare the `orbit` and `open_field` scenarios, or call `POST /api/simulate` with a fixed seed and record the returned metrics and DSP snapshot. `bin/smoke --local` checks a fresh local release and NIF-loaded readiness.
 
-The next useful step is not a broader feature list. It is a controlled validation track: make physical link-budget terms opt-in, compare selected propagation cases with published reference data, and publish the assumptions alongside any error comparison. Only after that evidence exists should the portfolio language move from simulation toward physical accuracy.
+A possible next step is a controlled validation track: make physical link-budget terms opt-in, compare a few propagation cases with published reference data, and publish the assumptions alongside any error comparison.
