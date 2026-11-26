@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-01 · Chronos-DSP — Index Object</title>
+<meta name="description" content="A deep-dive record for Chronos-DSP: scene geometry to a deterministic, illustrative received-signal simulation.">
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="plaque" href="../../index.html" aria-label="Leelansh Kharbanda — return to the index cover">
+      <span class="plaque-mark" aria-hidden="true">LK</span>
+      <span class="plaque-name"><strong>Leelansh Kharbanda</strong><small>ECE · IIIT Delhi</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../../index.html#index">Index</a></li>
+        <li><a href="../../index.html#notes">Notes</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <article class="project" aria-labelledby="project-title">
+
+    <header class="project-head">
+      <p class="eyebrow mono"><span class="eyebrow-cluster">INDEX OBJECT</span> <span class="eyebrow-cluster">DEEP DIVE · P-01</span></p>
+      <span class="project-numeral" aria-hidden="true">01</span>
+      <p class="project-kicker mono">PERSONAL PROJECT · RELEASED</p>
+      <h1 id="project-title" aria-label="P-01 · Chronos-DSP: from geometry to simulated IQ — Personal project">Chronos-DSP: from geometry to simulated IQ — Personal project</h1>
+      <p class="project-intro">A personal simulation that makes geometric propagation inspectable from scene geometry to simulated QPSK and BER, with a headless API and test evidence. No RF calibration is claimed.</p>
+    </header>
+
+    <section class="block" aria-labelledby="q-title">
+      <div class="block-head">
+        <h2 id="q-title">Question</h2>
+        <p class="block-note mono">01 / 05</p>
+      </div>
+      <p>How can ray geometry become an inspectable, deterministic received-signal simulation without implying hardware accuracy?</p>
+    </section>
+
+    <section class="block" aria-labelledby="m-title">
+      <div class="block-head">
+        <h2 id="m-title">Mechanism</h2>
+        <p class="block-note mono">MOVING PARTS</p>
+      </div>
+      <p>A scene contains transmitters, receivers and planar walls. The channel layer derives candidate paths — line of sight, image-source reflections with a bounded bounce count, knife-edge diffraction around blocking edges and transmission through walls — each carrying geometry and DSP-relevant fields such as delay, gain and Doppler, with a path cap keeping crowded scenes bounded. Those paths feed a QPSK chain: fractional-delay interpolation, Doppler phase rotation and complex additive Gaussian noise under an explicit seeded generator. A Rust NIF renders on a dirty CPU scheduler while a pure-Elixir reference mirrors the sample-order, interpolation, rotation and RNG contract; LiveView owns the supervised session and a headless JSON/CSV API exposes the same model outputs.</p>
+
+      <figure class="block-figure">
+        <svg viewBox="0 0 640 268" role="img" aria-labelledby="chronos-title chronos-desc">
+          <title id="chronos-title">Original four-stage Chronos-DSP signal-path schematic.</title>
+          <desc id="chronos-desc">A bounded scene holds a transmitter, two walls and a receiver, with a direct path and a dashed reflected path. Below it, four stages run left to right: source with QPSK and a seed, channel with paths and impairment, receiver with decisions and phase, and output with IQ and BER. A stamp reads MODEL BOUNDARY / NOT A RADIO CAPTURE; all values are illustrative.</desc>
+          <g fill="none" stroke="currentColor"><rect x="16" y="16" width="608" height="76"/></g>
+          <line x1="62" y1="72" x2="570" y2="40" stroke="currentColor" stroke-width="2"/>
+          <polyline points="62,72 206,72 386,40 570,40" fill="none" stroke="var(--signal)" stroke-width="2" stroke-dasharray="7 6"/>
+          <circle cx="62" cy="72" r="6" fill="currentColor"/>
+          <circle cx="570" cy="40" r="6" fill="currentColor"/>
+          <rect x="202" y="24" width="8" height="58" fill="currentColor" opacity="0.28"/>
+          <rect x="382" y="24" width="8" height="58" fill="currentColor" opacity="0.28"/>
+          <g font-family="monospace" font-size="12" fill="currentColor">
+            <text x="24" y="34">01 / SCENE GEOMETRY · ILLUSTRATIVE / SEEDED</text>
+            <text x="44" y="100">TX</text>
+            <text x="190" y="100">WALL A</text>
+            <text x="370" y="100">WALL B</text>
+            <text x="556" y="26">RX</text>
+            <text x="226" y="38">CANDIDATE PATHS</text>
+          </g>
+          <g fill="none" stroke="currentColor">
+            <rect x="16" y="132" width="142" height="72"/>
+            <rect x="174" y="132" width="142" height="72"/>
+            <rect x="332" y="132" width="142" height="72"/>
+            <rect x="490" y="132" width="142" height="72"/>
+            <path d="M158 168 H172 M316 168 H330 M474 168 H488" stroke-width="2"/>
+          </g>
+          <g font-family="monospace" font-size="12" fill="currentColor">
+            <text x="26" y="152">TS-01</text><text x="26" y="172">SOURCE</text><text x="26" y="192">QPSK + seed</text>
+            <text x="184" y="152">TS-02</text><text x="184" y="172">CHANNEL</text><text x="184" y="192">paths + impairment</text>
+            <text x="342" y="152">TS-03</text><text x="342" y="172">RECEIVER</text><text x="342" y="192">decisions + phase</text>
+            <text x="500" y="152">TS-04</text><text x="500" y="172">OUTPUT</text><text x="500" y="192">IQ + BER</text>
+          </g>
+          <text x="16" y="244" font-family="monospace" font-size="12" fill="currentColor">MODEL BOUNDARY / NOT A RADIO CAPTURE · ALL VALUES ILLUSTRATIVE</text>
+        </svg>
+        <figcaption class="mono">FIG 01 · Original schematic; geometry and values illustrative, not hardware measurements.</figcaption>
+      </figure>
+
+      <p>This is a personal build. The repository, release, tests and CI logs carry the contribution claim; the two renderers share one numerical contract. No team size is asserted.</p>
+    </section>
+
+    <section class="block" aria-labelledby="e-title">
+      <div class="block-head">
+        <h2 id="e-title">Evidence &amp; source</h2>
+        <p class="block-note mono">ARTIFACT / SOURCE EVIDENCE · SIMULATION RESULT</p>
+      </div>
+      <p>Numbers appear only in this block, with their configuration intact. Checked 2026-11-26; an artifact or a 200 is not a claim about physical accuracy, adoption or reliability.</p>
+      <dl class="ledger">
+        <div class="ledger-row">
+          <dt class="mono">E-01 · Artifact / source evidence</dt>
+          <dd><strong>Audited CI snapshot passed the Elixir and Rust suites.</strong> Value: 459 tests, 41 properties, and 6 Rust tests; 0 failures. Conditions: read the successful CI run for commit c8ec0b0d5882; its log reports 41 properties and 459 tests with zero failures, plus six passing Rust tests.</dd>
+        </div>
+        <div class="ledger-row">
+          <dt class="mono">E-02 · Artifact / source evidence</dt>
+          <dd><strong>A versioned release is available.</strong> Value: v0.3.0. Conditions: checked the public GitHub Releases page for the published tag and release metadata.</dd>
+        </div>
+        <div class="ledger-row">
+          <dt class="mono">E-03 · Simulation result</dt>
+          <dd><strong>Seeded scenes produce inspectable simulated signal outputs.</strong> Value: complex-baseband IQ, received power, path count and BER under stated geometry and noise assumptions. Conditions: inspected the channel and DSP implementation plus the headless simulate contract; outputs come from the software model rather than radio captures.</dd>
+        </div>
+      </dl>
+      <p>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/Chronos-DSP" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/Chronos-DSP#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a>
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="g-title">
+      <div class="block-head">
+        <h2 id="g-title">Guardrail</h2>
+        <p class="block-note mono">LIMITS</p>
+      </div>
+      <p class="guardrail-line">Geometric propagation and material losses are illustrative; the model is not calibrated against RF measurements</p>
+      <ul class="boundary-list">
+        <li>No live, over-the-air or hardware measurement and no external deployment is claimed.</li>
+        <li>There is no frequency-selective channel, antenna or link budget, OFDM, or FEC in the documented scope.</li>
+        <li>Dirty-CPU scheduling and the reference fallback do not establish hard-real-time deadlines or latency guarantees.</li>
+        <li>The named-scene store is capped and ephemeral; the public API has documented authentication and rate-limit gaps.</li>
+        <li>Repository screenshots are not reused; the portfolio visual is an original diagram.</li>
+      </ul>
+    </section>
+
+    <nav class="block route" aria-label="Route and source links">
+      <p class="block-note mono">LINKS &amp; LABEL</p>
+      <ul class="route-list">
+        <li><span class="route-key mono">LANDING LABEL</span><span>P-01 · Chronos-DSP: from geometry to simulated IQ — Personal project</span></li>
+        <li><span class="route-key mono">NOTES</span><a href="https://github.com/leelanshkharbanda/Chronos-DSP#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a></li>
+        <li><span class="route-key mono">SOURCE</span><a href="https://github.com/leelanshkharbanda/Chronos-DSP" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a></li>
+        <li><span class="route-key mono">CHECKED</span><span class="mono">2026-11-26</span></li>
+      </ul>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <p class="mono">INDEX OBJECT · CATALOGUE 01</p>
+    <a href="../../index.html#index">Back to the index <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>

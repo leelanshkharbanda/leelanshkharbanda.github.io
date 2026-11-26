@@ -50,163 +50,85 @@
     </div>
   </section>
 
-  <section class="section" id="projects" aria-labelledby="projects-title">
+  <section class="section index-section" id="index" aria-labelledby="index-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 id="projects-title">Projects</h2>
-        <p class="mono section-count">03 ENTRIES</p>
-      </div>
-
-      <div class="dossier-grid">
-
-        <article class="dossier">
-          <div class="dossier-top">
-            <span class="dossier-no" aria-hidden="true">01</span>
-            <span class="dossier-flag mono">Simulator</span>
-          </div>
-          <h3>Chronos-DSP</h3>
-          <p class="dossier-summary">Wireless propagation simulator with an Elixir/Phoenix control plane and a Rust NIF DSP data plane.</p>
-          <button class="dossier-toggle" type="button" aria-expanded="false" aria-controls="dossier-01"><span class="toggle-label">Open project</span></button>
-          <div class="dossier-panel" id="dossier-01">
-            <figure class="figure">
-              <svg viewBox="0 0 400 220" role="img" aria-labelledby="fig-01-title">
-                <title id="fig-01-title">Channel geometry: a direct line-of-sight path and a dashed image-source reflection between transmitter and receiver around two planar walls.</title>
-                <rect x="150" y="34" width="8" height="76" fill="currentColor" opacity="0.28"/>
-                <rect x="252" y="112" width="8" height="74" fill="currentColor" opacity="0.28"/>
-                <line x1="40" y1="150" x2="360" y2="90" stroke="currentColor" stroke-width="2"/>
-                <polyline points="40,150 154,150 256,112 360,90" fill="none" stroke="var(--signal)" stroke-width="2" stroke-dasharray="7 6"/>
-                <circle cx="40" cy="150" r="7" fill="currentColor"/>
-                <circle cx="360" cy="90" r="7" fill="currentColor"/>
-                <text x="26" y="182" font-size="14" font-family="monospace" fill="currentColor">TX</text>
-                <text x="348" y="74" font-size="14" font-family="monospace" fill="currentColor">RX</text>
-              </svg>
-              <figcaption class="mono">FIG 01</figcaption>
-            </figure>
-            <div class="dossier-notes">
-              <p>A 3D scene of transmitters, receivers and planar walls is driven from LiveView while signal processing runs server-side. The model covers line-of-sight, image-source reflections, knife-edge diffraction, wall transmission, material attenuation and Doppler.</p>
-              <dl class="spec">
-                <div><dt class="mono">DATA PLANE</dt><dd>Rust NIF called via <code>render_rx_block/5</code></dd></div>
-                <div><dt class="mono">SIGNAL</dt><dd>Seeded QPSK + AWGN, reproducible BER</dd></div>
-              </dl>
-              <p><code>render_rx_block/5</code> runs on a dirty CPU scheduler with artifact-magic checking and a deterministic pure-Elixir reference that mirrors sample order, interpolation, rotation and RNG.</p>
-              <p class="scope"><strong>Scope note.</strong> This is a simulator, not a live radio and not a deployed telecom product.</p>
-              <a class="source-link" href="https://github.com/leelanshkharbanda/Chronos-DSP">Source <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
-
-        <article class="dossier">
-          <div class="dossier-top">
-            <span class="dossier-no" aria-hidden="true">02</span>
-            <span class="dossier-flag mono">Live demo</span>
-          </div>
-          <h3>Modulation Studio</h3>
-          <p class="dossier-summary">A browser DSP visualizer for waveforms, FFT magnitude spectra and constellation plots.</p>
-          <button class="dossier-toggle" type="button" aria-expanded="false" aria-controls="dossier-02"><span class="toggle-label">Open project</span></button>
-          <div class="dossier-panel" id="dossier-02">
-            <figure class="figure">
-              <svg viewBox="0 0 400 220" role="img" aria-labelledby="fig-02-title">
-                <title id="fig-02-title">QPSK constellation: four signal points on the I/Q axes with a faint scatter of simulated noise around them.</title>
-                <line x1="200" y1="18" x2="200" y2="202" stroke="currentColor" stroke-width="1"/>
-                <line x1="106" y1="110" x2="294" y2="110" stroke="currentColor" stroke-width="1"/>
-                <g fill="currentColor" opacity="0.3">
-                  <circle cx="131" cy="72" r="2"/><circle cx="149" cy="85" r="2"/><circle cx="145" cy="62" r="2"/>
-                  <circle cx="270" cy="77" r="2"/><circle cx="252" cy="89" r="2"/><circle cx="265" cy="94" r="2"/>
-                  <circle cx="132" cy="146" r="2"/><circle cx="151" cy="134" r="2"/><circle cx="141" cy="157" r="2"/>
-                  <circle cx="269" cy="144" r="2"/><circle cx="251" cy="153" r="2"/><circle cx="263" cy="130" r="2"/>
-                </g>
-                <g fill="var(--signal)">
-                  <circle cx="140" cy="78" r="7"/><circle cx="260" cy="78" r="7"/>
-                  <circle cx="140" cy="142" r="7"/><circle cx="260" cy="142" r="7"/>
-                </g>
-                <text x="286" y="106" font-size="14" font-family="monospace" fill="currentColor">I</text>
-                <text x="207" y="28" font-size="14" font-family="monospace" fill="currentColor">Q</text>
-              </svg>
-              <figcaption class="mono">FIG 02</figcaption>
-            </figure>
-            <div class="dossier-notes">
-              <p>A terminal-style browser instrument: waveforms, spectra and constellations update as you change the channel. Impairments include AWGN, fading, and carrier/phase offset; digital schemes report BER/SER and analog ones report correlation.</p>
-              <dl class="spec">
-                <div><dt class="mono">NAMED SCHEMES</dt><dd>AM DSB-LC/DSB-SC, FM, PM, ASK, FSK, BPSK, QPSK, 16-QAM</dd></div>
-                <div><dt class="mono">RECEIVER</dt><dd>Optional PLL with timing recovery</dd></div>
-              </dl>
-              <p>Analytics are off by default and Do Not Track / Global Privacy Control are honoured. There is a working static-site demo.</p>
-              <p class="scope"><strong>Scope note.</strong> Named schemes only — no hard scheme count is claimed, because repository metadata and the README disagree.</p>
-              <a class="source-link" href="https://leelanshkharbanda.github.io/Modulation-Studio/">Live demo <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
-
-        <article class="dossier">
-          <div class="dossier-top">
-            <span class="dossier-no" aria-hidden="true">03</span>
-            <span class="dossier-flag mono">Simulation</span>
-          </div>
-          <h3>MoE Memory Wall</h3>
-          <p class="dossier-summary">A computer-architecture course project on expert prefetching across the CPU DRAM / HBM boundary.</p>
-          <button class="dossier-toggle" type="button" aria-expanded="false" aria-controls="dossier-03"><span class="toggle-label">Open project</span></button>
-          <div class="dossier-panel" id="dossier-03">
-            <figure class="figure">
-              <svg viewBox="0 0 400 220" role="img" aria-labelledby="fig-03-title">
-                <title id="fig-03-title">Two memory tiers: experts wait in CPU DRAM and are prefetched into HBM ahead of use.</title>
-                <rect x="24" y="46" width="146" height="86" fill="none" stroke="currentColor" stroke-width="2"/>
-                <rect x="230" y="46" width="146" height="86" fill="none" stroke="currentColor" stroke-width="2"/>
-                <line x1="24" y1="70" x2="170" y2="70" stroke="currentColor" stroke-width="1"/>
-                <line x1="230" y1="70" x2="376" y2="70" stroke="currentColor" stroke-width="1"/>
-                <line x1="174" y1="89" x2="352" y2="89" stroke="var(--signal)" stroke-width="3"/>
-                <polygon points="352,89 338,82 338,96" fill="var(--signal)"/>
-                <text x="40" y="112" font-size="14" font-family="monospace" fill="currentColor">CPU DRAM</text>
-                <text x="252" y="112" font-size="14" font-family="monospace" fill="currentColor">HBM</text>
-                <text x="196" y="80" font-size="14" font-family="monospace" fill="var(--signal)">→</text>
-                <text x="150" y="176" font-size="14" font-family="monospace" fill="currentColor">PREFETCH AHEAD OF USE · C = 64</text>
-              </svg>
-              <figcaption class="mono">FIG 03</figcaption>
-            </figure>
-            <div class="dossier-notes">
-              <p>Studied Mixtral-8x7B decode with experts offloaded to CPU DRAM, using LLMSimulator and an SSD-offloading fork. The policy combines a calibrated speculative gate with history fallback, guided replacement, preemption and a feedback throttle.</p>
-              <dl class="spec">
-                <div><dt class="mono">REPORTED RESULT</dt><dd>1.27× at C=64 on TinyMoE prose vs on-demand LRU</dd></div>
-                <div><dt class="mono">TEAM</dt><dd>CA Project 2, Group 24 — group course project</dd></div>
-              </dl>
-              <p>The submitted table reports simulated H100/A100 configurations alongside energy and DRAM→HBM traffic costs.</p>
-              <p class="scope"><strong>Scope note.</strong> Everything is simulation; no GPU measurements and no production deployment. Numbers are reported by the project's simulation with their configuration intact.</p>
-              <a class="source-link" href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project">Source <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="index" aria-labelledby="index-title">
-    <div class="wrap">
+      <span class="anchor-target" id="projects" aria-hidden="true"></span>
       <div class="section-head">
         <h2 id="index-title">Index</h2>
-        <p class="mono section-count">04 ENTRIES</p>
+        <p class="mono section-count">8 PROJECT RECORDS</p>
       </div>
-      <ol class="index-grid">
-        <li class="index-row">
-          <span class="index-no mono" aria-hidden="true">04</span>
-          <div><h3>RISC-V Assembler &amp; Simulator</h3><p>Two-pass RV32I assembler with label resolution and an auditable PC/register execution trace.</p></div>
-          <a class="index-link" href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator">View <span aria-hidden="true">↗</span></a>
-        </li>
-        <li class="index-row">
-          <span class="index-no mono" aria-hidden="true">05</span>
-          <div><h3>HPC_Boost</h3><p>Malware detection from 4-event CPU hardware performance-counter subsets on RaDaR and x86-64 KVM traces.</p></div>
-          <a class="index-link" href="https://github.com/leelanshkharbanda/HPC_Boost">View <span aria-hidden="true">↗</span></a>
-        </li>
-        <li class="index-row">
-          <span class="index-no mono" aria-hidden="true">06</span>
-          <div><h3>Life OS</h3><p>Local-first Tauri 2 desktop app with on-device ONNX inference and LanceDB memory. Unpublished.</p></div>
-          <a class="index-link" href="https://github.com/leelanshkharbanda/Life-Os">View <span aria-hidden="true">↗</span></a>
-        </li>
-        <li class="index-row">
-          <span class="index-no mono" aria-hidden="true">07</span>
-          <div><h3>Tasveer</h3><p>Website for Tasveer, the media society of IIIT Delhi, which he coordinates.</p></div>
-          <a class="index-link" href="https://github.com/leelanshkharbanda/tasveer">View <span aria-hidden="true">↗</span></a>
-        </li>
-      </ol>
+      <p class="shelf-lede">The project shelf · 5 deep dives + 3 archive records</p>
+
+      <div class="index-playhead" aria-hidden="true"></div>
+
+      <div class="index-group">
+        <h3 class="index-group-label mono">DEEP DIVES</h3>
+        <ol class="index-list">
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-01 · Chronos-DSP: from geometry to simulated IQ — Personal project" href="projects/chronos-dsp/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-01</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">Chronos-DSP: from geometry to simulated IQ — Personal project</span></span>
+              <span class="index-flag mono">Released</span>
+            </a>
+          </li>
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-02 · Life OS: local records, adaptive recommendations — Team project · 3 people" href="projects/life-os/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-02</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">Life OS: local records, adaptive recommendations — Team project · 3 people</span></span>
+              <span class="index-flag mono">Prototype</span>
+            </a>
+          </li>
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-03 · Modulation Studio: a browser signal lab — Team project · 2 people" href="projects/modulation-studio/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-03</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">Modulation Studio: a browser signal lab — Team project · 2 people</span></span>
+              <span class="index-flag mono">Live demo</span>
+            </a>
+          </li>
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-04 · HPC-Boost v2: Choosing Four Counters, Then Saying No — Research record · v2 team size unverified" href="projects/hpc-boost-v2/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-04</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">HPC-Boost v2: Choosing Four Counters, Then Saying No — Research record · v2 team size unverified</span></span>
+              <span class="index-flag mono">Research</span>
+            </a>
+          </li>
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-05 · MoE Memory Wall: Prefetching Experts Under an HBM Budget — Group coursework" href="projects/moe-memory-wall/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-05</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">MoE Memory Wall: Prefetching Experts Under an HBM Budget — Group coursework</span></span>
+              <span class="index-flag mono">Coursework</span>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <div class="index-group">
+        <h3 class="index-group-label mono">SIDE DRAWER</h3>
+        <p class="index-group-note">Earlier work, still on the bench.</p>
+        <ol class="index-list" start="6">
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-06 · RISC-V Assembler and Simulator — Team project · 4 people" href="projects/riscv-simulator/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-06</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">RISC-V Assembler and Simulator — Team project · 4 people</span></span>
+              <span class="index-flag mono">Archive</span>
+            </a>
+          </li>
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-07 · University ERP System — Team project · 2 people" href="projects/university-erp/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-07</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">University ERP System — Team project · 2 people</span></span>
+              <span class="index-flag mono">Archive</span>
+            </a>
+          </li>
+          <li class="index-entry">
+            <a class="index-entry__link" aria-label="P-08 · Tasveer: A Campus Media Archive — Team project" href="projects/tasveer/index.html">
+              <span class="index-entry__num mono" aria-hidden="true">P-08</span>
+              <span class="index-entry__title-wrap"><span class="index-entry__title">Tasveer: A Campus Media Archive — Team project</span></span>
+              <span class="index-flag mono">Live demo</span>
+            </a>
+          </li>
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -242,7 +164,7 @@
         </div>
         <div class="about-copy">
           <p>I am an ECE undergraduate at IIIT Delhi working across signal processing, computer architecture, hardware-counter telemetry and local-first tools. The through-line is simple: code that models, measures, or respects the machine underneath.</p>
-          <p>Outside the lab I coordinate Tasveer, the institute's media society. The work here is public and reproducible where it can be; where it is simulated or group-built, the dossiers say so plainly.</p>
+          <p>Outside the lab I coordinate Tasveer, the institute's media society. The work here is public and reproducible where it can be; where it is simulated or group-built, the records say so plainly.</p>
           <p>Engineer is used here as a description of practice, not a job title.</p>
         </div>
       </div>

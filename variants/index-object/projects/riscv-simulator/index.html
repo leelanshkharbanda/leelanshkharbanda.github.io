@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-06 · RISC-V Assembler and Simulator — Team project · 4 people — Index Object</title>
+<meta name="description" content="A compact archive record for a four-person RISC-V assembler and functional simulator with inspectable traces.">
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="plaque" href="../../index.html" aria-label="Leelansh Kharbanda — return to the index cover">
+      <span class="plaque-mark" aria-hidden="true">LK</span>
+      <span class="plaque-name"><strong>Leelansh Kharbanda</strong><small>ECE · IIIT Delhi</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../../index.html#index">Index</a></li>
+        <li><a href="../../index.html#notes">Notes</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <article class="project" aria-labelledby="project-title">
+
+    <header class="project-head">
+      <p class="eyebrow mono"><span class="eyebrow-cluster">INDEX OBJECT</span> <span class="eyebrow-cluster">SIDE DRAWER · P-06</span></p>
+      <span class="project-numeral" aria-hidden="true">06</span>
+      <p class="project-kicker mono">TEAM PROJECT · ARCHIVE</p>
+      <h1 id="project-title" aria-label="P-06 · RISC-V Assembler and Simulator — Team project · 4 people">RISC-V Assembler and Simulator — Team project · 4 people</h1>
+      <p class="project-intro">A four-person Python project that makes an RV32I subset visible through assembly encoding, execution traces and memory dumps. Earlier work, still on the bench.</p>
+    </header>
+
+    <section class="block" aria-labelledby="q-title">
+      <div class="block-head">
+        <h2 id="q-title">Question</h2>
+        <p class="block-note mono">01 / 05</p>
+      </div>
+      <p>How does assembly become an inspectable sequence of register and memory states?</p>
+    </section>
+
+    <section class="block" aria-labelledby="m-title">
+      <div class="block-head">
+        <h2 id="m-title">Mechanism</h2>
+        <p class="block-note mono">MOVING PARTS</p>
+      </div>
+      <p>A two-pass Python assembler resolves labels and encodes the supported R/I/S/B/J instruction types. A functional simulator models 32 registers, byte-addressed 64 KB memory, a program counter and data-memory access, producing a per-instruction trace and a memory dump. The work was shared across four people; no per-module ownership is asserted.</p>
+
+      <figure class="block-figure">
+        <svg viewBox="0 0 640 200" role="img" aria-labelledby="riscv-title riscv-desc">
+          <title id="riscv-title">Original compact RISC-V functional-trace schematic.</title>
+          <desc id="riscv-desc">Assembly instructions addi, addi, add and sw pass through label-to-address resolution and instruction fields such as imm, rs1, funct3, rd and opcode, then through encoding, fetch, decode and execute, ending in a table of program counter, instruction, registers and memory. A stamp reads RV32I SUBSET / FUNCTIONAL TRACE / NOT CYCLE-ACCURATE.</desc>
+          <g fill="none" stroke="currentColor"><rect x="16" y="40" width="608" height="118"/></g>
+          <g font-family="monospace" font-size="11" fill="currentColor">
+            <text x="24" y="30">FUNCTIONAL TRACE / RV32I SUBSET / NOT CYCLE-ACCURATE</text>
+            <text x="26" y="64">addi · addi · add · sw</text>
+            <text x="26" y="90">labels → addresses</text>
+            <text x="26" y="116">imm | rs1 | funct3 | rd | opcode</text>
+            <text x="286" y="64">ENCODING → FETCH → DECODE → EXECUTE</text>
+            <text x="286" y="100">PC | INSTRUCTION | REGISTERS | MEMORY</text>
+            <text x="286" y="126">byte-addressed · 64 KB · 32 registers</text>
+            <text x="26" y="146">RV32I SUBSET / FUNCTIONAL TRACE / NOT CYCLE-ACCURATE</text>
+          </g>
+        </svg>
+        <figcaption class="mono">FIG 01 · Original compact schematic; a functional trace, not a timing model.</figcaption>
+      </figure>
+    </section>
+
+    <section class="block" aria-labelledby="e-title">
+      <div class="block-head">
+        <h2 id="e-title">Evidence &amp; source</h2>
+        <p class="block-note mono">EVIDENCE · CHECKED 2026-11-26</p>
+      </div>
+      <p>One row, with its condition intact. Checked 2026-11-26; repository availability is artifact evidence only.</p>
+      <dl class="ledger">
+        <div class="ledger-row">
+          <dt class="mono">E-01 · Artifact / source evidence</dt>
+          <dd><strong>A public repository is available.</strong> Value: the assembler and simulator source with example programs and traces. Conditions: the public GitHub repository was checked on 2026-11-26; availability is not a correctness, timing or hardware-efficiency claim.</dd>
+        </div>
+      </dl>
+      <p>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a>
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="g-title">
+      <div class="block-head">
+        <h2 id="g-title">Guardrail</h2>
+        <p class="block-note mono">LIMITS</p>
+      </div>
+      <p class="guardrail-line">The implementation supports an RV32I subset, not the complete RV32I base integer instruction set</p>
+      <ul class="boundary-list">
+        <li>The implementation supports an RV32I subset, not the complete RV32I base integer instruction set.</li>
+        <li>Memory is 64 KB; there are no privilege levels, floating-point or compressed instructions.</li>
+        <li>The simulator is not cycle-accurate, so no timing or hardware-efficiency result is claimed.</li>
+        <li>Four people is the verified team size; contribution stays explicitly shared.</li>
+      </ul>
+    </section>
+
+    <nav class="block route" aria-label="Route and source links">
+      <p class="block-note mono">LINKS &amp; LABEL</p>
+      <ul class="route-list">
+        <li><span class="route-key mono">LANDING LABEL</span><span>P-06 · RISC-V Assembler and Simulator — Team project · 4 people</span></li>
+        <li><span class="route-key mono">NOTES</span><a href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a></li>
+        <li><span class="route-key mono">SOURCE</span><a href="https://github.com/leelanshkharbanda/RISC-V-Assembler-and-Simulator" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a></li>
+        <li><span class="route-key mono">CHECKED</span><span class="mono">2026-11-26</span></li>
+      </ul>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <p class="mono">INDEX OBJECT · CATALOGUE 01</p>
+    <a href="../../index.html#index">Back to the index <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>

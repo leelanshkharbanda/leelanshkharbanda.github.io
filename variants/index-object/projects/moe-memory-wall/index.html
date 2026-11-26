@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-05 · MoE Memory Wall: Prefetching Experts Under an HBM Budget — Group coursework — Index Object</title>
+<meta name="description" content="A deep-dive record for MoE Memory Wall: group coursework on training-free expert prediction, HBM caching and prefetching.">
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="plaque" href="../../index.html" aria-label="Leelansh Kharbanda — return to the index cover">
+      <span class="plaque-mark" aria-hidden="true">LK</span>
+      <span class="plaque-name"><strong>Leelansh Kharbanda</strong><small>ECE · IIIT Delhi</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../../index.html#index">Index</a></li>
+        <li><a href="../../index.html#notes">Notes</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <article class="project" aria-labelledby="project-title">
+
+    <header class="project-head">
+      <p class="eyebrow mono"><span class="eyebrow-cluster">INDEX OBJECT</span> <span class="eyebrow-cluster">DEEP DIVE · P-05</span></p>
+      <span class="project-numeral" aria-hidden="true">05</span>
+      <p class="project-kicker mono">GROUP COURSEWORK · COURSEWORK</p>
+      <h1 id="project-title" aria-label="P-05 · MoE Memory Wall: Prefetching Experts Under an HBM Budget — Group coursework">MoE Memory Wall: Prefetching Experts Under an HBM Budget — Group coursework</h1>
+      <p class="project-intro">A group coursework simulation of expert prediction, HBM caching and prefetching across TinyMoE prose/code, Mixtral-calibrated and uniform routing under a constrained memory budget.</p>
+    </header>
+
+    <section class="block" aria-labelledby="q-title">
+      <div class="block-head">
+        <h2 id="q-title">Question</h2>
+        <p class="block-note mono">01 / 05</p>
+      </div>
+      <p>When expert weights exceed HBM capacity, can training-free prediction and prefetching reduce decode stalls without changing routing?</p>
+    </section>
+
+    <section class="block" aria-labelledby="m-title">
+      <div class="block-head">
+        <h2 id="m-title">Mechanism</h2>
+        <p class="block-note mono">MOVING PARTS</p>
+      </div>
+      <p>LLMSimulator had no learned router, so the group supplied routing traces: recorded TinyMoE (a Mixtral topology trained on Tiny Shakespeare and CPython code), a Mixtral-calibrated generator fitted to published temporal-locality statistics, and uniform routing as a null. Causal training-free predictors — a calibrated speculative gate with a history fallback — fed a Python discrete-event timeline with a per-layer LRU HBM cache, one copy link, demand priority, next-layer prefetch, guided replacement, preemptible copies and feedback throttling. Prefetching never changed which experts were routed.</p>
+
+      <figure class="block-figure">
+        <svg viewBox="0 0 640 220" role="img" aria-labelledby="moe-title moe-desc">
+          <title id="moe-title">Original MoE Memory Wall memory-grid schematic.</title>
+          <desc id="moe-desc">A simulated path runs from off-chip experts through a next-layer predictor and prefetch over one copy link into a bounded HBM cache holding LRU and predicted copies, then to decode or stall. It is stamped BATCH-1 DECODE BOUNDARY and TRAFFIC + LATENCY + ENERGY ARE MODEL OUTPUTS.</desc>
+          <g fill="none" stroke="currentColor">
+            <rect x="16" y="46" width="118" height="58"/><rect x="150" y="46" width="118" height="58"/><rect x="284" y="46" width="118" height="58"/><rect x="418" y="46" width="104" height="58"/><rect x="538" y="46" width="86" height="58"/>
+            <path d="M134 75 H148 M268 75 H282 M402 75 H416 M522 75 H536" stroke-width="2"/>
+          </g>
+          <g font-family="monospace" font-size="10" fill="currentColor">
+            <text x="16" y="24">SIMULATED EXPERT-WEIGHT PATH / BATCH-1 DECODE BOUNDARY</text>
+            <text x="24" y="70">OFF-CHIP</text><text x="24" y="86">EXPERTS</text>
+            <text x="158" y="70">NEXT-LAYER</text><text x="158" y="86">PREDICTOR</text>
+            <text x="292" y="70">PREFETCH</text><text x="292" y="86">one copy link</text>
+            <text x="426" y="70">BOUNDED HBM</text><text x="426" y="86">CACHE · CAPACITY C</text>
+            <text x="546" y="70">DECODE</text><text x="546" y="86">/ STALL</text>
+            <text x="24" y="132">causal · training-free · bounded</text>
+            <text x="292" y="132">demand priority · LRU + predicted copies</text>
+            <text x="16" y="176">TRAFFIC + LATENCY + ENERGY ARE MODEL OUTPUTS — NOT MEASURED GPU PERFORMANCE</text>
+          </g>
+        </svg>
+        <figcaption class="mono">FIG 01 · Original schematic; cache capacity and routing predictability decide whether prefetching helps.</figcaption>
+      </figure>
+
+      <p>This was group coursework, not a solo build. "Group 24" is a group identifier rather than a verified headcount, and the project did not build LLMSimulator. Contribution and credit remain shared.</p>
+    </section>
+
+    <section class="block" aria-labelledby="e-title">
+      <div class="block-head">
+        <h2 id="e-title">Evidence &amp; source</h2>
+        <p class="block-note mono">EVIDENCE · CHECKED 2026-11-26</p>
+      </div>
+      <p>Numbers appear only in this block, with their configuration intact. Checked 2026-11-26; the reported figure is a modeled output from an analytical roofline simulation.</p>
+      <dl class="ledger">
+        <div class="ledger-row">
+          <dt class="mono">E-01 · Simulation result</dt>
+          <dd><strong>Prefetching helped at one modeled capacity.</strong> Value: 1.27× at C=64 on TinyMoE-prose against on-demand LRU; uniform routing stayed at 1.00×. Conditions: reported by the project's simulation; an analytical roofline model without DRAM timing, not a measured GPU speedup and not production inference.</dd>
+        </div>
+        <div class="ledger-row">
+          <dt class="mono">E-02 · Architecture evidence</dt>
+          <dd><strong>Routing was supplied by the project, not learned inside it.</strong> Value: recorded TinyMoE traces, a Mixtral-calibrated generator and a uniform null, with causal predictors feeding a discrete-event cache timeline. Conditions: read from source and project notes; prefetching never changed which experts were routed.</dd>
+        </div>
+      </dl>
+      <p>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a>
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="g-title">
+      <div class="block-head">
+        <h2 id="g-title">Guardrail</h2>
+        <p class="block-note mono">LIMITS</p>
+      </div>
+      <p class="guardrail-line">Both simulators are analytical roofline models without DRAM timing, so latency and energy are modeled rather than observed on a GPU</p>
+      <ul class="boundary-list">
+        <li>Both simulators are analytical roofline models without DRAM timing, so latency and energy are modeled rather than observed on a GPU.</li>
+        <li>No measured Mixtral or GPU speedup, no production inference and no sole-authorship claim is made.</li>
+        <li>The project did not build LLMSimulator; the 1.27× figure is quoted only at C=64 on TinyMoE-prose against on-demand LRU.</li>
+        <li>The portfolio visual is an original diagram; no repository screenshots are reused.</li>
+      </ul>
+    </section>
+
+    <nav class="block route" aria-label="Route and source links">
+      <p class="block-note mono">LINKS &amp; LABEL</p>
+      <ul class="route-list">
+        <li><span class="route-key mono">LANDING LABEL</span><span>P-05 · MoE Memory Wall: Prefetching Experts Under an HBM Budget — Group coursework</span></li>
+        <li><span class="route-key mono">NOTES</span><a href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a></li>
+        <li><span class="route-key mono">SOURCE</span><a href="https://github.com/leelanshkharbanda/MoE-Memory-Wall-CA-Project" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a></li>
+        <li><span class="route-key mono">CHECKED</span><span class="mono">2026-11-26</span></li>
+      </ul>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <p class="mono">INDEX OBJECT · CATALOGUE 01</p>
+    <a href="../../index.html#index">Back to the index <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>

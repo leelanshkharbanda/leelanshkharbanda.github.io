@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-02 · Life OS: local records, adaptive recommendations — Team project · 3 people — Index Object</title>
+<meta name="description" content="A deep-dive record for Life OS: a three-person local-records prototype with context-aware, explainable recommendations.">
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="plaque" href="../../index.html" aria-label="Leelansh Kharbanda — return to the index cover">
+      <span class="plaque-mark" aria-hidden="true">LK</span>
+      <span class="plaque-name"><strong>Leelansh Kharbanda</strong><small>ECE · IIIT Delhi</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../../index.html#index">Index</a></li>
+        <li><a href="../../index.html#notes">Notes</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <article class="project" aria-labelledby="project-title">
+
+    <header class="project-head">
+      <p class="eyebrow mono"><span class="eyebrow-cluster">INDEX OBJECT</span> <span class="eyebrow-cluster">DEEP DIVE · P-02</span></p>
+      <span class="project-numeral" aria-hidden="true">02</span>
+      <p class="project-kicker mono">TEAM PROJECT · PROTOTYPE</p>
+      <h1 id="project-title" aria-label="P-02 · Life OS: local records, adaptive recommendations — Team project · 3 people">Life OS: local records, adaptive recommendations — Team project · 3 people</h1>
+      <p class="project-intro">A three-person Tauri 2 prototype that keeps records local, produces embeddings on-device, and makes each recommendation's uncertainty explainable. Model files still have to be provisioned locally.</p>
+    </header>
+
+    <section class="block" aria-labelledby="q-title">
+      <div class="block-head">
+        <h2 id="q-title">Question</h2>
+        <p class="block-note mono">01 / 05</p>
+      </div>
+      <p>How can a desktop prototype keep personal records local while adapting recommendations to context and making uncertainty visible?</p>
+    </section>
+
+    <section class="block" aria-labelledby="m-title">
+      <div class="block-head">
+        <h2 id="m-title">Mechanism</h2>
+        <p class="block-note mono">MOVING PARTS</p>
+      </div>
+      <p>React 19 views call typed Tauri IPC commands into Rust and SQLx over local SQLite. ONNX Runtime produces local embeddings stored in LanceDB. A linear contextual bandit — a UCB path with a Thompson-sampling alternative — returns expected reward, uncertainty, a confidence category, feature contributions, similar experiences and a human-readable explanation.</p>
+
+      <figure class="block-figure">
+        <svg viewBox="0 0 640 224" role="img" aria-labelledby="life-title life-desc">
+          <title id="life-title">Original Life OS desktop-boundary schematic.</title>
+          <desc id="life-desc">A solid desktop-core region connects React UI through Tauri IPC and Rust commands to SQLite, ONNX and LanceDB, then to context and bandit recommendations. A separate dashed region holds required model provisioning and optional exercise lookup and calendar sync, marked NOT FULLY OFFLINE.</desc>
+          <g fill="none" stroke="currentColor"><rect x="16" y="40" width="438" height="150"/><rect x="468" y="40" width="156" height="150" stroke-dasharray="6 5"/></g>
+          <g fill="none" stroke="currentColor"><rect x="32" y="66" width="92" height="40"/><rect x="146" y="66" width="92" height="40"/><rect x="260" y="66" width="92" height="40"/><rect x="120" y="128" width="88" height="40"/><rect x="220" y="128" width="88" height="40"/><rect x="320" y="128" width="88" height="40"/><path d="M124 86 H144 M238 86 H258 M304 86 H330 M166 106 V126 M300 106 V126 M364 148 H410" stroke-width="2"/></g>
+          <g font-family="monospace" font-size="11" fill="currentColor">
+            <text x="24" y="32">LOCAL DESKTOP CORE / TAURI 2 BOUNDARY</text>
+            <text x="40" y="90">REACT UI</text><text x="154" y="90">TAURI IPC</text><text x="268" y="90">RUST COMMANDS</text>
+            <text x="128" y="152">SQLITE</text><text x="228" y="152">ONNX</text><text x="328" y="152">LANCEDB</text>
+            <text x="410" y="152">CONTEXT + BANDIT</text>
+            <text x="476" y="60">SETUP / NETWORK</text><text x="476" y="88">model provisioning (required)</text>
+            <text x="476" y="114">exercise lookup (optional)</text><text x="476" y="138">calendar sync (optional)</text>
+            <text x="476" y="172">NOT FULLY OFFLINE</text>
+          </g>
+        </svg>
+        <figcaption class="mono">FIG 01 · Original schematic; required model setup and optional integrations sit outside the local core.</figcaption>
+      </figure>
+
+      <p>This was a three-person prototype. Core records and inference stay inside the desktop boundary; setup and optional integrations are separate. Contribution was shared — no per-module ownership or collaborator names are asserted.</p>
+    </section>
+
+    <section class="block" aria-labelledby="e-title">
+      <div class="block-head">
+        <h2 id="e-title">Evidence &amp; source</h2>
+        <p class="block-note mono">EVIDENCE · CHECKED 2026-11-26</p>
+      </div>
+      <p>Numbers are absent here: this record describes an architecture, not a measured recommendation result. Checked 2026-11-26; a repository is not a release or a user study.</p>
+      <dl class="ledger">
+        <div class="ledger-row">
+          <dt class="mono">E-01 · Artifact / source evidence</dt>
+          <dd><strong>A public repository is available.</strong> Value: the Tauri 2, React 19, TypeScript and Rust source tree. Conditions: the public GitHub repository was checked on 2026-11-26; availability is not a release, a user study, or a usability result.</dd>
+        </div>
+        <div class="ledger-row">
+          <dt class="mono">E-02 · Architecture evidence</dt>
+          <dd><strong>The local record-to-explanation path is present in source.</strong> Value: SQLite records, ONNX embeddings in LanceDB, and a contextual bandit with UCB and Thompson-sampling paths returning reward, uncertainty and an explanation. Conditions: read from the source and project notes; this is an architecture description, not a measured recommendation-quality result.</dd>
+        </div>
+      </dl>
+      <p>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/Life-Os" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/Life-Os#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a>
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="g-title">
+      <div class="block-head">
+        <h2 id="g-title">Guardrail</h2>
+        <p class="block-note mono">LIMITS</p>
+      </div>
+      <p class="guardrail-line">No released build or sustained user study is evidenced, so usability, recommendation quality, and productivity effects remain unknown</p>
+      <ul class="boundary-list">
+        <li>No released build or sustained user study is evidenced; usability, productivity and recommendation quality are not claimed.</li>
+        <li>"Zero cloud dependency" is not claimed: model provisioning is required, and exercise lookup and calendar sync are optional integrations, so the prototype is not fully offline.</li>
+        <li>Three people is the verified team size; collaborator names and per-module ownership are not asserted.</li>
+        <li>The portfolio visual is an original diagram; no repository screenshots are reused.</li>
+      </ul>
+    </section>
+
+    <nav class="block route" aria-label="Route and source links">
+      <p class="block-note mono">LINKS &amp; LABEL</p>
+      <ul class="route-list">
+        <li><span class="route-key mono">LANDING LABEL</span><span>P-02 · Life OS: local records, adaptive recommendations — Team project · 3 people</span></li>
+        <li><span class="route-key mono">NOTES</span><a href="https://github.com/leelanshkharbanda/Life-Os#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a></li>
+        <li><span class="route-key mono">SOURCE</span><a href="https://github.com/leelanshkharbanda/Life-Os" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a></li>
+        <li><span class="route-key mono">CHECKED</span><span class="mono">2026-11-26</span></li>
+      </ul>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <p class="mono">INDEX OBJECT · CATALOGUE 01</p>
+    <a href="../../index.html#index">Back to the index <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>

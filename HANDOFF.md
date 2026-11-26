@@ -58,6 +58,24 @@ All four: one h1, 3 case studies, branded 404, no external runtime requests or f
 
 Open `https://leelanshkharbanda.github.io/variants/` to choose. The original v2 instrument-stage build remains the root site.
 
+## Expanded Index Object (added 2026-11-26)
+
+`variants/index-object/` is now a complete portfolio: the original abstract cover plus eight local project pages under `projects/<slug>/`. Each page uses the question → mechanism → evidence → guardrail → route structure, verified credit labels, original diagrams, verbatim limits, and source links. The eight-entry index is the single canonical project list; the old three dossiers are gone. Two CSS-only interactions were borrowed from award-site research (a scroll-linked playhead readout and letter-spread on non-nav titles with focus parity); six heavier patterns were rejected. Copy is deliberately nonchalant.
+
+Final build council: art director 9.7, visitor 9.5, frontend 9.9, accessibility 9.6 — all >=9.5. The last low diagram-label residual was fixed and re-measured. Screenshots: `.scratch/elevation-shots/index-object-expansion/`. Source notes: `research/index-object-expansion-brief.md`, `research/index-object-content-spec.md`, `research/index-object-interactions.md`. Wayfinder map: issue #20.
+
+The supplied `info/` folder was used as content only. Its HTML is not copied, linked, served, or committed; `info/` is gitignored along with `.DS_Store`.
+
+Root v2 is intentionally unchanged (council decision on promotion ticket #28). To promote Index Object to the root later, first preserve the current root, then copy the variant over it:
+
+```
+mkdir -p variants/instrument-stage
+cp index.html 404.html variants/instrument-stage/
+cp -R css js variants/instrument-stage/
+rsync -a variants/index-object/ ./
+git add -A && git commit -m "promote: Index Object to root" && git push
+```
+
 ## Editing locally
 
 Open `index.html` directly, or serve the folder with any static server. The site needs no build step. Push to `main` to publish.

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-03 · Modulation Studio: a browser signal lab — Team project · 2 people — Index Object</title>
+<meta name="description" content="A deep-dive record for Modulation Studio: a two-person browser signal lab with simulated channel effects and receiver recovery.">
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="plaque" href="../../index.html" aria-label="Leelansh Kharbanda — return to the index cover">
+      <span class="plaque-mark" aria-hidden="true">LK</span>
+      <span class="plaque-name"><strong>Leelansh Kharbanda</strong><small>ECE · IIIT Delhi</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../../index.html#index">Index</a></li>
+        <li><a href="../../index.html#notes">Notes</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <article class="project" aria-labelledby="project-title">
+
+    <header class="project-head">
+      <p class="eyebrow mono"><span class="eyebrow-cluster">INDEX OBJECT</span> <span class="eyebrow-cluster">DEEP DIVE · P-03</span></p>
+      <span class="project-numeral" aria-hidden="true">03</span>
+      <p class="project-kicker mono">TEAM PROJECT · LIVE DEMO</p>
+      <h1 id="project-title" aria-label="P-03 · Modulation Studio: a browser signal lab — Team project · 2 people">Modulation Studio: a browser signal lab — Team project · 2 people</h1>
+      <p class="project-intro">A two-person static web lab that simulates analog and digital modulation, applies noise and fading, recovers signals, and exposes constellations and error metrics in the browser.</p>
+    </header>
+
+    <section class="block" aria-labelledby="q-title">
+      <div class="block-head">
+        <h2 id="q-title">Question</h2>
+        <p class="block-note mono">01 / 05</p>
+      </div>
+      <p>How can a browser make modulation, channel impairment, and receiver recovery inspectable in one interactive signal path?</p>
+    </section>
+
+    <section class="block" aria-labelledby="m-title">
+      <div class="block-head">
+        <h2 id="m-title">Mechanism</h2>
+        <p class="block-note mono">MOVING PARTS</p>
+      </div>
+      <p>A baseband message and carrier parameters feed the selected modulator. A software channel applies adjustable SNR, fading and receiver offsets. Digital schemes integrate over symbol intervals, decide and compare against retained bits to produce BER/SER; analog schemes report correlation. An optional bounded adaptive receiver estimates phase, frequency and timing. The signal core is separated from the UI for testing.</p>
+
+      <figure class="block-figure">
+        <svg viewBox="0 0 640 236" role="img" aria-labelledby="mod-title mod-desc">
+          <title id="mod-title">Original three-panel QPSK constellation schematic for Modulation Studio.</title>
+          <desc id="mod-desc">Three fixed-seed panels read SOURCE / QPSK, CHANNEL / IMPAIRED and RECEIVER / DECISIONS, each with 32 points on I/Q axes. The caption states CONCEPTUAL SIGNAL VIEWS / NOT CHRONOS-DSP RECORDED OUTPUT.</desc>
+          <g fill="none" stroke="currentColor"><rect x="16" y="34" width="188" height="168"/><rect x="226" y="34" width="188" height="168"/><rect x="436" y="34" width="188" height="168"/></g>
+          <g fill="none" stroke="currentColor" opacity="0.5"><path d="M110 50 V186 M32 118 H188 M320 50 V186 M242 118 H398 M530 50 V186 M452 118 H608"/></g>
+          <g fill="currentColor">
+            <circle cx="82" cy="90" r="3"/><circle cx="138" cy="90" r="3"/><circle cx="82" cy="146" r="3"/><circle cx="138" cy="146" r="3"/>
+            <circle cx="290" cy="88" r="3"/><circle cx="350" cy="96" r="3"/><circle cx="296" cy="150" r="3"/><circle cx="346" cy="142" r="3"/>
+            <circle cx="502" cy="94" r="3"/><circle cx="558" cy="90" r="3"/><circle cx="506" cy="142" r="3"/><circle cx="556" cy="146" r="3"/>
+          </g>
+          <path d="M204 118 H224 M414 118 H434" stroke="currentColor" stroke-width="2" fill="none"/>
+          <g font-family="monospace" font-size="11" fill="currentColor">
+            <text x="24" y="26">SOURCE / QPSK · FIXED SEED / 32 POINTS</text>
+            <text x="234" y="26">CHANNEL / IMPAIRED · FIXED SEED</text>
+            <text x="444" y="26">RECEIVER / DECISIONS · FIXED SEED</text>
+            <text x="24" y="218">I</text><text x="178" y="218">Q</text>
+            <text x="16" y="232">CONCEPTUAL SIGNAL VIEWS / NOT CHRONOS-DSP RECORDED OUTPUT</text>
+          </g>
+        </svg>
+        <figcaption class="mono">FIG 01 · Original schematic; points are simulated from fixed seeds, not measured signals.</figcaption>
+      </figure>
+
+      <p>This was a two-person static web lab. The signal core is separated from the UI so it can be tested directly. Contribution was shared; no sole authorship or individual module ownership is claimed.</p>
+    </section>
+
+    <section class="block" aria-labelledby="e-title">
+      <div class="block-head">
+        <h2 id="e-title">Evidence &amp; source</h2>
+        <p class="block-note mono">EVIDENCE · CHECKED 2026-11-26</p>
+      </div>
+      <p>Numbers are absent here: signal views and error metrics come from a fixed-seed software model. Checked 2026-11-26; a reachable URL is not a fresh deployment claim.</p>
+      <dl class="ledger">
+        <div class="ledger-row">
+          <dt class="mono">E-01 · Artifact / source evidence</dt>
+          <dd><strong>The live lab URL is reachable.</strong> Value: HTTP 200 on 2026-11-25 and again on 2026-11-26. Conditions: the GitHub Pages URL was requested on both dates. The latest Pages workflow failed at artifact lookup, so a 200 is not described as a successful fresh deployment.</dd>
+        </div>
+        <div class="ledger-row">
+          <dt class="mono">E-02 · Simulation result</dt>
+          <dd><strong>Constellation and error-metric views come from the software model.</strong> Value: fixed-seed symbol streams, simulated channel impairment, receiver decisions, BER/SER for digital schemes and correlation for analog schemes. Conditions: read from the implementation and tests; these are simulations, not over-the-air or hardware measurements.</dd>
+        </div>
+      </dl>
+      <p>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/Modulation-Studio" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/Modulation-Studio#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a>
+        <a class="block-link" href="https://leelanshkharbanda.github.io/Modulation-Studio/" target="_blank" rel="noopener noreferrer">Try live demo ↗</a>
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="g-title">
+      <div class="block-head">
+        <h2 id="g-title">Guardrail</h2>
+        <p class="block-note mono">LIMITS</p>
+      </div>
+      <p class="guardrail-line">All channel effects and recovered signals are software simulations; no over-the-air or hardware measurement is claimed</p>
+      <ul class="boundary-list">
+        <li>All channel effects and recovered signals are software simulations; no over-the-air or hardware measurement is claimed.</li>
+        <li>No learning outcome, adoption, cross-browser correctness or fresh-deployment result follows from a reachable URL or a failing Pages workflow.</li>
+        <li>The adaptive receiver is a bounded simulation aid, not a production synchronizer.</li>
+        <li>Two people is the verified team size; the portfolio visual is an original diagram, not recorded output from another project.</li>
+      </ul>
+    </section>
+
+    <nav class="block route" aria-label="Route and source links">
+      <p class="block-note mono">LINKS &amp; LABEL</p>
+      <ul class="route-list">
+        <li><span class="route-key mono">LANDING LABEL</span><span>P-03 · Modulation Studio: a browser signal lab — Team project · 2 people</span></li>
+        <li><span class="route-key mono">NOTES</span><a href="https://github.com/leelanshkharbanda/Modulation-Studio#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a></li>
+        <li><span class="route-key mono">SOURCE</span><a href="https://github.com/leelanshkharbanda/Modulation-Studio" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a></li>
+        <li><span class="route-key mono">LIVE DEMO</span><a href="https://leelanshkharbanda.github.io/Modulation-Studio/" target="_blank" rel="noopener noreferrer">Try live demo ↗</a></li>
+        <li><span class="route-key mono">CHECKED</span><span class="mono">2026-11-26</span></li>
+      </ul>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <p class="mono">INDEX OBJECT · CATALOGUE 01</p>
+    <a href="../../index.html#index">Back to the index <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>

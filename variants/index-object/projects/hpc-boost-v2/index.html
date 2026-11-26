@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-04 · HPC-Boost v2: Choosing Four Counters, Then Saying No — Research record · v2 team size unverified — Index Object</title>
+<meta name="description" content="A deep-dive research record for HPC-Boost v2: fixed four-counter subsets, grouped validation and the negative per-binary conditioning result.">
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="plaque" href="../../index.html" aria-label="Leelansh Kharbanda — return to the index cover">
+      <span class="plaque-mark" aria-hidden="true">LK</span>
+      <span class="plaque-name"><strong>Leelansh Kharbanda</strong><small>ECE · IIIT Delhi</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../../index.html#index">Index</a></li>
+        <li><a href="../../index.html#notes">Notes</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <article class="project" aria-labelledby="project-title">
+
+    <header class="project-head">
+      <p class="eyebrow mono"><span class="eyebrow-cluster">INDEX OBJECT</span> <span class="eyebrow-cluster">DEEP DIVE · P-04</span></p>
+      <span class="project-numeral" aria-hidden="true">04</span>
+      <p class="project-kicker mono">RESEARCH RECORD · RESEARCH</p>
+      <h1 id="project-title" aria-label="P-04 · HPC-Boost v2: Choosing Four Counters, Then Saying No — Research record · v2 team size unverified">HPC-Boost v2: Choosing Four Counters, Then Saying No — Research record · v2 team size unverified</h1>
+      <p class="project-intro">A version-qualified research case study of fixed-subset counter selection, grouped validation, and the decision not to add a learned routing layer.</p>
+    </header>
+
+    <section class="block" aria-labelledby="q-title">
+      <div class="block-head">
+        <h2 id="q-title">Question</h2>
+        <p class="block-note mono">01 / 05</p>
+      </div>
+      <p>Can four CPU performance-counter events separate malware from benign workloads without leaking binary identity into validation?</p>
+    </section>
+
+    <section class="block" aria-labelledby="m-title">
+      <div class="block-head">
+        <h2 id="m-title">Mechanism</h2>
+        <p class="block-note mono">MOVING PARTS</p>
+      </div>
+      <p>Thirteen guest PMU events were cycled in separate-boot groups of at most four, anchored on cycles. Six marginal statistics per event gave 78 features, or 24 per four-event subset. All C(13,4) = 715 subsets were trained with an XGBoost detector of 100 trees at depth 4. Inner cross-validation selected the subset and tuned the threshold at TPR 0.95 while five outer folds held out whole binaries. A routing ladder compared one global subset against per-family, per-binary and per-run oracles; held-out binaries never chose the subset.</p>
+
+      <figure class="block-figure">
+        <svg viewBox="0 0 640 264" role="img" aria-labelledby="hpc-title hpc-desc">
+          <title id="hpc-title">Original V2 fixed-subset experiment ledger for HPC-Boost v2.</title>
+          <desc id="hpc-desc">Five stages run left to right: PMU traces, event groups of at most four, subsets used in training only, one fixed selector, and held-out whole binaries. A stamp reads NO RUN-LEVEL LEAKAGE. A per-binary oracle branch ends at a gate reading NEGATIVE CONDITIONING RESULT / do not add a learned routing layer.</desc>
+          <g fill="none" stroke="currentColor">
+            <rect x="16" y="44" width="112" height="64"/><rect x="140" y="44" width="112" height="64"/><rect x="264" y="44" width="112" height="64"/><rect x="388" y="44" width="112" height="64"/><rect x="512" y="44" width="112" height="64"/>
+            <path d="M128 76 H138 M252 76 H262 M376 76 H386 M500 76 H510" stroke-width="2"/>
+            <rect x="264" y="158" width="356" height="56" stroke-dasharray="6 5"/>
+            <path d="M444 108 V156" stroke-width="2"/>
+          </g>
+          <g font-family="monospace" font-size="11" fill="currentColor">
+            <text x="16" y="26">V2 / FIXED-SUBSET EXPERIMENT LEDGER · GROUP BY BINARY</text>
+            <text x="24" y="70">01</text><text x="24" y="90">PMU TRACES</text>
+            <text x="148" y="70">02</text><text x="148" y="90">EVENT GROUPS ≤ 4</text>
+            <text x="272" y="70">03</text><text x="272" y="90">SUBSETS</text><text x="272" y="104">training only</text>
+            <text x="396" y="70">04</text><text x="396" y="90">FIXED SET</text><text x="396" y="104">one selector</text>
+            <text x="520" y="70">05</text><text x="520" y="90">HELD OUT</text><text x="520" y="104">whole binaries</text>
+            <text x="272" y="180">PER-BINARY ORACLE GATE</text>
+            <text x="272" y="200">NEGATIVE CONDITIONING RESULT / do not add a learned routing layer</text>
+            <text x="16" y="132">NO RUN-LEVEL LEAKAGE · CORPUS-SPECIFIC DECISION</text>
+          </g>
+        </svg>
+        <figcaption class="mono">FIG 01 · Original schematic; the per-binary branch ends at the negative conditioning gate.</figcaption>
+      </figure>
+
+      <p>This is a version-qualified research record. The two-person resume line is version-unspecified and the imported earlier report names different authors, so no team size is applied to v2 or to the repository. Contribution is described as shared team work.</p>
+    </section>
+
+    <section class="block" aria-labelledby="e-title">
+      <div class="block-head">
+        <h2 id="e-title">Evidence &amp; source</h2>
+        <p class="block-note mono">EVIDENCE · CHECKED 2026-11-26</p>
+      </div>
+      <p>Numbers appear only in this block, with their configuration intact. Checked 2026-11-26; figures are corpus-specific and are not a deployed-detector result.</p>
+      <dl class="ledger">
+        <div class="ledger-row">
+          <dt class="mono">E-01 · Mixed evidence</dt>
+          <dd><strong>A version-qualified corpus result is reported.</strong> Value: 45 binaries / 225 runs, F1 0.889, balanced accuracy 0.886, FPR 0.174. Conditions: five outer folds held out whole binaries; one detector family (XGBoost, 100 trees, depth 4) and one operating point (threshold tuned at TPR 0.95) on a corpus of 22 malware binaries from only Tsunami and Kaiji families.</dd>
+        </div>
+        <div class="ledger-row">
+          <dt class="mono">E-02 · Simulation result</dt>
+          <dd><strong>Per-binary conditioning added almost nothing.</strong> Value: +0.0045 balanced accuracy from the per-binary oracle against one global subset. Conditions: corpus-specific; the decision was not to build a learned routing layer.</dd>
+        </div>
+      </dl>
+      <p>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/HPC_Boost" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a>
+        <a class="block-link" href="https://github.com/leelanshkharbanda/HPC_Boost#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a>
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="g-title">
+      <div class="block-head">
+        <h2 id="g-title">Guardrail</h2>
+        <p class="block-note mono">LIMITS</p>
+      </div>
+      <p class="guardrail-line">The corpus contains 22 malware binaries from only Tsunami and Kaiji families, so the negative conditioning result is corpus-specific</p>
+      <ul class="boundary-list">
+        <li>The corpus contains 22 malware binaries from only Tsunami and Kaiji families, so the negative conditioning result is corpus-specific.</li>
+        <li>This is not a deployed detector. The selected subset varied across folds; only one detector family and one operating point were used.</li>
+        <li>The imported earlier report is a distinct history; no two-person claim is applied to v2 or the whole repository.</li>
+        <li>Corpus figures are quoted with their method intact and are not presented as a general malware-detection result.</li>
+      </ul>
+    </section>
+
+    <nav class="block route" aria-label="Route and source links">
+      <p class="block-note mono">LINKS &amp; LABEL</p>
+      <ul class="route-list">
+        <li><span class="route-key mono">LANDING LABEL</span><span>P-04 · HPC-Boost v2: Choosing Four Counters, Then Saying No — Research record · v2 team size unverified</span></li>
+        <li><span class="route-key mono">NOTES</span><a href="https://github.com/leelanshkharbanda/HPC_Boost#readme" target="_blank" rel="noopener noreferrer">Open project notes →</a></li>
+        <li><span class="route-key mono">SOURCE</span><a href="https://github.com/leelanshkharbanda/HPC_Boost" target="_blank" rel="noopener noreferrer">Source ↗ (opens in a new tab)</a></li>
+        <li><span class="route-key mono">CHECKED</span><span class="mono">2026-11-26</span></li>
+      </ul>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <p class="mono">INDEX OBJECT · CATALOGUE 01</p>
+    <a href="../../index.html#index">Back to the index <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+</body>
+</html>
