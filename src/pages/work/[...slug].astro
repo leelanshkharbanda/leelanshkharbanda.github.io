@@ -103,7 +103,9 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
               output.
             </p>
           </div>
+          <!-- html-validate-disable void-style -->
           <TraceInspector client:idle />
+          <!-- html-validate-enable void-style -->
           <details class="trace-static-details">
             <summary>Stage table</summary>
             <div class="table-scroll" tabindex="0" aria-label="Signal stage table">

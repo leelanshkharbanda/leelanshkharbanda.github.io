@@ -1444,6 +1444,7 @@ html[data-motion='reduced'] .motion-toggle {
   border: 1px solid var(--dark-secondary);
   background: color-mix(in srgb, var(--ink) 92%, white);
   color: var(--paper);
+  color-scheme: dark;
 }
 
 .trace-inspector__header {
@@ -1500,6 +1501,7 @@ html[data-motion='reduced'] .motion-toggle {
 .trace-inspector__controls {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--dark-secondary);
@@ -1525,6 +1527,36 @@ html[data-motion='reduced'] .motion-toggle {
 }
 
 .trace-inspector__controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.trace-inspector__scrubber {
+  display: grid;
+  flex: 1 1 16rem;
+  min-width: min(16rem, 100%);
+  max-width: min(28rem, 100%);
+  gap: 0.45rem;
+  color: var(--dark-secondary);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+}
+
+.trace-inspector__scrubber-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.trace-inspector__scrubber input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  accent-color: var(--dark-signal);
+  cursor: pointer;
+}
+
+.trace-inspector__scrubber input:disabled {
   cursor: not-allowed;
   opacity: 0.42;
 }

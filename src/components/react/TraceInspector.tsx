@@ -42,11 +42,11 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
     setIsHydrated(true);
   }, []);
 
-  function moveToStage(nextIndex: number) {
+  function moveToStage(nextIndex: number, announce = true) {
     const boundedIndex = clampStageIndex(nextIndex);
     const nextStage = SIGNAL_STAGES[boundedIndex]!;
     setStageIndex(boundedIndex);
-    setAnnouncement(`${formatStagePosition(boundedIndex)}. ${nextStage.output}.`);
+    setAnnouncement(announce ? `${formatStagePosition(boundedIndex)}. ${nextStage.output}.` : '');
   }
 
   function resetTrace() {
@@ -108,6 +108,24 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
         >
           Reset
         </button>
+        <label className="trace-inspector__scrubber">
+          <span className="trace-inspector__scrubber-heading">
+            <span>Signal stage</span>
+            <span aria-hidden="true">{formatStagePosition(stageIndex)}</span>
+          </span>
+          <input
+            data-trace-scrubber
+            type="range"
+            min={0}
+            max={SIGNAL_STAGES.length - 1}
+            step={1}
+            value={stageIndex}
+            disabled={!isHydrated}
+            aria-valuetext={formatStagePosition(stageIndex)}
+            aria-controls={panelId}
+            onChange={(event) => moveToStage(Number(event.currentTarget.value), false)}
+          />
+        </label>
       </div>
 
       {!isHydrated && (
@@ -141,7 +159,16 @@ export default function TraceInspector({ id = 'chronos-trace-inspector' }: Trace
         })}
       </ol>
 
-      <p className="trace-inspector__status" aria-live="polite" aria-atomic="true">
+      <p className="trace-inspector__status">
+        {formatStagePosition(stageIndex)}. {stage.output}.
+      </p>
+      <p
+        className="sr-only"
+        data-trace-announcement
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {announcement}
       </p>
 

@@ -69,6 +69,11 @@ test('every route preserves core content without JavaScript', async ({ browser }
     /trace-inspector__path-node--active/,
   );
   await expect(page.locator('.trace-inspector__readout-heading')).toContainText('Source');
+  await expect(page.getByRole('slider', { name: 'Signal stage' })).toBeDisabled();
+  await expect(page.getByRole('slider', { name: 'Signal stage' })).toHaveValue('0');
+  await expect(
+    page.getByText('Showing the first stage statically until controls load.'),
+  ).toBeVisible();
   await page.getByText('Stage table', { exact: true }).click();
   await expect(page.locator('.trace-static-details tbody tr')).toHaveCount(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
@@ -249,6 +254,62 @@ test('signal sketch advances, reports, and resets without autoplay', async ({ pa
   await expect(inspector).toHaveAttribute('data-stage', 'receiver');
   await reset.click();
   await expect(inspector).toHaveAttribute('data-stage', 'source');
+});
+
+test('trace scrubber keeps controls and evidence synchronized', async ({ page }) => {
+  await page.goto('/work/chronos-dsp/');
+  const inspector = page.locator('.trace-inspector__root');
+  const scrubber = page.getByRole('slider', { name: 'Signal stage' });
+  const next = page.getByRole('button', { name: 'Next', exact: true });
+  const previous = page.getByRole('button', { name: 'Previous', exact: true });
+  const reset = page.getByRole('button', { name: 'Reset', exact: true });
+  const announcement = page.locator('[data-trace-announcement]');
+
+  await inspector.scrollIntoViewIfNeeded();
+  await expect(scrubber).toBeEnabled();
+  await expect(page.locator('.trace-inspector__scrubber-heading > span').first()).toHaveText(
+    'Signal stage',
+  );
+  await expect(scrubber).toHaveValue('0');
+  await expect(scrubber).toHaveAttribute('aria-valuetext', 'Stage 1 of 4 · Source');
+  const scrubberBox = await scrubber.boundingBox();
+  expect(scrubberBox?.height).toBeGreaterThanOrEqual(44);
+  expect(scrubberBox?.width).toBeLessThanOrEqual(448.5);
+  expect((await next.boundingBox())?.height).toBeLessThanOrEqual(44.5);
+  await scrubber.focus();
+  await expect(scrubber).toHaveCSS('outline-width', '3px');
+  await page.keyboard.press('End');
+  await expect(scrubber).toHaveValue('3');
+  await expect(inspector).toHaveAttribute('data-stage', 'output');
+  await expect(next).toBeDisabled();
+  await expect(previous).toBeEnabled();
+  await expect(page.locator('.trace-inspector__stage-row[data-stage="output"]')).toHaveClass(
+    /trace-inspector__stage-row--active/,
+  );
+  await expect(page.locator('.trace-inspector__path-node[data-stage="output"]')).toHaveClass(
+    /trace-inspector__path-node--active/,
+  );
+  await expect(page.locator('.trace-inspector__readout-heading')).toContainText('Output');
+  await expect(page.locator('.trace-inspector__status')).toContainText('Stage 4 of 4');
+  await expect(announcement).toBeEmpty();
+
+  await page.keyboard.press('Home');
+  await expect(scrubber).toHaveValue('0');
+  await expect(inspector).toHaveAttribute('data-stage', 'source');
+  await expect(previous).toBeDisabled();
+  await expect(page.locator('.trace-inspector__stage-row[data-stage="source"]')).toHaveClass(
+    /trace-inspector__stage-row--active/,
+  );
+  await page.keyboard.press('ArrowRight');
+  await expect(scrubber).toHaveValue('1');
+  await expect(inspector).toHaveAttribute('data-stage', 'channel');
+  await expect(page.locator('.trace-inspector__path-node[data-stage="channel"]')).toHaveClass(
+    /trace-inspector__path-node--active/,
+  );
+  await reset.click();
+  await expect(scrubber).toHaveValue('0');
+  await expect(inspector).toHaveAttribute('data-stage', 'source');
+  await expect(announcement).toHaveText('Reset to Stage 1 of 4 · Source.');
 });
 
 test('trace stage handoff settles the active row and SVG node together', async ({ page }) => {

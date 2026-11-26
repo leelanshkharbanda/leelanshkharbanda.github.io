@@ -837,6 +837,70 @@ test('signal toy readouts tick after input and respect reduced motion', async ({
   await expect(direct).toHaveCSS('animation-name', 'none');
 });
 
+test('touch input can scrub TraceInspector stages', async ({ browser, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Touch scrubbing uses Chromium CDP input events.');
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto('/work/chronos-dsp/');
+  const scrubber = page.getByRole('slider', { name: 'Signal stage' });
+  await scrubber.scrollIntoViewIfNeeded();
+  await expect(scrubber).toBeEnabled();
+  const box = await scrubber.boundingBox();
+  expect(box).not.toBeNull();
+  const client = await context.newCDPSession(page);
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ id: 1, x: box!.x + box!.width * 0.2, y: box!.y + box!.height / 2 }],
+  });
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchEnd',
+    touchPoints: [],
+  });
+  await expect.poll(async () => Number(await scrubber.inputValue())).toBeLessThanOrEqual(1);
+  const value = Number(await scrubber.inputValue());
+  expect(value).toBeLessThanOrEqual(1);
+  await expect(page.locator('.trace-inspector__root')).toHaveAttribute(
+    'data-stage',
+    value === 0 ? 'source' : 'channel',
+  );
+
+  const startX = box!.x + box!.width * 0.5;
+  const endX = box!.x + box!.width * 0.9;
+  const y = box!.y + box!.height / 2;
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ id: 1, x: startX, y }],
+  });
+  for (let step = 1; step <= 6; step += 1) {
+    await client.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ id: 1, x: startX + ((endX - startX) * step) / 6, y }],
+    });
+  }
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchEnd',
+    touchPoints: [],
+  });
+  await expect.poll(async () => Number(await scrubber.inputValue())).toBeGreaterThan(value);
+  const nextValue = Number(await scrubber.inputValue());
+  const stages = ['source', 'channel', 'receiver', 'output'];
+  await expect(page.locator('.trace-inspector__root')).toHaveAttribute(
+    'data-stage',
+    stages[nextValue]!,
+  );
+  await expect(page.locator('.trace-inspector__readout-heading')).toContainText(
+    ['Source', 'Channel', 'Receiver', 'Output'][nextValue]!,
+  );
+  await expect(page.locator('.trace-inspector__status')).toContainText(
+    `Stage ${nextValue + 1} of 4`,
+  );
+  await context.close();
+});
+
 test('touch drag keeps the toy, range, and reset in sync', async ({ browser, browserName }) => {
   test.skip(browserName !== 'chromium', 'Touch drag uses Chromium CDP input events.');
   const context = await browser.newContext({
