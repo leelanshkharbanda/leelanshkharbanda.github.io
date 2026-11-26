@@ -207,6 +207,50 @@ test('navigation links match hover color on keyboard focus', async ({ page }, te
   await expect(page.locator('.mobile-nav a').first()).toHaveCSS('transition-duration', '0s');
 });
 
+test('quiet and footer links match hover accent on keyboard focus', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  const quiet = page.locator('#project-chronos-dsp .quiet-link');
+  const quietPrevious = page
+    .locator('#project-chronos-dsp .project-card__actions .arrow-link')
+    .first();
+  await expect(quiet).toHaveCSS('color', 'rgb(92, 90, 80)');
+  await quiet.hover();
+  await expect(quiet).toHaveCSS('color', 'rgb(169, 52, 26)');
+  await page.mouse.move(0, 0);
+  await expect(quiet).toHaveCSS('color', 'rgb(92, 90, 80)');
+  await quietPrevious.focus();
+  await page.keyboard.press(tabKey);
+  await expect(quiet).toBeFocused();
+  await expect(quiet).toHaveCSS('color', 'rgb(169, 52, 26)');
+  await expect(quiet).toHaveCSS('outline-width', '3px');
+
+  const footer = page.locator('.site-footer__links a').first();
+  const footerPrevious = page.locator('.site-footer__top > a');
+  await expect(footer).toHaveCSS('color', 'rgb(199, 201, 188)');
+  await footer.hover();
+  await expect(footer).toHaveCSS('color', 'rgb(223, 255, 104)');
+  await page.mouse.move(0, 0);
+  await expect(footer).toHaveCSS('color', 'rgb(199, 201, 188)');
+  await footerPrevious.focus();
+  await page.keyboard.press(tabKey);
+  await expect(footer).toBeFocused();
+  await expect(footer).toHaveCSS('color', 'rgb(223, 255, 104)');
+  await expect(footer).toHaveCSS('outline-width', '3px');
+  await expect(footer).toHaveCSS('outline-color', 'rgb(255, 133, 103)');
+
+  await expect(quiet).toHaveCSS('transition-duration', '0.16s');
+  await expect(footer).toHaveCSS('transition-duration', '0.16s');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(quiet).toHaveCSS('transition-duration', '0s');
+  await expect(footer).toHaveCSS('transition-duration', '0s');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(quiet).toHaveCSS('transition-duration', '0s');
+  await expect(footer).toHaveCSS('transition-duration', '0s');
+});
+
 test('arrow links nudge on hover and keyboard focus', async ({ page }, testInfo) => {
   await page.goto('/');
   const link = page.locator('#project-chronos-dsp .project-card__actions .arrow-link').first();

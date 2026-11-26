@@ -35,6 +35,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile rest, hover, focus, current-page, and route screenshots were inspected. The yellow state is clear and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `f85fe79` and pushed to `main`.
+- Pages deployment run `45878209277` completed successfully.
+- Live verification returned HTTP 200 with natural keyboard focus on Projects and the expected yellow background.
+
 ## Next candidates
 
 1. Audit quiet links and footer links for the same hover/focus color parity.

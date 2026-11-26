@@ -318,9 +318,11 @@ h3 {
   border-bottom: 1px solid var(--rule);
   color: var(--secondary);
   text-decoration: none;
+  transition: color 160ms ease;
 }
 
-.quiet-link:hover {
+.quiet-link:hover,
+.quiet-link:focus-visible {
   color: var(--signal);
 }
 
@@ -1094,7 +1096,8 @@ h3 {
   color: var(--dark-signal);
 }
 
-.site-footer a:hover {
+.site-footer a:hover,
+.site-footer a:focus-visible {
   color: var(--play-green);
 }
 
@@ -1747,6 +1750,8 @@ h3 {
   .mobile-nav summary,
   .desktop-nav a,
   .mobile-nav a,
+  .quiet-link,
+  .site-footer a,
   .arrow-link span,
   .back-link__arrow,
   .project-card,
@@ -1772,6 +1777,8 @@ html[data-motion='reduced'] .button,
 html[data-motion='reduced'] .mobile-nav summary,
 html[data-motion='reduced'] .desktop-nav a,
 html[data-motion='reduced'] .mobile-nav a,
+html[data-motion='reduced'] .quiet-link,
+html[data-motion='reduced'] .site-footer a,
 html[data-motion='reduced'] .arrow-link span,
 html[data-motion='reduced'] .back-link__arrow,
 html[data-motion='reduced'] .project-card,

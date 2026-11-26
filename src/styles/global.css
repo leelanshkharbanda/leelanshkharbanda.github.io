@@ -1111,6 +1111,7 @@ address {
 
 .site-footer a {
   text-decoration: none;
+  transition: color 160ms ease;
 }
 
 .site-footer a:hover {
