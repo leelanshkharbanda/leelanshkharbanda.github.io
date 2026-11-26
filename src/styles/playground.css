@@ -297,7 +297,8 @@ h3 {
   transform: translate(var(--magnet-x, 0), var(--magnet-y, 0)) rotate(1deg);
 }
 
-.button--secondary:hover {
+.button--secondary:hover,
+.button--secondary:focus-visible {
   background: var(--play-lilac);
   color: var(--ink);
 }

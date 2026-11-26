@@ -476,6 +476,38 @@ test('primary pill settles into its shadow and presses flat', async ({ page }) =
   await expect(button).toHaveCSS('outline-offset', '4px');
 });
 
+test('secondary buttons match lilac hover background on keyboard focus', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/');
+  const primary = page.locator('.button--primary[data-magnetic]');
+  const secondary = page.locator('.button--secondary[data-magnetic]');
+  const tabKey = testInfo.project.name === 'webkit' ? 'Alt+Tab' : 'Tab';
+  await expect(secondary).toHaveCSS('background-color', 'rgb(246, 242, 231)');
+  await secondary.hover();
+  await expect(secondary).toHaveCSS('background-color', 'rgb(217, 201, 255)');
+  await page.mouse.move(0, 0);
+  await expect(secondary).toHaveCSS('background-color', 'rgb(246, 242, 231)');
+  await primary.focus();
+  await page.keyboard.press(tabKey);
+  await expect(secondary).toBeFocused();
+  await expect(secondary).toHaveCSS('background-color', 'rgb(217, 201, 255)');
+  await expect(secondary).toHaveCSS('outline-width', '3px');
+  await secondary.evaluate((element) => element.blur());
+  await expect(secondary).toHaveCSS('background-color', 'rgb(246, 242, 231)');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await secondary.hover();
+  await expect(secondary).toHaveCSS('background-color', 'rgb(217, 201, 255)');
+  await expect(secondary).toHaveCSS('transform', 'none');
+  await expect(secondary).toHaveCSS('transition-duration', '0s');
+  await primary.focus();
+  await page.keyboard.press(tabKey);
+  await expect(secondary).toBeFocused();
+  await expect(secondary).toHaveCSS('background-color', 'rgb(217, 201, 255)');
+  await expect(secondary).toHaveCSS('transform', 'none');
+});
+
 test('reduced motion keeps the primary pill detent static', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');

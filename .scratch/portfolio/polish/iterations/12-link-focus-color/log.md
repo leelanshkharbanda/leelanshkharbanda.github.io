@@ -36,6 +36,12 @@ Date: 2026-11-27
 - Fresh desktop/mobile quiet/footer rest, hover, focus, and route screenshots were inspected. The accent is clear, focus rings remain visible, and no layout shifts occur.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `a2013f9` and pushed to `main`.
+- Pages deployment run `45880889503` completed successfully.
+- Live verification returned HTTP 200 with natural footer-link focus, lime text, and the coral focus outline.
+
 ## Next candidates
 
 1. Revisit contact-copy confirmation timing only if real-device testing exposes a rough corner.
