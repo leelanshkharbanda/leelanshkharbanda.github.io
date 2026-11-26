@@ -1,8 +1,16 @@
-<div class="signal-toy" data-signal-toy>
+<div class="signal-toy" data-signal-toy data-pulse="idle">
   <div class="signal-toy__topline">
     <span>01 / CHANNEL SKETCHPAD</span>
     <span class="signal-toy__drag-label" hidden>
       DRAG LEFT / RIGHT
+    </span>
+    <span
+      class="signal-toy__pulse-indicator"
+      data-toy-pulse-indicator
+      data-state="idle"
+      aria-hidden="true"
+    >
+      READY
     </span>
   </div>
 
@@ -55,14 +63,49 @@
     />
     <path
       data-signal-path="echo"
-      d="M 104 104 L 237 218 L 370 82"
+      d="M 104 104 L 225.3 218 L 370 82"
       fill="none"
       stroke="#ff785a"
       stroke-width="2"
       stroke-dasharray="7 6"
       marker-end="url(#signal-toy-arrow)"
     />
-    <circle data-signal-bounce cx="237" cy="218" r="5" fill="#ff785a" />
+    <circle data-signal-bounce cx="225.3" cy="218" r="5" fill="#ff785a" />
+
+    <g class="signal-toy__pulse" data-signal-pulse="direct" aria-hidden="true">
+      <circle
+        class="signal-toy__pulse-dot signal-toy__pulse-dot--trail"
+        data-pulse-offset="14"
+        r="2.5"
+      />
+      <circle
+        class="signal-toy__pulse-dot signal-toy__pulse-dot--mid"
+        data-pulse-offset="7"
+        r="3.5"
+      />
+      <circle
+        class="signal-toy__pulse-dot signal-toy__pulse-dot--core"
+        data-pulse-offset="0"
+        r="4.5"
+      />
+    </g>
+    <g class="signal-toy__pulse" data-signal-pulse="echo" aria-hidden="true">
+      <circle
+        class="signal-toy__pulse-dot signal-toy__pulse-dot--trail"
+        data-pulse-offset="14"
+        r="2.5"
+      />
+      <circle
+        class="signal-toy__pulse-dot signal-toy__pulse-dot--mid"
+        data-pulse-offset="7"
+        r="3.5"
+      />
+      <circle
+        class="signal-toy__pulse-dot signal-toy__pulse-dot--core"
+        data-pulse-offset="0"
+        r="4.5"
+      />
+    </g>
 
     <g
       class="signal-toy__handle"
@@ -77,6 +120,7 @@
       <text y="43" text-anchor="middle" class="signal-toy__handle-label">
         TX / SOURCE
       </text>
+      <circle class="signal-toy__hit-area" r="48" />
     </g>
 
     <g
@@ -89,9 +133,11 @@
       <circle r="25" fill="#ff785a" fill-opacity="0.15" />
       <circle r="15" fill="#ff785a" stroke="#20231c" stroke-width="3" />
       <circle r="4" fill="#20231c" />
+      <circle class="signal-toy__receiver-ring" r="25" />
       <text y="43" text-anchor="middle" class="signal-toy__handle-label">
         RX / RECEIVER
       </text>
+      <circle class="signal-toy__hit-area" r="48" />
     </g>
   </svg>
 
@@ -104,24 +150,33 @@
       <span>REFLECTED PATH</span>
       <strong data-toy-echo>365 units</strong>
     </p>
-    <span class="signal-toy__readout-note">
-      Drag TX or RX to compare direct vs reflected path length.
+    <span class="signal-toy__readout-note signal-toy__interactive-note" hidden>
+      Drag TX or RX, or send a pulse through both paths.
     </span>
+    <noscript>
+      <span class="signal-toy__readout-note">Fixed direct and reflected path lengths.</span>
+    </noscript>
   </div>
 
   <div class="signal-toy__controls" id="signal-toy-instructions" hidden>
     <label>
       <span>Transmitter</span>
-      <input data-toy-range="transmitter" type="range" min="40" max="440" value="104" />
+      <input data-toy-range="transmitter" type="range" min="48" max="432" value="104" />
     </label>
     <label>
       <span>Receiver</span>
-      <input data-toy-range="receiver" type="range" min="40" max="440" value="370" />
+      <input data-toy-range="receiver" type="range" min="48" max="432" value="370" />
     </label>
-    <button data-toy-reset type="button">
-      Reset ↺
-    </button>
+    <div class="signal-toy__actions">
+      <button data-toy-pulse type="button">
+        Send pulse
+      </button>
+      <button data-toy-reset type="button">
+        Reset ↺
+      </button>
+    </div>
   </div>
+  <p class="sr-only" data-toy-pulse-status role="status" aria-atomic="true"></p>
 </div>
 
 <script>

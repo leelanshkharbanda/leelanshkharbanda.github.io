@@ -417,11 +417,19 @@ test('signal toy remains positioned without JavaScript and readable on mobile', 
   );
   await expect(page.locator('.signal-toy__drag-label')).toBeHidden();
   await expect(page.locator('.signal-toy__controls')).toBeHidden();
+  await expect(page.locator('[data-toy-pulse]')).toBeHidden();
+  await expect(page.locator('[data-signal-pulse="direct"]')).not.toHaveClass(/is-active/);
+  await expect(page.locator('[data-signal-pulse="echo"]')).not.toHaveClass(/is-active/);
   await expect(page.locator('[data-signal-handle="transmitter"]')).not.toHaveAttribute('role');
   await expect(page.locator('.signal-toy__handle-label').first()).toHaveCSS('font-size', '16px');
   await expect(page.locator('[data-toy-direct]')).toHaveText('267 units');
   await expect(page.locator('[data-toy-echo]')).toHaveText('365 units');
-  await expect(page.locator('.toy-sticker')).toHaveText('drag tx or rx');
+  await expect(page.locator('.toy-sticker')).toHaveText('channel sketch');
+  await expect(page.locator('.signal-toy__interactive-note')).toBeHidden();
+  await expect(page.locator('.signal-toy__readouts noscript')).toBeVisible();
+  expect(await page.locator('.signal-toy__readouts noscript').textContent()).toBe(
+    'Fixed direct and reflected path lengths.',
+  );
   await expect(page.locator('.signal-toy__handle-label').first()).toHaveText('TX / SOURCE');
 
   await page.goto('/work/life-os/');

@@ -683,8 +683,13 @@ test('interactive control accents match on keyboard focus', async ({ page }, tes
   await page.mouse.move(0, 0);
   await expect(reset).toHaveCSS('color', 'rgb(246, 242, 231)');
   await page.locator('[data-toy-range="receiver"]').focus();
-  await page.keyboard.press('Tab');
-  if (testInfo.project.name === 'webkit') await reset.focus();
+  await page.keyboard.press(tabKey);
+  const pulse = page.getByRole('button', { name: 'Send pulse' });
+  await expect(pulse).toBeFocused();
+  await expect(pulse).toHaveCSS('color', 'rgb(223, 255, 104)');
+  await expect(pulse).toHaveCSS('border-top-color', 'rgb(223, 255, 104)');
+  await expect(pulse).toHaveCSS('outline-width', '3px');
+  await page.keyboard.press(tabKey);
   await expect(reset).toBeFocused();
   await expect(reset).toHaveCSS('color', 'rgb(223, 255, 104)');
   await expect(reset).toHaveCSS('border-top-color', 'rgb(223, 255, 104)');
@@ -835,6 +840,223 @@ test('signal toy readouts tick after input and respect reduced motion', async ({
   await nextFrame();
   await expect(direct).not.toHaveClass(/is-ticking/);
   await expect(direct).toHaveCSS('animation-name', 'none');
+});
+
+test('signal toy sends a pulse through both paths and acknowledges the receiver', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const toy = page.locator('[data-signal-toy]');
+  const pulseButton = page.getByRole('button', { name: 'Send pulse' });
+  const directPulse = page.locator('[data-signal-pulse="direct"]');
+  const echoPulse = page.locator('[data-signal-pulse="echo"]');
+  const directCore = directPulse.locator('.signal-toy__pulse-dot--core');
+  const echoCore = echoPulse.locator('.signal-toy__pulse-dot--core');
+  const status = page.locator('[data-toy-pulse-status]');
+  const indicator = page.locator('[data-toy-pulse-indicator]');
+  const receiver = page.locator('[data-signal-handle="receiver"]');
+
+  await expect(pulseButton).toBeVisible();
+  await expect(toy).toHaveAttribute('data-pulse', 'idle');
+  await expect(indicator).toHaveText('READY');
+  await pulseButton.focus();
+  await page.keyboard.press('Enter');
+
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+  await expect(directPulse).toHaveClass(/is-active/);
+  await expect(echoPulse).toHaveClass(/is-active/);
+  await expect.poll(async () => Number(await directCore.getAttribute('cx'))).toBeGreaterThan(104);
+  await expect.poll(async () => Number(await echoCore.getAttribute('cx'))).toBeGreaterThan(104);
+  await expect(status).toContainText('Pulse sent. Direct 267 units, reflected 365 units.');
+  await expect(indicator).toHaveText('REFLECTED / RX', { timeout: 3000 });
+  await expect(status).toContainText('Reflected pulse received');
+  await expect(toy).toHaveAttribute('data-pulse', 'received');
+  await expect(toy).toHaveAttribute('data-pulse', 'complete');
+  await expect(indicator).toHaveText('RX / BOTH');
+  await expect(receiver).toHaveClass(/is-receiving/);
+  await expect(directPulse).not.toHaveClass(/is-active/);
+  await expect(echoPulse).not.toHaveClass(/is-active/);
+  await expect(page.locator('[data-toy-direct]')).toHaveText('267 units');
+  await expect(page.locator('[data-toy-echo]')).toHaveText('365 units');
+});
+
+test('signal toy cancels a pulse when the channel changes', async ({ page }) => {
+  await page.goto('/');
+  const toy = page.locator('[data-signal-toy]');
+  const pulseButton = page.getByRole('button', { name: 'Send pulse' });
+  const transmitter = page.getByRole('slider', { name: 'Transmitter horizontal position' });
+
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+  await transmitter.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(toy).toHaveAttribute('data-pulse', 'idle');
+  await expect(page.locator('[data-signal-pulse="direct"]')).not.toHaveClass(/is-active/);
+  await expect(page.locator('[data-signal-pulse="echo"]')).not.toHaveClass(/is-active/);
+  await expect(page.locator('[data-toy-pulse-indicator]')).toHaveText('READY');
+
+  await page.getByRole('button', { name: /Reset/ }).click();
+  await expect(transmitter).toHaveAttribute('aria-valuenow', '104');
+  await expect(page.locator('[data-toy-pulse-status]')).toHaveText('Channel reset.');
+});
+
+test('signal toy pulse respects OS and manual reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const toy = page.locator('[data-signal-toy]');
+  const pulseButton = page.getByRole('button', { name: 'Send pulse' });
+  const status = page.locator('[data-toy-pulse-status]');
+
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'static');
+  await expect(page.locator('[data-toy-pulse-indicator]')).toHaveText('PATH CHECK');
+  await expect(status).toHaveText('Path check: direct 267 units, reflected 365 units.');
+  await expect(page.locator('[data-signal-pulse="direct"]')).not.toHaveClass(/is-active/);
+  await expect(page.locator('[data-signal-pulse="echo"]')).not.toHaveClass(/is-active/);
+  await expect(page.locator('[data-signal-pulse="direct"]')).toHaveCSS('display', 'none');
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'static');
+  await expect(page.locator('[data-signal-pulse="direct"]')).toHaveCSS('display', 'none');
+
+  await page.getByRole('button', { name: 'Enable motion' }).click();
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+  await expect(page.locator('[data-signal-pulse="direct"]')).toHaveClass(/is-active/);
+});
+
+test('signal toy pulse responds to touch input', async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto('/');
+  const pulseButton = page.getByRole('button', { name: 'Send pulse' });
+  await pulseButton.tap();
+  await expect(page.locator('[data-signal-toy]')).toHaveAttribute('data-pulse', 'running');
+  await expect(page.locator('[data-toy-pulse-status]')).toContainText('Reflected pulse received', {
+    timeout: 3000,
+  });
+  await expect(page.locator('[data-signal-toy]')).toHaveAttribute('data-pulse', 'complete');
+  await context.close();
+});
+
+test('signal toy pulse timing scales down for a short direct path', async ({ page }) => {
+  await page.goto('/');
+  for (const [name, value] of [
+    ['transmitter', '432'],
+    ['receiver', '430'],
+  ]) {
+    await page.locator(`[data-toy-range="${name}"]`).evaluate((element, nextValue) => {
+      if (!(element instanceof HTMLInputElement)) return;
+      element.value = nextValue;
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    }, value);
+  }
+  await expect(page.locator('[data-toy-direct]')).toHaveText('22 units');
+  await page.getByRole('button', { name: 'Send pulse' }).click();
+  await expect(page.locator('[data-toy-pulse-status]')).toContainText('Direct pulse received', {
+    timeout: 500,
+  });
+  await page.getByRole('button', { name: /Reset/ }).click();
+});
+
+test('signal toy pulse cancels on resize and motion changes and restarts cleanly', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const toy = page.locator('[data-signal-toy]');
+  const pulseButton = page.getByRole('button', { name: 'Send pulse' });
+  const status = page.locator('[data-toy-pulse-status]');
+
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await expect(toy).toHaveAttribute('data-pulse', 'idle');
+  await expect(status).toBeEmpty();
+
+  await pulseButton.click();
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+  await expect(status).toContainText('Pulse sent.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(toy).toHaveAttribute('data-pulse', 'idle');
+  await expect(status).toHaveText('Pulse stopped because motion is reduced.');
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await expect(toy).toHaveAttribute('data-pulse', 'idle');
+  await expect(status).toHaveText('Pulse stopped because motion is reduced.');
+  await page.getByRole('button', { name: 'Enable motion' }).click();
+  await pulseButton.click();
+  await expect(toy).toHaveAttribute('data-pulse', 'running');
+});
+
+test('signal toy controls keep touch targets and 200% text within bounds', async ({ page }) => {
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    const toy = page.locator('[data-signal-toy]');
+    await expect(page.getByRole('button', { name: 'Send pulse' })).toBeVisible();
+
+    for (const handle of await toy.locator('.signal-toy__hit-area').all()) {
+      const box = await handle.boundingBox();
+      expect(box?.width).toBeGreaterThanOrEqual(44);
+      expect(box?.height).toBeGreaterThanOrEqual(44);
+    }
+    for (const name of ['transmitter', 'receiver']) {
+      const handle = toy.locator(`[data-signal-handle="${name}"]`);
+      const otherName = name === 'transmitter' ? 'receiver' : 'transmitter';
+      const otherHandle = toy.locator(`[data-signal-handle="${otherName}"]`);
+      for (const key of ['Home', 'End']) {
+        await otherHandle.scrollIntoViewIfNeeded();
+        await otherHandle.focus();
+        await page.keyboard.press(key === 'Home' ? 'End' : 'Home');
+        await handle.scrollIntoViewIfNeeded();
+        await handle.focus();
+        await page.keyboard.press(key);
+        const clickableWidth = await handle.evaluate((element) => {
+          const hitArea = element.querySelector('.signal-toy__hit-area');
+          if (!(hitArea instanceof SVGCircleElement)) return 0;
+          const bounds = hitArea.getBoundingClientRect();
+          const y = bounds.top + bounds.height / 2;
+          let width = 0;
+          for (let x = bounds.left; x <= bounds.right; x += 1) {
+            if (document.elementFromPoint(x, y)?.closest('[data-signal-handle]') === element) {
+              width += 1;
+            }
+          }
+          return width;
+        });
+        expect(clickableWidth, `${width}px ${name} ${key}`).toBeGreaterThanOrEqual(44);
+      }
+    }
+    for (const range of await toy.locator('input[type="range"]').all()) {
+      expect((await range.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+    }
+    for (const button of await toy.locator('button').all()) {
+      const dimensions = await button.evaluate((element) => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        left: element.getBoundingClientRect().left,
+        right: element.getBoundingClientRect().right,
+      }));
+      expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+      const toyBox = await toy.boundingBox();
+      expect(dimensions.left).toBeGreaterThanOrEqual(toyBox!.x - 1);
+      expect(dimensions.right).toBeLessThanOrEqual(toyBox!.x + toyBox!.width + 1);
+    }
+    expect(await toy.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(
+      true,
+    );
+  }
 });
 
 test('touch input can scrub TraceInspector stages', async ({ browser, browserName }) => {

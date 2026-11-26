@@ -543,6 +543,78 @@ h3 {
   color: var(--play-green);
 }
 
+.signal-toy__pulse-indicator {
+  color: var(--dark-secondary);
+}
+
+.signal-toy__pulse-indicator[data-state='running'] {
+  color: var(--paper);
+}
+
+.signal-toy__pulse-indicator[data-state='direct'],
+.signal-toy__pulse-indicator[data-state='complete'] {
+  color: var(--play-green);
+}
+
+.signal-toy__pulse-indicator[data-state='echo'] {
+  color: var(--dark-signal);
+}
+
+.signal-toy__pulse-indicator[data-state='static'] {
+  color: var(--play-yellow);
+}
+
+.signal-toy__pulse {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.signal-toy__pulse.is-active {
+  opacity: 1;
+}
+
+.signal-toy__pulse[data-signal-pulse='direct'] .signal-toy__pulse-dot {
+  fill: var(--play-green);
+}
+
+.signal-toy__pulse[data-signal-pulse='echo'] .signal-toy__pulse-dot {
+  fill: var(--dark-signal);
+}
+
+.signal-toy__pulse-dot--trail {
+  opacity: 0.28;
+}
+
+.signal-toy__pulse-dot--mid {
+  opacity: 0.6;
+}
+
+.signal-toy__receiver-ring {
+  fill: none;
+  stroke: var(--dark-signal);
+  stroke-width: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.signal-toy__handle.is-receiving .signal-toy__receiver-ring {
+  animation: signal-receiver-ping 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes signal-receiver-ping {
+  from {
+    opacity: 0.9;
+    transform: scale(0.75);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.65);
+  }
+}
+
 .signal-toy__svg {
   display: block;
   width: 100%;
@@ -562,6 +634,11 @@ h3 {
   cursor: grab;
   outline: none;
   touch-action: none;
+}
+
+.signal-toy__hit-area {
+  fill: transparent;
+  pointer-events: all;
 }
 
 .signal-toy__handle:active,
@@ -646,11 +723,19 @@ h3 {
 .signal-toy__controls input {
   width: 100%;
   min-width: 0;
+  min-height: 2.75rem;
   accent-color: var(--play-green);
 }
 
+.signal-toy__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .signal-toy__controls button {
-  min-height: 2.5rem;
+  min-width: 0;
+  min-height: 2.75rem;
   border: 1px solid var(--dark-secondary);
   border-radius: 999px;
   padding: 0.4rem 0.7rem;
@@ -660,13 +745,18 @@ h3 {
   font-size: 0.65rem;
   transition:
     border-color 160ms ease,
-    color 160ms ease;
+    color 160ms ease,
+    transform 120ms ease;
 }
 
 .signal-toy__controls button:hover,
 .signal-toy__controls button:focus-visible {
   border-color: var(--play-green);
   color: var(--play-green);
+}
+
+.signal-toy__controls button:active {
+  transform: translateY(1px);
 }
 
 .playground-comparison {
@@ -1677,6 +1767,11 @@ h3 {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .signal-toy__actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  }
+
   .signal-toy__controls button {
     width: 100%;
   }
@@ -1738,6 +1833,10 @@ h3 {
   .identity-link__name {
     display: none;
   }
+
+  .signal-toy__readouts {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @supports (animation-timeline: view()) {
@@ -1782,6 +1881,11 @@ html[data-motion='reduced'] .project-visual__root {
     display: none !important;
   }
 
+  .signal-toy__pulse,
+  .signal-toy__receiver-ring {
+    display: none !important;
+  }
+
   .signal-toy__readouts strong {
     animation: none !important;
     transform: none !important;
@@ -1811,6 +1915,11 @@ html[data-motion='reduced'] .project-visual__root {
 }
 
 html[data-motion='reduced'] .playground-cursor {
+  display: none !important;
+}
+
+html[data-motion='reduced'] .signal-toy__pulse,
+html[data-motion='reduced'] .signal-toy__receiver-ring {
   display: none !important;
 }
 
