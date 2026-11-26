@@ -557,9 +557,25 @@ h3 {
 }
 
 .signal-toy__readouts strong {
+  display: inline-block;
   color: var(--play-green);
   font-family: var(--mono);
   font-size: 0.85rem;
+  transform-origin: left bottom;
+}
+
+.signal-toy__readouts strong.is-ticking {
+  animation: signal-readout-tick 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes signal-readout-tick {
+  from {
+    transform: translateY(2px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
 
 .signal-toy__readouts p:nth-child(2) strong {
@@ -1679,6 +1695,11 @@ h3 {
     display: none !important;
   }
 
+  .signal-toy__readouts strong {
+    animation: none !important;
+    transform: none !important;
+  }
+
   .button,
   .project-card,
   .project-card__stage,
@@ -1692,6 +1713,11 @@ h3 {
 
 html[data-motion='reduced'] .playground-cursor {
   display: none !important;
+}
+
+html[data-motion='reduced'] .signal-toy__readouts strong {
+  animation: none !important;
+  transform: none !important;
 }
 
 html[data-motion='reduced'] .button,

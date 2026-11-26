@@ -48,6 +48,28 @@ export function updateSignalToy(toy: HTMLElement) {
     receiver: { ...initial.receiver },
   };
   let active: HandleName | null = null;
+  let tickFrame = 0;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const tickReadouts = () => {
+    window.cancelAnimationFrame(tickFrame);
+    for (const readout of [directReadout, echoReadout]) readout?.classList.remove('is-ticking');
+    if (reducedMotion.matches || document.documentElement.dataset.motion === 'reduced') return;
+    tickFrame = window.requestAnimationFrame(() => {
+      if (reducedMotion.matches || document.documentElement.dataset.motion === 'reduced') return;
+      void directReadout?.offsetWidth;
+      for (const readout of [directReadout, echoReadout]) readout?.classList.add('is-ticking');
+    });
+  };
+
+  for (const readout of [directReadout, echoReadout]) {
+    if (!readout) continue;
+    const clearTick = (event: AnimationEvent) => {
+      if (event.animationName === 'signal-readout-tick') readout.classList.remove('is-ticking');
+    };
+    readout.addEventListener('animationend', clearTick);
+    readout.addEventListener('animationcancel', clearTick);
+  }
 
   const draw = () => {
     const tx = state.transmitter;
@@ -85,6 +107,7 @@ export function updateSignalToy(toy: HTMLElement) {
       y: initial[name].y,
     };
     draw();
+    tickReadouts();
   };
 
   const pointerPosition = (event: PointerEvent): Point | null => {
@@ -147,6 +170,7 @@ export function updateSignalToy(toy: HTMLElement) {
     state.transmitter = { ...initial.transmitter };
     state.receiver = { ...initial.receiver };
     draw();
+    tickReadouts();
   });
 
   window.addEventListener('resize', draw, { passive: true });

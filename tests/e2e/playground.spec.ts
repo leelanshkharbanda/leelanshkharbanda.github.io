@@ -93,6 +93,81 @@ test('signal toy supports keyboard movement and reversible motion', async ({ pag
   await expect(toggle).not.toHaveAttribute('aria-pressed');
 });
 
+test('signal toy readouts tick after input and respect reduced motion', async ({ page }) => {
+  await page.goto('/');
+  const direct = page.locator('[data-toy-direct]');
+  const echo = page.locator('[data-toy-echo]');
+  const transmitter = page.getByRole('slider', { name: 'Transmitter horizontal position' });
+  const activeTicks = () =>
+    direct.evaluate(
+      (element) =>
+        element
+          .getAnimations()
+          .filter(
+            (animation) =>
+              'animationName' in animation && animation.animationName === 'signal-readout-tick',
+          ).length,
+    );
+  const nextFrame = () =>
+    page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
+  await expect(direct).not.toHaveClass(/is-ticking/);
+
+  await transmitter.scrollIntoViewIfNeeded();
+  await transmitter.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(direct).toHaveText('257 units');
+  await expect(direct).toHaveClass(/is-ticking/);
+  await expect(direct).toHaveCSS('animation-name', 'signal-readout-tick');
+  await expect(direct).toHaveCSS('animation-duration', '0.16s');
+  await expect(echo).toHaveClass(/is-ticking/);
+  await expect.poll(activeTicks).toBe(0);
+  await expect(direct).not.toHaveClass(/is-ticking/);
+
+  await page.keyboard.press('ArrowRight');
+  await expect.poll(activeTicks).toBe(1);
+  await expect.poll(activeTicks).toBe(0);
+
+  await page.locator('[data-toy-range="transmitter"]').evaluate((element) => {
+    const range = element as HTMLInputElement;
+    range.value = '120';
+    range.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(direct).toHaveClass(/is-ticking/);
+  await expect(echo).toHaveClass(/is-ticking/);
+  await expect.poll(activeTicks).toBe(0);
+
+  await page.getByRole('button', { name: /Reset/ }).click();
+  await expect(direct).toHaveText('267 units');
+  await expect(direct).toHaveClass(/is-ticking/);
+  await expect.poll(activeTicks).toBe(0);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await transmitter.focus();
+  await page.keyboard.press('ArrowRight');
+  await nextFrame();
+  await expect(direct).not.toHaveClass(/is-ticking/);
+  await expect(direct).toHaveCSS('animation-name', 'none');
+  await expect.poll(activeTicks).toBe(0);
+  expect(
+    Number.parseFloat(
+      await direct.evaluate((element) => getComputedStyle(element).animationDuration),
+    ),
+  ).toBeLessThanOrEqual(0.001);
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Reduce motion' }).click();
+  await transmitter.focus();
+  await page.keyboard.press('ArrowRight');
+  await nextFrame();
+  await expect(direct).not.toHaveClass(/is-ticking/);
+  await expect(direct).toHaveCSS('animation-name', 'none');
+  await expect.poll(activeTicks).toBe(0);
+  await page.getByRole('button', { name: 'Enable motion' }).click();
+  await nextFrame();
+  await expect(direct).not.toHaveClass(/is-ticking/);
+  await expect(direct).toHaveCSS('animation-name', 'none');
+});
+
 test('touch drag keeps the toy, range, and reset in sync', async ({ browser, browserName }) => {
   test.skip(browserName !== 'chromium', 'Touch drag uses Chromium CDP input events.');
   const context = await browser.newContext({
@@ -123,6 +198,7 @@ test('touch drag keeps the toy, range, and reset in sync', async ({ browser, bro
   const moved = Number(await handle.getAttribute('aria-valuenow'));
   expect(moved).toBeGreaterThan(104);
   await expect(page.locator('[data-toy-range="transmitter"]')).toHaveValue(String(moved));
+  await expect(page.locator('[data-toy-direct]')).toHaveClass(/is-ticking/);
   await page.getByRole('button', { name: /Reset/ }).click();
   await expect(handle).toHaveAttribute('aria-valuenow', '104');
   await context.close();

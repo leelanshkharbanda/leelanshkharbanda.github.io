@@ -38,6 +38,12 @@ Date: 2026-11-26
 - Fresh desktop/mobile route, full-page, Source, Channel, and Output screenshots were inspected. SVG geometry and labels remain fully contained; no overlap or layout shift was introduced.
 - Local screenshots are retained under `screenshots/baseline/` and `screenshots/after/` and ignored by Git.
 
+## Release
+
+- Committed as `7a32db9` and pushed to `main`.
+- Pages deployment run `45855424576` completed successfully.
+- Live verification returned HTTP 200, a 180 ms SVG-node transition, a working Source → Channel handoff, and the corrected motion-toggle semantics.
+
 ## Next candidates
 
 1. Add a brief SignalToy readout tick when pointer or keyboard input changes the direct/reflected path lengths.
