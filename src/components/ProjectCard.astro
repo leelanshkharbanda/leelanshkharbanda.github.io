@@ -95,6 +95,8 @@ const demoLink = data.links.find((link) => link.kind === 'demo');
         caption={data.diagramCaption}
         preview={true}
         transitionName={`project-${project.id}`}
+        projectTitle={shortTitle}
+        credit={credit}
       />
     </div>
   )}

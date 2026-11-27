@@ -1,0 +1,51 @@
+<dialog
+  class="diagram-inspector"
+  id="diagram-inspector"
+  aria-labelledby="diagram-inspector-title"
+  aria-describedby="diagram-inspector-caption"
+>
+  <div class="diagram-inspector__header">
+    <div>
+      <p class="datum-label">DIAGRAM INSPECTOR</p>
+      <h2 id="diagram-inspector-title">Diagram</h2>
+    </div>
+    <button
+      class="diagram-inspector__close"
+      type="button"
+      data-diagram-inspector-close
+      aria-label="Close diagram inspector"
+      autofocus
+    >
+      <span class="diagram-inspector__close-label">Close</span>
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="diagram-inspector__toolbar" role="group" aria-label="Diagram zoom controls">
+    <button type="button" data-diagram-zoom-out aria-label="Zoom out">
+      −
+    </button>
+    <output class="diagram-inspector__zoom-output" data-diagram-zoom-output aria-live="polite">
+      100%
+    </output>
+    <button type="button" data-diagram-zoom-in aria-label="Zoom in">
+      +
+    </button>
+    <button class="diagram-inspector__fit" type="button" data-diagram-fit>
+      Fit
+    </button>
+  </div>
+
+  <p id="diagram-inspector-help" class="sr-only">
+    Use the arrow keys or scroll to move around an enlarged diagram. Use the zoom controls to change
+    its size.
+  </p>
+  <section
+    class="diagram-inspector__canvas"
+    data-diagram-inspector-canvas
+    tabindex="0"
+    aria-label="Diagram inspection viewport"
+    aria-describedby="diagram-inspector-help"
+  ></section>
+  <p class="diagram-inspector__caption" id="diagram-inspector-caption" tabindex="0"></p>
+</dialog>

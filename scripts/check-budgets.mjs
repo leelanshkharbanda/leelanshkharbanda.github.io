@@ -20,6 +20,9 @@ const inspectorBytes = files
 const signalToyBytes = files
   .filter((file) => /^SignalToy\./.test(file) && file.endsWith('.js'))
   .reduce((total, file) => total + gzipSize(readFileSync(join(assetDirectory, file))), 0);
+const diagramInspectorBytes = files
+  .filter((file) => /^(DiagramInspector|diagram-inspector)\./.test(file) && file.endsWith('.js'))
+  .reduce((total, file) => total + gzipSize(readFileSync(join(assetDirectory, file))), 0);
 const fontBytes = readdirSync(fontDirectory)
   .filter((file) => file.endsWith('.woff2'))
   .reduce((total, file) => total + statSync(join(fontDirectory, file)).size, 0);
@@ -29,6 +32,8 @@ if (inspectorBytes > 75_000)
   failures.push(`Inspector JavaScript exceeds 75 KB gzip: ${inspectorBytes}`);
 if (signalToyBytes > 6_000)
   failures.push(`SignalToy JavaScript exceeds 6 KB gzip: ${signalToyBytes}`);
+if (diagramInspectorBytes > 6_000)
+  failures.push(`DiagramInspector JavaScript exceeds 6 KB gzip: ${diagramInspectorBytes}`);
 if (fontBytes > 60_000) failures.push(`Fonts exceed 60 KB: ${fontBytes}`);
 
 function htmlFiles(directory) {
@@ -76,6 +81,7 @@ console.log(
       cssGzipBytes: cssBytes,
       inspectorGzipBytes: inspectorBytes,
       signalToyGzipBytes: signalToyBytes,
+      diagramInspectorGzipBytes: diagramInspectorBytes,
       fontBytes,
       maxInlineGzipBytes: maxInlineBytes,
       thirdPartyRequests,

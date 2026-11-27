@@ -22,9 +22,20 @@ interface Props {
   caption: string;
   preview?: boolean;
   transitionName?: string;
+  projectTitle?: string;
+  credit?: string;
 }
 
-const { id, diagram, alt, caption, preview = false, transitionName } = Astro.props;
+const {
+  id,
+  diagram,
+  alt,
+  caption,
+  preview = false,
+  transitionName,
+  projectTitle,
+  credit,
+} = Astro.props;
 const safeId =
   id
     .trim()
@@ -95,6 +106,8 @@ const constellationPlots: {
     class={`project-visual__root${preview ? ' project-visual__root--preview' : ''}`}
     id={figureId}
     data-diagram={diagram}
+    data-project-title={projectTitle}
+    data-project-credit={credit}
     data-visual-scroll
     tabindex="0"
     aria-label={alt}
@@ -887,6 +900,17 @@ const constellationPlots: {
 
     <figcaption class="project-visual__caption">
       <span class="project-visual__caption-text">{caption}</span>
+      <button
+        class="project-visual__inspect"
+        type="button"
+        data-diagram-inspect
+        aria-controls="diagram-inspector"
+        aria-haspopup="dialog"
+        aria-label={projectTitle ? `Inspect ${projectTitle} diagram` : 'Inspect diagram'}
+        hidden
+      >
+        Inspect <span aria-hidden="true">↗</span>
+      </button>
     </figcaption>
   </figure>
 )}

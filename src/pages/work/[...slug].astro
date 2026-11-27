@@ -90,6 +90,8 @@ const evidenceIds = data.results.map((_, index) => `E-${String(index + 1).padSta
           alt={data.diagramAlt}
           caption={data.diagramCaption}
           transitionName={`project-${project.id}`}
+          projectTitle={pageTitle}
+          credit={credit}
         />
       )}
 
