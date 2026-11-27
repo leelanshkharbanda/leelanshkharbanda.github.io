@@ -37,6 +37,12 @@ Date: 2026-11-27
 - Budgets: CSS 13,543 bytes gzip; TraceInspector JavaScript 73,344 bytes gzip; SignalToy JavaScript 3,530 bytes gzip; fonts 43,244 bytes; largest inline script 2,460 bytes gzip; 0 third-party runtime requests.
 - Fresh desktop, mobile, 320px/200%, near-horizontal, near-vertical, boundary, and legend-fallback screenshots were inspected under `screenshots/after/`.
 
+## Release
+
+- Committed as `415231d` and pushed to `main`.
+- Pages deployment run `45933206118` completed successfully.
+- Live verification returned HTTP 200, Transmitter Y moving from 104 to 114 with the SVG handle synchronized, a completed pulse, updated 268/358 unit readouts, and no page errors.
+
 ## Next candidates
 
 1. Let the Chronos-DSP case-study stage controls reuse the same transmit/arrival language only if the hero 2D instrument remains stable in production.
