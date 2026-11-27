@@ -1,0 +1,360 @@
+---
+import '../../styles/diagrams/memory-grid.css';
+
+interface Props {
+  traceArrowId: string;
+}
+
+const { traceArrowId } = Astro.props;
+
+const expertCells = Array.from({ length: 16 }, (_, index) => ({
+  state: [0, 5, 10, 15].includes(index) ? 'predicted' : 'off-chip',
+}));
+
+const cacheCells = Array.from({ length: 16 }, (_, index) => ({
+  state: index < 4 ? 'predicted' : index < 10 ? 'resident' : 'free',
+}));
+---
+
+<g class="project-visual__memory-grid">
+  <g data-layout="full">
+    <text class="memory-grid__header" x="40" y="42">
+      SIMULATED EXPERT-WEIGHT PATH
+    </text>
+    <text class="memory-grid__boundary-label" x="920" y="42" text-anchor="end">
+      BATCH-1 DECODE BOUNDARY
+    </text>
+    <path class="memory-grid__header-rule" d="M 40 58 H 920" />
+
+    <rect
+      class="project-visual__panel project-visual__panel--raised memory-grid__predictor-panel"
+      x="40"
+      y="70"
+      width="310"
+      data-node="predictor"
+      height="76"
+      rx="2"
+    />
+    <text class="memory-grid__stage-title" x="60" y="102">
+      NEXT-LAYER PREDICTOR
+    </text>
+    <text class="memory-grid__predictor-note" x="60" y="128">
+      causal · bounded
+    </text>
+    <path
+      class="memory-grid__predictor-path"
+      d="M 195 146 V 174 H 590 V 198"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="predictor-cache"
+      data-from="predictor"
+      data-to="cache"
+    />
+    <text
+      class="memory-grid__path-label memory-grid__path-label--predicted"
+      x="392"
+      y="164"
+      text-anchor="middle"
+    >
+      PREDICTED PREFETCH
+    </text>
+
+    <rect
+      class="project-visual__boundary memory-grid__stage-boundary"
+      x="40"
+      y="200"
+      data-node="experts"
+      width="288"
+      height="196"
+      rx="3"
+    />
+    <text class="memory-grid__stage-title" x="56" y="226">
+      OFF-CHIP EXPERTS
+    </text>
+    <text class="memory-grid__section-note" x="312" y="226" text-anchor="end">
+      16-CELL VIEW
+    </text>
+    <g class="project-visual__expert-grid">
+      {expertCells.map((cell, index) => (
+        <rect
+          class={`project-visual__expert-cell memory-grid__cell ${cell.state === 'predicted' ? 'project-visual__expert-cell--predicted' : ''}`}
+          data-state={cell.state}
+          x={56 + (index % 4) * 68}
+          y={242 + Math.floor(index / 4) * 34}
+          width="56"
+          height="24"
+          rx="1"
+        />
+      ))}
+    </g>
+    <text class="memory-grid__section-note" x="56" y="386">
+      HIGHLIGHTED = PREDICTED
+    </text>
+
+    <path
+      class="project-visual__path memory-grid__prefetch-path"
+      d="M 328 282 H 428"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="experts-cache-prefetch"
+      data-from="experts"
+      data-to="cache"
+    />
+    <text
+      class="memory-grid__path-label memory-grid__path-label--predicted"
+      x="379"
+      y="270"
+      text-anchor="middle"
+    >
+      PREDICTED PREFETCH
+    </text>
+    <text class="memory-grid__link-label" x="378" y="310" text-anchor="middle">
+      ONE COPY LINK
+    </text>
+    <path
+      class="project-visual__path memory-grid__demand-path"
+      d="M 328 334 H 428"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="experts-cache-demand"
+      data-from="experts"
+      data-to="cache"
+    />
+    <text
+      class="memory-grid__path-label memory-grid__path-label--demand"
+      x="378"
+      y="354"
+      text-anchor="middle"
+    >
+      DEMAND &gt; PREFETCH
+    </text>
+
+    <rect
+      class="project-visual__boundary memory-grid__stage-boundary"
+      x="430"
+      y="200"
+      data-node="cache"
+      width="330"
+      height="196"
+      rx="3"
+    />
+    <text class="memory-grid__stage-title" x="448" y="226">
+      BOUNDED HBM CACHE
+    </text>
+    <text class="memory-grid__section-note" x="742" y="226" text-anchor="end">
+      C = 64
+    </text>
+    <g class="project-visual__cache-grid">
+      {cacheCells.map((cell, index) => (
+        <rect
+          class={`project-visual__cache-cell memory-grid__cell ${cell.state === 'predicted' ? 'project-visual__cache-cell--predicted' : cell.state === 'resident' ? 'project-visual__cache-cell--resident' : ''}`}
+          data-state={cell.state}
+          x={448 + (index % 4) * 72}
+          y={242 + Math.floor(index / 4) * 34}
+          width="62"
+          height="24"
+          rx="1"
+        />
+      ))}
+    </g>
+    <g class="memory-grid__legend" aria-label="Cache states">
+      <g class="memory-grid__legend-item">
+        <rect
+          class="memory-grid__legend-swatch"
+          data-state="predicted"
+          x="448"
+          y="378"
+          width="14"
+          height="10"
+          rx="1"
+        />
+        <text class="memory-grid__legend-label" x="468" y="386">
+          PREDICTED
+        </text>
+      </g>
+      <g class="memory-grid__legend-item">
+        <rect
+          class="memory-grid__legend-swatch"
+          data-state="resident"
+          x="548"
+          y="378"
+          width="14"
+          height="10"
+          rx="1"
+        />
+        <text class="memory-grid__legend-label" x="568" y="386">
+          RESIDENT
+        </text>
+      </g>
+      <g class="memory-grid__legend-item">
+        <rect
+          class="memory-grid__legend-swatch"
+          data-state="free"
+          x="648"
+          y="378"
+          width="14"
+          height="10"
+          rx="1"
+        />
+        <text class="memory-grid__legend-label" x="668" y="386">
+          FREE
+        </text>
+      </g>
+    </g>
+
+    <path
+      class="project-visual__path memory-grid__serve-path"
+      d="M 760 294 H 818"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="cache-decode"
+      data-from="cache"
+      data-to="decode"
+    />
+    <text class="memory-grid__path-label" x="789" y="282" text-anchor="middle">
+      READ
+    </text>
+    <rect
+      class="project-visual__panel project-visual__panel--raised memory-grid__decode-panel"
+      x="820"
+      y="226"
+      width="100"
+      data-node="decode"
+      height="154"
+      rx="2"
+    />
+    <text class="memory-grid__stage-title memory-grid__decode-title" x="834" y="258">
+      DECODE
+    </text>
+    <text class="memory-grid__decode-note" x="834" y="284">
+      EXPERT
+    </text>
+    <text class="memory-grid__decode-note" x="834" y="304">
+      REQUEST
+    </text>
+    <path class="memory-grid__stall-line" d="M 834 328 H 906" />
+    <text class="memory-grid__stall-label" x="834" y="352">
+      EXPOSED STALL
+    </text>
+    <text class="memory-grid__decode-note" x="834" y="372">
+      ON CACHE MISS
+    </text>
+
+    <text class="memory-grid__footer" x="40" y="418">
+      TRAFFIC + LATENCY ARE MODEL OUTPUTS
+    </text>
+  </g>
+
+  <g data-layout="compact">
+    <text class="memory-grid__header" x="40" y="42">
+      SIMULATED
+    </text>
+    <path class="memory-grid__header-rule" d="M 40 58 H 920" />
+
+    <rect
+      class="project-visual__panel project-visual__panel--raised memory-grid__predictor-panel"
+      x="40"
+      y="70"
+      width="880"
+      data-node="predictor"
+      height="62"
+      rx="2"
+    />
+    <text class="memory-grid__stage-title" x="62" y="113">
+      PREDICTOR
+    </text>
+    <text class="memory-grid__predictor-note" x="918" y="112" text-anchor="end">
+      PREDICTED PREFETCH
+    </text>
+    <path
+      class="memory-grid__predictor-path"
+      d="M 620 132 V 150"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="compact-predictor-cache"
+      data-from="predictor"
+      data-to="cache"
+    />
+
+    <rect
+      class="project-visual__panel memory-grid__compact-panel"
+      x="40"
+      y="156"
+      width="230"
+      data-node="experts"
+      height="194"
+      rx="3"
+    />
+    <text class="memory-grid__compact-note" x="62" y="190">
+      OFF-CHIP
+    </text>
+    <text class="memory-grid__stage-title" x="62" y="270">
+      EXPERTS
+    </text>
+
+    <path
+      class="project-visual__path memory-grid__prefetch-path"
+      d="M 270 279 H 368"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="compact-experts-cache-prefetch"
+      data-from="experts"
+      data-to="cache"
+    />
+    <path
+      class="project-visual__path memory-grid__demand-path"
+      d="M 270 323 H 368"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="compact-experts-cache-demand"
+      data-from="experts"
+      data-to="cache"
+    />
+
+    <rect
+      class="project-visual__panel memory-grid__compact-panel"
+      x="370"
+      y="156"
+      width="300"
+      data-node="cache"
+      height="194"
+      rx="3"
+    />
+    <text class="memory-grid__compact-note" x="392" y="190">
+      BOUNDED
+    </text>
+    <text class="memory-grid__stage-title" x="392" y="270">
+      HBM CACHE
+    </text>
+
+    <path
+      class="project-visual__path memory-grid__serve-path"
+      d="M 670 279 H 708"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="compact-cache-decode"
+      data-from="cache"
+      data-to="decode"
+    />
+    <rect
+      class="project-visual__panel project-visual__panel--raised memory-grid__compact-panel"
+      x="710"
+      y="156"
+      width="210"
+      data-node="decode"
+      height="194"
+      rx="3"
+    />
+    <text class="memory-grid__stage-title memory-grid__decode-title" x="732" y="198">
+      DECODE
+    </text>
+    <path class="memory-grid__stall-line" d="M 732 232 H 898" />
+    <text class="memory-grid__stall-label" x="732" y="278">
+      EXPOSED
+    </text>
+    <text class="memory-grid__stall-label memory-grid__stall-label--primary" x="732" y="342">
+      STALL
+    </text>
+
+    <path class="memory-grid__demand-rule" d="M 40 376 H 180" />
+    <text class="memory-grid__path-label memory-grid__path-label--demand" x="200" y="388">
+      DEMAND FIRST
+    </text>
+
+    <text class="memory-grid__footer" x="920" y="419" text-anchor="end">
+      NOT MEASURED
+    </text>
+  </g>
+</g>

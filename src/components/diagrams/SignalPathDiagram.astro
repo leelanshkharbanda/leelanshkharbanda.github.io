@@ -1,0 +1,298 @@
+---
+import '../../styles/diagrams/signal-path.css';
+
+interface Props {
+  arrowId: string;
+  traceArrowId: string;
+}
+
+const { arrowId, traceArrowId } = Astro.props;
+
+const stages = [
+  {
+    x: 40,
+    y: 76,
+    number: '01',
+    datum: 'TS-01',
+    label: 'SOURCE',
+    detail: 'QPSK + seed',
+    compactDetail: 'QPSK + seed',
+  },
+  {
+    x: 260,
+    y: 152,
+    number: '02',
+    datum: 'TS-02',
+    label: 'CHANNEL',
+    detail: 'paths + impairment',
+    compactDetail: 'multipath',
+  },
+  {
+    x: 480,
+    y: 228,
+    number: '03',
+    datum: 'TS-03',
+    label: 'RECEIVER',
+    detail: 'decisions + phase',
+    compactDetail: 'decisions + phase',
+  },
+  {
+    x: 700,
+    y: 304,
+    number: '04',
+    datum: 'TS-04',
+    label: 'OUTPUT',
+    detail: 'IQ + BER',
+    compactDetail: 'IQ + BER',
+  },
+];
+---
+
+<g class="project-visual__signal-path">
+  <g data-layout="full">
+    <rect class="project-visual__panel" x="24" y="24" width="912" height="184" rx="2" />
+    <text class="project-visual__eyebrow" x="44" y="52">
+      01 / SCENE GEOMETRY
+    </text>
+    <text class="project-visual__micro" x="916" y="52" text-anchor="end">
+      ILLUSTRATIVE / SEEDED
+    </text>
+
+    <rect class="signal-path__scene-frame" x="44" y="68" width="392" height="120" rx="2" />
+    <path class="signal-path__divider" d="M 452 68 L 452 188" />
+
+    <path
+      class="project-visual__path signal-path__path--direct"
+      d="M 141 126 L 329 126"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="direct"
+      data-from="tx"
+      data-to="rx"
+    />
+    <path
+      class="project-visual__path project-visual__path--dashed signal-path__path--reflected"
+      d="M 141 122 L 216 104 L 408 104 L 329 122"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="reflected"
+      data-from="tx"
+      data-to="rx"
+    />
+    <path
+      class="project-visual__path project-visual__path--dotted signal-path__path--transmitted"
+      d="M 141 130 L 276 174 L 408 154 L 329 130"
+      marker-end={`url(#${traceArrowId})`}
+      data-connector="transmitted"
+      data-from="tx"
+      data-to="rx"
+    />
+
+    <path class="project-visual__wall" d="M 216 104 L 216 174 M 408 104 L 408 174" />
+    <text class="project-visual__micro" x="216" y="88" text-anchor="middle">
+      WALL A
+    </text>
+    <text class="project-visual__micro" x="408" y="88" text-anchor="middle">
+      WALL B
+    </text>
+    <text class="project-visual__micro" x="346" y="88" text-anchor="middle">
+      RECEIVER
+    </text>
+
+    <circle class="project-visual__node-fill" cx="126" cy="126" r="15" data-node="tx" />
+    <text class="project-visual__node-label" x="126" y="131" text-anchor="middle">
+      TX
+    </text>
+    <text class="project-visual__micro" x="126" y="96" text-anchor="middle">
+      SOURCE
+    </text>
+
+    <circle class="project-visual__node-fill" cx="346" cy="126" r="15" data-node="rx" />
+    <text class="project-visual__node-label" x="346" y="131" text-anchor="middle">
+      RX
+    </text>
+
+    <rect
+      class="project-visual__panel project-visual__panel--raised"
+      x="468"
+      y="68"
+      data-node="candidate-paths"
+      width="448"
+      height="120"
+      rx="2"
+    />
+    <text class="project-visual__eyebrow" x="492" y="92">
+      CANDIDATE PATHS
+    </text>
+    <text class="project-visual__micro" x="892" y="92" text-anchor="end">
+      BOUNDED SCENE
+    </text>
+    <path class="signal-path__legend-line" d="M 492 112 L 522 112" />
+    <text class="project-visual__body" x="536" y="116">
+      line of sight
+    </text>
+    <path
+      class="signal-path__legend-line signal-path__legend-line--dashed"
+      d="M 492 139 L 522 139"
+    />
+    <text class="project-visual__body" x="536" y="143">
+      reflection
+    </text>
+    <path
+      class="signal-path__legend-line signal-path__legend-line--dotted"
+      d="M 492 166 L 522 166"
+    />
+    <text class="project-visual__body" x="536" y="170">
+      transmission
+    </text>
+
+    <path
+      class="project-visual__connector signal-path__feed"
+      d="M 126 141 L 126 274"
+      marker-end={`url(#${arrowId})`}
+      data-connector="scene-source"
+      data-from="tx"
+      data-to="TS-01"
+    />
+    <path
+      class="project-visual__connector signal-path__feed"
+      d="M 346 141 L 346 274"
+      marker-end={`url(#${arrowId})`}
+      data-connector="scene-channel"
+      data-from="rx"
+      data-to="TS-02"
+    />
+    <path
+      class="project-visual__connector signal-path__feed"
+      d="M 566 188 L 566 274"
+      marker-end={`url(#${arrowId})`}
+      data-connector="paths-receiver"
+      data-from="candidate-paths"
+      data-to="TS-03"
+    />
+    <text
+      class="project-visual__micro signal-path__process-label"
+      x="916"
+      y="252"
+      text-anchor="end"
+    >
+      PROCESS ORDER / LEFT TO RIGHT
+    </text>
+
+    {stages.map((stage) => (
+      <g class="project-visual__stage" data-stage={stage.datum}>
+        <rect
+          class="project-visual__stage-box"
+          x={stage.x}
+          data-node={stage.datum}
+          y="276"
+          width="172"
+          height="98"
+          rx="2"
+        />
+        <text class="project-visual__datum" x={stage.x + 16} y="300">
+          {stage.datum}
+        </text>
+        <text class="project-visual__stage-label" x={stage.x + 16} y="330">
+          {stage.label}
+        </text>
+        <text class="project-visual__micro" x={stage.x + 16} y="354">
+          {stage.detail}
+        </text>
+      </g>
+    ))}
+
+    <path
+      class="project-visual__connector"
+      d="M 212 325 L 258 325"
+      marker-end={`url(#${arrowId})`}
+      data-connector="source-channel"
+      data-from="TS-01"
+      data-to="TS-02"
+    />
+    <path
+      class="project-visual__connector"
+      d="M 432 325 L 478 325"
+      marker-end={`url(#${arrowId})`}
+      data-connector="channel-receiver"
+      data-from="TS-02"
+      data-to="TS-03"
+    />
+    <path
+      class="project-visual__connector"
+      d="M 652 325 L 698 325"
+      marker-end={`url(#${arrowId})`}
+      data-connector="receiver-output"
+      data-from="TS-03"
+      data-to="TS-04"
+    />
+
+    <polyline
+      class="project-visual__wave"
+      points="720,410 736,410 744,394 752,422 760,382 768,418 776,394 784,414 792,410 812,410 828,410 836,398 844,418 852,386 860,416 868,398 876,410 904,410"
+    />
+    <text class="project-visual__micro signal-path__footer-label" x="40" y="414">
+      BASEBAND SIMULATION
+    </text>
+  </g>
+
+  <g data-layout="compact">
+    <text class="signal-path__compact-title" x="40" y="52">
+      SIGNAL PATH
+    </text>
+    <text class="signal-path__compact-boundary" x="920" y="52" text-anchor="end">
+      SEEDED
+    </text>
+
+    {stages.map((stage) => (
+      <g class="signal-path__compact-stage" data-stage={stage.datum}>
+        <circle class="signal-path__compact-number-ring" cx="64" cy={stage.y + 32} r="30" />
+        <text class="signal-path__compact-number" x="64" y={stage.y + 47} text-anchor="middle">
+          {stage.number}
+        </text>
+        <rect
+          class="signal-path__compact-card"
+          x="108"
+          data-node={stage.datum}
+          y={stage.y}
+          width="824"
+          height="64"
+          rx="4"
+        />
+        <text class="signal-path__compact-name" x="144" y={stage.y + 47}>
+          {stage.label}
+        </text>
+        <text class="signal-path__compact-detail" x="892" y={stage.y + 47} text-anchor="end">
+          {stage.compactDetail}
+        </text>
+      </g>
+    ))}
+
+    <path
+      class="signal-path__compact-connector"
+      d="M 520 144 L 520 150"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-source-channel"
+      data-from="TS-01"
+      data-to="TS-02"
+    />
+    <path
+      class="signal-path__compact-connector"
+      d="M 520 220 L 520 226"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-channel-receiver"
+      data-from="TS-02"
+      data-to="TS-03"
+    />
+    <path
+      class="signal-path__compact-connector"
+      d="M 520 296 L 520 302"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-receiver-output"
+      data-from="TS-03"
+      data-to="TS-04"
+    />
+
+    <text class="signal-path__compact-footer" x="40" y="412">
+      SIMULATED / NOT MEASURED
+    </text>
+  </g>
+</g>

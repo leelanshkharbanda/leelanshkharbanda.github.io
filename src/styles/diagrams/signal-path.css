@@ -1,0 +1,153 @@
+.project-visual__signal-path [data-layout='compact'] {
+  display: none;
+}
+
+.project-visual__signal-path .signal-path__scene-frame {
+  fill: #1d211d;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.project-visual__signal-path .signal-path__divider {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.project-visual__signal-path .signal-path__path--direct {
+  stroke-width: 2.5;
+}
+
+.project-visual__signal-path .signal-path__path--reflected,
+.project-visual__signal-path .signal-path__path--transmitted {
+  stroke-width: 1.75;
+}
+
+.project-visual__signal-path .signal-path__legend-line {
+  fill: none;
+  stroke: var(--dark-trace);
+  stroke-linecap: square;
+  stroke-width: 2;
+}
+
+.project-visual__signal-path .signal-path__legend-line--dashed {
+  stroke-dasharray: 8 5;
+  stroke-width: 1.75;
+}
+
+.project-visual__signal-path .signal-path__legend-line--dotted {
+  stroke-dasharray: 2 5;
+  stroke-width: 1.75;
+}
+
+.project-visual__signal-path .signal-path__feed {
+  stroke: var(--dark-secondary);
+}
+
+.project-visual__signal-path .signal-path__process-label {
+  font-size: 10px !important;
+  letter-spacing: 0.08em;
+}
+
+.project-visual__signal-path .project-visual__stage-label {
+  font-size: 16px !important;
+  letter-spacing: 0.02em;
+}
+
+.project-visual__signal-path
+  :where(.project-visual__stage[data-stage='TS-02'])
+  .project-visual__stage-box {
+  fill: #22302e;
+  stroke: var(--dark-trace);
+}
+
+.project-visual__signal-path
+  :where(.project-visual__stage[data-stage='TS-04'])
+  .project-visual__stage-box {
+  stroke: var(--dark-signal);
+}
+
+.project-visual__signal-path .signal-path__footer-label {
+  font-size: 10px !important;
+  letter-spacing: 0.08em;
+}
+
+.project-visual__signal-path .signal-path__compact-title {
+  fill: var(--dark-signal) !important;
+  font-size: 46px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.project-visual__signal-path .signal-path__compact-boundary {
+  fill: var(--dark-secondary) !important;
+  font-size: 40px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.project-visual__signal-path .signal-path__compact-card {
+  fill: #222620;
+  stroke: var(--rule);
+  stroke-width: 2.5;
+}
+
+.project-visual__signal-path
+  :where(.signal-path__compact-stage[data-stage='TS-02'])
+  .signal-path__compact-card {
+  fill: #22302e;
+  stroke: var(--dark-trace);
+}
+
+.project-visual__signal-path
+  :where(.signal-path__compact-stage[data-stage='TS-04'])
+  .signal-path__compact-card {
+  stroke: var(--dark-signal);
+}
+
+.project-visual__signal-path .signal-path__compact-number-ring {
+  fill: #1d211d;
+  stroke: var(--rule);
+  stroke-width: 2.5;
+}
+
+.project-visual__signal-path .signal-path__compact-number {
+  fill: var(--dark-secondary) !important;
+  font-size: 40px !important;
+  font-weight: 700;
+}
+
+.project-visual__signal-path .signal-path__compact-name {
+  fill: var(--paper) !important;
+  font-size: 46px !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.project-visual__signal-path .signal-path__compact-detail {
+  fill: var(--dark-secondary) !important;
+  font-size: 40px !important;
+}
+
+.project-visual__signal-path .signal-path__compact-connector {
+  fill: none;
+  stroke: var(--dark-secondary);
+  stroke-linecap: square;
+  stroke-width: 3;
+}
+
+.project-visual__signal-path .signal-path__compact-footer {
+  fill: var(--dark-secondary) !important;
+  font-size: 40px !important;
+  letter-spacing: 0.06em;
+}
+
+@container project-visual (max-width: 640px) {
+  .project-visual__signal-path [data-layout='full'] {
+    display: none;
+  }
+
+  .project-visual__signal-path [data-layout='compact'] {
+    display: inline;
+  }
+}

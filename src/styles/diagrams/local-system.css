@@ -1,0 +1,118 @@
+.project-visual__local-system [data-layout='compact'] {
+  display: none;
+}
+
+.project-visual__local-system .ls-core-boundary {
+  stroke-width: 1.5;
+}
+
+.project-visual__local-system .ls-command-flow,
+.project-visual__local-system .ls-local-flow {
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.project-visual__local-system .ls-divider {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.project-visual__local-system .ls-setup-node {
+  fill: #24251f;
+  stroke: var(--dark-secondary);
+}
+
+.project-visual__local-system .ls-optional-node {
+  fill: #2b231e;
+  stroke: var(--dark-signal);
+  stroke-dasharray: 4 4;
+}
+
+.project-visual__local-system .ls-optional-flow {
+  stroke: var(--dark-secondary);
+}
+
+.project-visual__local-system .project-visual__panel--raised {
+  transition: none;
+}
+
+.project-visual__local-system .ls-compact-core-boundary,
+.project-visual__local-system .ls-compact-optional-boundary {
+  stroke-width: 2;
+}
+
+.project-visual__local-system .ls-compact-boundary-label,
+.project-visual__local-system .ls-compact-optional-title {
+  fill: var(--dark-signal);
+  font-size: 44px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.project-visual__local-system .ls-compact-title {
+  fill: var(--paper);
+  font-size: 48px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.project-visual__local-system .ls-compact-data-title {
+  fill: var(--paper);
+  font-size: 44px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.project-visual__local-system .ls-compact-optional-detail {
+  fill: var(--paper);
+  font-size: 44px;
+  letter-spacing: 0;
+}
+
+.project-visual__local-system .ls-compact-connector {
+  stroke-width: 2.5;
+}
+
+.project-visual__local-system .ls-compact-path {
+  stroke-width: 3;
+}
+
+.project-visual__local-system .ls-compact-context {
+  stroke-width: 1.5;
+}
+
+.project-visual__local-system .ls-compact-setup-node {
+  fill: #24251f;
+  stroke: var(--dark-secondary);
+  stroke-width: 1.5;
+}
+
+.project-visual__local-system .ls-compact-setup-title {
+  fill: var(--paper);
+  font-size: 44px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.project-visual__local-system .ls-compact-optional-node {
+  fill: #2b231e;
+  stroke: var(--dark-signal);
+  stroke-dasharray: 5 4;
+  stroke-width: 1.5;
+}
+
+.project-visual__local-system .ls-compact-optional-flow {
+  stroke: var(--dark-secondary);
+  stroke-width: 2.5;
+}
+
+@container project-visual (max-width: 640px) {
+  .project-visual__local-system [data-layout='full'] {
+    display: none;
+  }
+
+  .project-visual__local-system [data-layout='compact'] {
+    display: inline;
+  }
+}

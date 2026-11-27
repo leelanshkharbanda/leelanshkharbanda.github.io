@@ -1,0 +1,180 @@
+.project-visual__constellation [data-layout='compact'] {
+  display: none;
+}
+
+.project-visual__constellation [data-layout='full'] {
+  display: inline;
+}
+
+@container project-visual (max-width: 640px) {
+  .project-visual__constellation [data-layout='full'] {
+    display: none;
+  }
+
+  .project-visual__constellation [data-layout='compact'] {
+    display: inline;
+  }
+}
+
+.project-visual__constellation .project-visual__constellation-title {
+  fill: var(--paper) !important;
+  font-size: 13px !important;
+  font-weight: 650;
+  letter-spacing: 1.2px;
+}
+
+.project-visual__constellation .project-visual__constellation-seed {
+  fill: var(--dark-secondary) !important;
+  letter-spacing: 0.6px;
+}
+
+.project-visual__constellation .project-visual__constellation-heading {
+  font-size: 12px !important;
+  font-weight: 650;
+  letter-spacing: 0.7px;
+}
+
+.project-visual__constellation .project-visual__plot {
+  --constellation-accent: var(--dark-signal);
+}
+
+.project-visual__constellation .project-visual__plot[data-stage='source'] {
+  --constellation-accent: var(--paper);
+}
+
+.project-visual__constellation .project-visual__plot[data-stage='receiver'] {
+  --constellation-accent: var(--dark-trace);
+}
+
+.project-visual__constellation .project-visual__plot[data-stage='source'] .project-visual__eyebrow {
+  fill: var(--paper) !important;
+}
+
+.project-visual__constellation
+  .project-visual__plot[data-stage='channel']
+  .project-visual__eyebrow {
+  fill: var(--dark-signal) !important;
+}
+
+.project-visual__constellation
+  .project-visual__plot[data-stage='receiver']
+  .project-visual__eyebrow {
+  fill: var(--dark-trace) !important;
+}
+
+.project-visual__constellation
+  .project-visual__plot[data-stage='source']
+  .project-visual__plot-frame {
+  fill: #1e211c;
+}
+
+.project-visual__constellation
+  .project-visual__plot[data-stage='channel']
+  .project-visual__plot-frame {
+  fill: #28231f;
+}
+
+.project-visual__constellation
+  .project-visual__plot[data-stage='receiver']
+  .project-visual__plot-frame {
+  fill: #1c2725;
+}
+
+.project-visual__constellation .project-visual__point {
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.92;
+}
+
+.project-visual__constellation .project-visual__point--source {
+  fill: var(--paper);
+}
+
+.project-visual__constellation .project-visual__point--channel {
+  fill: var(--dark-signal);
+}
+
+.project-visual__constellation .project-visual__point--receiver {
+  fill: var(--dark-trace);
+}
+
+.project-visual__constellation .project-visual__constellation-detail {
+  fill: var(--dark-secondary) !important;
+  letter-spacing: 0.4px;
+}
+
+.project-visual__constellation .project-visual__axis {
+  stroke: var(--dark-secondary);
+  stroke-opacity: 0.55;
+}
+
+.project-visual__constellation .project-visual__axis-tick {
+  fill: none;
+  stroke: var(--dark-secondary);
+  stroke-width: 1.2;
+  stroke-opacity: 0.7;
+}
+
+.project-visual__constellation .project-visual__constellation-axis-label {
+  fill: var(--paper) !important;
+  font-size: 10px !important;
+  font-weight: 650;
+}
+
+.project-visual__constellation .project-visual__decision {
+  stroke: var(--dark-trace);
+  stroke-width: 1.4;
+  stroke-opacity: 0.8;
+  stroke-dasharray: 5 5;
+}
+
+.project-visual__constellation .project-visual__decision-target {
+  fill: none;
+  stroke: var(--dark-trace);
+  stroke-width: 1;
+  stroke-opacity: 0.32;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-visual__constellation .project-visual__plot:hover .project-visual__plot-frame {
+    stroke: var(--constellation-accent);
+  }
+
+  .project-visual__constellation .project-visual__plot:hover .project-visual__point {
+    opacity: 1;
+  }
+}
+
+.project-visual__constellation .project-visual__constellation-compact-heading {
+  font-size: 48px !important;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.project-visual__constellation .project-visual__plot--compact .project-visual__axis {
+  stroke-width: 1.2;
+  stroke-opacity: 0.65;
+}
+
+.project-visual__constellation .project-visual__plot--compact .project-visual__axis-tick {
+  stroke-width: 1.6;
+}
+
+.project-visual__constellation .project-visual__plot--compact .project-visual__decision {
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+}
+
+.project-visual__constellation .project-visual__plot--compact .project-visual__decision-target {
+  stroke-width: 1.2;
+  stroke-opacity: 0.4;
+}
+
+.project-visual__constellation .project-visual__plot--compact .project-visual__point {
+  stroke-width: 1.25;
+  opacity: 0.96;
+}
+
+.project-visual__constellation [data-layout='compact'] .project-visual__connector {
+  stroke-width: 2;
+}

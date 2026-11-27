@@ -1,0 +1,398 @@
+---
+import '../../styles/diagrams/instruction-trace.css';
+
+interface Props {
+  arrowId: string;
+}
+
+const { arrowId } = Astro.props;
+---
+
+<g class="project-visual__instruction-trace">
+  <g data-layout="full" class="instruction-trace__layout instruction-trace__layout--full">
+    <text class="project-visual__eyebrow instruction-trace__title" x="40" y="44">
+      RV32I SUBSET / FUNCTIONAL TRACE
+    </text>
+    <text
+      class="project-visual__micro instruction-trace__boundary"
+      x="920"
+      y="44"
+      text-anchor="end"
+    >
+      FUNCTIONAL EXECUTION
+    </text>
+
+    <g class="instruction-trace__stage instruction-trace__stage--assembly">
+      <rect
+        class="project-visual__panel instruction-trace__panel"
+        x="40"
+        y="72"
+        data-node="assembly"
+        width="230"
+        height="304"
+        rx="2"
+      />
+      <text class="project-visual__eyebrow" x="60" y="102">
+        01 / ASSEMBLY
+      </text>
+      <rect class="instruction-trace__example-band" x="50" y="124" width="210" height="26" rx="1" />
+      <text class="project-visual__micro instruction-trace__line-number" x="60" y="142">
+        01
+      </text>
+      <text class="project-visual__trace-code" x="88" y="142">
+        <tspan class="instruction-trace__mnemonic">addi</tspan>
+        <tspan> x1, x0, 5</tspan>
+      </text>
+      <text class="project-visual__micro instruction-trace__line-number" x="60" y="178">
+        02
+      </text>
+      <text class="project-visual__trace-code" x="88" y="178">
+        <tspan class="instruction-trace__mnemonic">addi</tspan>
+        <tspan> x2, x0, 7</tspan>
+      </text>
+      <text class="project-visual__micro instruction-trace__line-number" x="60" y="214">
+        03
+      </text>
+      <text class="project-visual__trace-code" x="88" y="214">
+        <tspan class="instruction-trace__mnemonic">add</tspan>
+        <tspan> x3, x1, x2</tspan>
+      </text>
+      <text class="project-visual__micro instruction-trace__line-number" x="60" y="250">
+        04
+      </text>
+      <text class="project-visual__trace-code" x="88" y="250">
+        <tspan class="instruction-trace__mnemonic">sw</tspan>
+        <tspan> x3, 0(x0)</tspan>
+      </text>
+      <path class="project-visual__rule instruction-trace__assembly-rule" d="M 60 286 L 250 286" />
+      <text class="project-visual__micro" x="60" y="308">
+        LABELS → ADDRESSES
+      </text>
+      <text class="project-visual__micro" x="60" y="334">
+        SUPPORTED TYPES
+      </text>
+      <text class="project-visual__trace-code instruction-trace__type-list" x="60" y="356">
+        R · I · S · B · J
+      </text>
+    </g>
+
+    <path
+      class="project-visual__connector"
+      d="M 270 130 L 316 130"
+      marker-end={`url(#${arrowId})`}
+      data-connector="assembly-encoding"
+      data-from="assembly"
+      data-to="encoding"
+    />
+    <g class="instruction-trace__stage instruction-trace__stage--encoding">
+      <rect
+        class="project-visual__panel project-visual__panel--raised instruction-trace__panel"
+        x="318"
+        y="72"
+        data-node="encoding"
+        width="602"
+        height="118"
+        rx="2"
+      />
+      <text class="project-visual__eyebrow" x="338" y="102">
+        02 / ADDI FIELD ENCODING
+      </text>
+      <text
+        class="project-visual__micro instruction-trace__word-width"
+        x="900"
+        y="102"
+        text-anchor="end"
+      >
+        32-BIT WORD
+      </text>
+      <g
+        class="instruction-trace__fields"
+        aria-label="ADDI fields: immediate 5, rs1 0, funct3 000, rd 1, opcode 0010011"
+      >
+        <rect
+          class="instruction-trace__field instruction-trace__field--immediate"
+          x="338"
+          y="112"
+          width="211"
+          height="48"
+          rx="1"
+        />
+        <rect class="instruction-trace__field" x="549" y="112" width="88" height="48" rx="1" />
+        <rect class="instruction-trace__field" x="637" y="112" width="53" height="48" rx="1" />
+        <rect class="instruction-trace__field" x="690" y="112" width="88" height="48" rx="1" />
+        <rect class="instruction-trace__field" x="778" y="112" width="122" height="48" rx="1" />
+        <text
+          class="project-visual__micro instruction-trace__field-label"
+          x="443.5"
+          y="130"
+          text-anchor="middle"
+        >
+          imm[11:0]
+        </text>
+        <text
+          class="project-visual__trace-code instruction-trace__field-value instruction-trace__field-value--immediate"
+          x="443.5"
+          y="151"
+          text-anchor="middle"
+        >
+          5
+        </text>
+        <text
+          class="project-visual__micro instruction-trace__field-label"
+          x="593"
+          y="130"
+          text-anchor="middle"
+        >
+          rs1
+        </text>
+        <text
+          class="project-visual__trace-code instruction-trace__field-value"
+          x="593"
+          y="151"
+          text-anchor="middle"
+        >
+          0
+        </text>
+        <text
+          class="project-visual__micro instruction-trace__field-label"
+          x="663.5"
+          y="130"
+          text-anchor="middle"
+        >
+          funct3
+        </text>
+        <text
+          class="project-visual__trace-code instruction-trace__field-value"
+          x="663.5"
+          y="151"
+          text-anchor="middle"
+        >
+          000
+        </text>
+        <text
+          class="project-visual__micro instruction-trace__field-label"
+          x="734"
+          y="130"
+          text-anchor="middle"
+        >
+          rd
+        </text>
+        <text
+          class="project-visual__trace-code instruction-trace__field-value"
+          x="734"
+          y="151"
+          text-anchor="middle"
+        >
+          1
+        </text>
+        <text
+          class="project-visual__micro instruction-trace__field-label"
+          x="839"
+          y="130"
+          text-anchor="middle"
+        >
+          opcode
+        </text>
+        <text
+          class="project-visual__trace-code instruction-trace__field-value"
+          x="839"
+          y="151"
+          text-anchor="middle"
+        >
+          0010011
+        </text>
+      </g>
+      <text class="project-visual__micro instruction-trace__field-widths" x="338" y="178">
+        12 · 5 · 3 · 5 · 7 BITS
+      </text>
+      <text
+        class="project-visual__micro instruction-trace__pipeline"
+        x="900"
+        y="178"
+        text-anchor="end"
+      >
+        ENCODING → FETCH → DECODE → EXECUTE
+      </text>
+    </g>
+
+    <path
+      class="project-visual__connector"
+      d="M 620 190 L 620 234"
+      marker-end={`url(#${arrowId})`}
+      data-connector="encoding-state"
+      data-from="encoding"
+      data-to="state"
+    />
+    <g class="instruction-trace__stage instruction-trace__stage--state">
+      <rect
+        class="project-visual__panel instruction-trace__panel"
+        x="318"
+        y="236"
+        data-node="state"
+        width="602"
+        height="188"
+        rx="2"
+      />
+      <text class="project-visual__eyebrow" x="338" y="266">
+        03 / STATE AFTER EACH INSTRUCTION
+      </text>
+      <text
+        class="project-visual__micro instruction-trace__timing-limit"
+        x="900"
+        y="266"
+        text-anchor="end"
+      >
+        NO CYCLE TIMING
+      </text>
+      <rect class="instruction-trace__table-heading" x="319" y="283" width="600" height="35" />
+      <rect class="instruction-trace__row-band" x="319" y="362" width="600" height="44" />
+      <path class="instruction-trace__row-accent" d="M 320 319 L 320 361 M 320 363 L 320 405" />
+
+      <path
+        class="project-visual__rule"
+        d="M 338 282 L 900 282 M 338 318 L 900 318 M 338 362 L 900 362 M 338 406 L 900 406"
+      />
+      <path
+        class="project-visual__rule"
+        d="M 410 282 L 410 406 M 610 282 L 610 406 M 770 282 L 770 406"
+      />
+      <text class="project-visual__micro instruction-trace__column-heading" x="338" y="304">
+        ADDR
+      </text>
+      <text class="project-visual__micro instruction-trace__column-heading" x="430" y="304">
+        INSTRUCTION
+      </text>
+      <text class="project-visual__micro instruction-trace__column-heading" x="630" y="304">
+        REGISTERS
+      </text>
+      <text class="project-visual__micro instruction-trace__column-heading" x="790" y="304">
+        MEMORY
+      </text>
+      <text class="project-visual__trace-code instruction-trace__pc" x="338" y="344">
+        0x08
+      </text>
+      <text class="project-visual__trace-code instruction-trace__instruction" x="430" y="344">
+        ADD
+      </text>
+      <text class="project-visual__trace-code" x="630" y="344">
+        x3 = 12
+      </text>
+      <text class="project-visual__trace-code instruction-trace__empty-value" x="790" y="344">
+        —
+      </text>
+      <text class="project-visual__trace-code instruction-trace__pc" x="338" y="390">
+        0x0C
+      </text>
+      <text class="project-visual__trace-code instruction-trace__instruction" x="430" y="390">
+        SW
+      </text>
+      <text class="project-visual__trace-code" x="630" y="390">
+        x3 = 12
+      </text>
+      <text class="project-visual__trace-code instruction-trace__memory-write" x="790" y="390">
+        mem[0] = 12
+      </text>
+    </g>
+
+    <text class="project-visual__micro instruction-trace__limits" x="40" y="424">
+      32 REGISTERS / BYTE-ADDRESSED MEMORY / 64 KB MODEL
+    </text>
+  </g>
+
+  <g data-layout="compact" class="instruction-trace__layout instruction-trace__layout--compact">
+    <g class="instruction-trace__compact-stage instruction-trace__compact-stage--assembly">
+      <rect
+        class="instruction-trace__compact-panel"
+        x="40"
+        y="16"
+        width="880"
+        height="72"
+        rx="2"
+        data-node="assembly"
+      />
+      <path class="instruction-trace__compact-accent" d="M 41 22 L 41 82" />
+      <text class="instruction-trace__compact-heading" x="64" y="60">
+        ASSEMBLY
+      </text>
+      <text class="instruction-trace__compact-code" x="340" y="60">
+        <tspan class="instruction-trace__mnemonic">addi</tspan>
+        <tspan> x1, x0, 5</tspan>
+      </text>
+    </g>
+
+    <path
+      class="project-visual__connector instruction-trace__compact-connector"
+      d="M 480 88 L 480 100"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-assembly-encoding"
+      data-from="assembly"
+      data-to="encoding"
+    />
+
+    <g class="instruction-trace__compact-stage instruction-trace__compact-stage--encoding">
+      <rect
+        class="instruction-trace__compact-panel"
+        x="40"
+        y="104"
+        width="880"
+        height="122"
+        data-node="encoding"
+        rx="2"
+      />
+      <path class="instruction-trace__compact-accent" d="M 41 110 L 41 220" />
+      <text class="instruction-trace__compact-heading" x="64" y="142">
+        ENCODING
+      </text>
+      <text class="instruction-trace__compact-field-line" x="430" y="142">
+        <tspan class="instruction-trace__mnemonic">imm[11:0]=5</tspan>
+        <tspan> · rs1=0</tspan>
+      </text>
+      <text class="instruction-trace__compact-field-line" x="64" y="198">
+        funct3=000 · rd=1 · opcode=0010011
+      </text>
+    </g>
+
+    <path
+      class="project-visual__connector instruction-trace__compact-connector"
+      d="M 480 226 L 480 238"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-encoding-state"
+      data-from="encoding"
+      data-to="state"
+    />
+
+    <g class="instruction-trace__compact-stage instruction-trace__compact-stage--state">
+      <rect
+        class="instruction-trace__compact-panel"
+        x="40"
+        y="242"
+        width="880"
+        height="178"
+        data-node="state"
+        rx="2"
+      />
+      <path class="instruction-trace__compact-accent" d="M 41 248 L 41 414" />
+      <text class="instruction-trace__compact-heading" x="64" y="286">
+        STATE
+      </text>
+      <text class="instruction-trace__compact-boundary" x="896" y="286" text-anchor="end">
+        FUNCTIONAL / NO CYCLE TIMING
+      </text>
+      <path class="instruction-trace__compact-rule" d="M 64 302 L 896 302 M 464 310 L 464 410" />
+      <text class="instruction-trace__compact-value" x="64" y="346">
+        <tspan class="instruction-trace__compact-address">ADDR 0x08</tspan>
+      </text>
+      <text class="instruction-trace__compact-value" x="64" y="398">
+        <tspan class="instruction-trace__instruction">ADD</tspan>
+        <tspan> → x3=12</tspan>
+      </text>
+      <text class="instruction-trace__compact-value" x="496" y="346">
+        <tspan class="instruction-trace__compact-address">ADDR 0x0C</tspan>
+      </text>
+      <text class="instruction-trace__compact-value" x="496" y="398">
+        <tspan class="instruction-trace__instruction">SW</tspan>
+        <tspan> → mem[0]=12</tspan>
+      </text>
+    </g>
+  </g>
+</g>

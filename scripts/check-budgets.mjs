@@ -45,6 +45,8 @@ function htmlFiles(directory) {
 }
 
 let maxInlineBytes = 0;
+let maxDiagramGzipBytes = 0;
+let maxDiagramNodes = 0;
 let thirdPartyRequests = 0;
 
 for (const file of htmlFiles(join(root, 'dist'))) {
@@ -57,6 +59,17 @@ for (const file of htmlFiles(join(root, 'dist'))) {
   maxInlineBytes = Math.max(maxInlineBytes, inlineBytes);
   if (inlineBytes > 125_000)
     failures.push(`Inline JavaScript exceeds 125 KB gzip in ${file}: ${inlineBytes}`);
+
+  for (const match of html.matchAll(/<figure\b[^>]*project-visual__root[\s\S]*?<\/figure>/g)) {
+    const diagramBytes = gzipSize(Buffer.from(match[0]));
+    const diagramNodes = (match[0].match(/<[a-z][^>]*>/gi) ?? []).length;
+    maxDiagramGzipBytes = Math.max(maxDiagramGzipBytes, diagramBytes);
+    maxDiagramNodes = Math.max(maxDiagramNodes, diagramNodes);
+    if (diagramBytes > 6_000)
+      failures.push(`Project diagram exceeds 6 KB gzip in ${file}: ${diagramBytes}`);
+    if (diagramNodes > 320)
+      failures.push(`Project diagram exceeds 320 nodes in ${file}: ${diagramNodes}`);
+  }
 
   const runtimeTags = html.match(/<(?:script|link|img|iframe|source)\b[^>]*>/g) ?? [];
   for (const tag of runtimeTags) {
@@ -84,6 +97,8 @@ console.log(
       diagramInspectorGzipBytes: diagramInspectorBytes,
       fontBytes,
       maxInlineGzipBytes: maxInlineBytes,
+      maxDiagramGzipBytes,
+      maxDiagramNodes,
       thirdPartyRequests,
     },
     null,

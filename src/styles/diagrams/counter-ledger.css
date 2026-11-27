@@ -1,0 +1,142 @@
+.project-visual__counter-ledger [data-layout='compact'] {
+  display: none;
+}
+
+.project-visual__counter-ledger .counter-ledger__selection-boundary {
+  fill: none;
+  stroke: var(--dark-secondary);
+  stroke-dasharray: 5 5;
+  stroke-width: 1.25;
+}
+
+.project-visual__counter-ledger .counter-ledger__label-cutout {
+  fill: var(--ink);
+}
+
+.project-visual__counter-ledger .counter-ledger__boundary-label {
+  fill: var(--dark-signal) !important;
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.project-visual__counter-ledger .counter-ledger__evaluation-label {
+  fill: var(--dark-trace) !important;
+}
+
+.project-visual__counter-ledger .counter-ledger__evaluation-rule {
+  fill: none;
+  stroke: var(--dark-trace);
+  stroke-width: 2;
+}
+
+.project-visual__counter-ledger .counter-ledger__split {
+  fill: none;
+  stroke: var(--rule);
+  stroke-dasharray: 3 5;
+  stroke-width: 1;
+}
+
+.project-visual__counter-ledger .counter-ledger__train-step .project-visual__stage-box {
+  stroke: var(--dark-secondary);
+}
+
+.project-visual__counter-ledger .counter-ledger__evaluation-step .project-visual__stage-box {
+  stroke: var(--dark-trace);
+}
+
+.project-visual__counter-ledger .counter-ledger__negative-title {
+  font-size: 17px !important;
+  letter-spacing: 0.02em;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-train {
+  fill: #222620;
+  stroke: var(--dark-secondary);
+  stroke-dasharray: 6 5;
+  stroke-width: 1.25;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-evaluate {
+  fill: #22302d;
+  stroke: var(--dark-trace);
+  stroke-width: 1.5;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-split {
+  fill: none;
+  stroke: var(--rule);
+  stroke-dasharray: 3 5;
+  stroke-width: 1;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-lane {
+  fill: var(--dark-signal) !important;
+  font-size: 40px !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-evaluate-label {
+  fill: var(--dark-trace) !important;
+  font-size: 40px !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-primary {
+  fill: var(--paper) !important;
+  font-size: 40px !important;
+  font-weight: 650;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-negative-accent {
+  fill: var(--dark-signal);
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-negative-label {
+  fill: var(--dark-signal) !important;
+  font-size: 40px !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.project-visual__counter-ledger .counter-ledger__compact-negative-title {
+  fill: var(--paper) !important;
+  font-size: 40px !important;
+  font-weight: 700;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-visual__counter-ledger:has(.counter-ledger__train-step:hover)
+    .counter-ledger__selection-boundary {
+    stroke: var(--dark-signal);
+  }
+
+  .project-visual__counter-ledger .counter-ledger__train-step:hover .project-visual__stage-box {
+    fill: #2c322c;
+    stroke: var(--dark-signal);
+  }
+
+  .project-visual__counter-ledger:has(.counter-ledger__evaluation-step:hover)
+    .counter-ledger__evaluation-rule {
+    stroke: var(--paper);
+  }
+
+  .project-visual__counter-ledger
+    .counter-ledger__evaluation-step:hover
+    .project-visual__stage-box {
+    fill: #2c322c;
+    stroke: var(--dark-trace);
+  }
+}
+
+@container project-visual (max-width: 640px) {
+  .project-visual__counter-ledger [data-layout='full'] {
+    display: none;
+  }
+
+  .project-visual__counter-ledger [data-layout='compact'] {
+    display: inline;
+  }
+}

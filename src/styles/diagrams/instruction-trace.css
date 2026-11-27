@@ -1,0 +1,185 @@
+.project-visual__instruction-trace .instruction-trace__example-band {
+  fill: #263431;
+}
+
+.project-visual__instruction-trace .instruction-trace__assembly-rule {
+  stroke: var(--dark-secondary);
+}
+
+.project-visual__instruction-trace .instruction-trace__line-number {
+  fill: var(--dark-secondary) !important;
+  font-size: 9px !important;
+}
+
+.project-visual__instruction-trace .instruction-trace__mnemonic {
+  fill: var(--dark-signal) !important;
+}
+
+.project-visual__instruction-trace .instruction-trace__type-list {
+  font-size: 12px !important;
+  letter-spacing: 1.4px;
+}
+
+.project-visual__instruction-trace .instruction-trace__word-width,
+.project-visual__instruction-trace .instruction-trace__field-widths,
+.project-visual__instruction-trace .instruction-trace__pipeline,
+.project-visual__instruction-trace .instruction-trace__timing-limit {
+  font-size: 9px !important;
+  letter-spacing: 0.35px;
+}
+
+.project-visual__instruction-trace .instruction-trace__field {
+  fill: #222620;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.project-visual__instruction-trace .instruction-trace__field--immediate {
+  fill: #263431;
+  stroke: var(--dark-trace);
+}
+
+.project-visual__instruction-trace .instruction-trace__field-label {
+  fill: var(--dark-secondary) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.45px;
+}
+
+.project-visual__instruction-trace .instruction-trace__field-value {
+  font-size: 14px !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.project-visual__instruction-trace .instruction-trace__field-value--immediate {
+  fill: var(--dark-signal) !important;
+  font-weight: 700;
+}
+
+.project-visual__instruction-trace .instruction-trace__table-heading {
+  fill: #2c322c;
+}
+
+.project-visual__instruction-trace .instruction-trace__row-band {
+  fill: #1e211b;
+}
+
+.project-visual__instruction-trace .instruction-trace__row-accent {
+  fill: none;
+  stroke: var(--dark-trace);
+  stroke-linecap: square;
+  stroke-width: 2;
+}
+
+.project-visual__instruction-trace .instruction-trace__column-heading {
+  fill: var(--paper) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.65px;
+}
+
+.project-visual__instruction-trace .instruction-trace__instruction {
+  fill: var(--dark-signal) !important;
+  font-weight: 650;
+  letter-spacing: 0.8px;
+}
+
+.project-visual__instruction-trace .instruction-trace__empty-value {
+  fill: var(--dark-secondary) !important;
+}
+
+.project-visual__instruction-trace .instruction-trace__memory-write {
+  font-variant-numeric: tabular-nums;
+}
+
+.project-visual__instruction-trace .instruction-trace__layout--compact {
+  display: none;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-panel {
+  fill: #222620;
+  stroke: var(--rule);
+  stroke-width: 1.5;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-accent {
+  fill: none;
+  stroke: var(--dark-trace);
+  stroke-linecap: square;
+  stroke-width: 3;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-connector {
+  stroke: var(--dark-secondary);
+  stroke-width: 2;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-heading {
+  fill: var(--dark-signal) !important;
+  font-size: 44px !important;
+  font-weight: 650;
+  letter-spacing: 0.4px;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-code {
+  fill: var(--paper) !important;
+  font-size: 40px !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-field-line {
+  fill: var(--paper) !important;
+  font-size: 40px !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-boundary {
+  fill: var(--dark-secondary) !important;
+  font-size: 40px !important;
+  letter-spacing: 0.2px;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-rule {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-address {
+  fill: var(--dark-secondary) !important;
+}
+
+.project-visual__instruction-trace .instruction-trace__compact-value {
+  fill: var(--paper) !important;
+  font-size: 40px !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+@container project-visual (max-width: 640px) {
+  .project-visual__root .instruction-trace__layout--full {
+    display: none;
+  }
+
+  .project-visual__root .instruction-trace__layout--compact {
+    display: inline;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-visual__root .instruction-trace__stage:hover .instruction-trace__panel,
+  .project-visual__root .instruction-trace__compact-stage:hover .instruction-trace__compact-panel {
+    fill: #2c322c;
+    stroke: var(--dark-signal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-visual__instruction-trace .instruction-trace__panel {
+    transition: none;
+  }
+}
+
+html[data-motion='reduced'] .project-visual__instruction-trace .instruction-trace__panel {
+  transition: none;
+}

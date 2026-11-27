@@ -1,0 +1,254 @@
+---
+import '../../styles/diagrams/counter-ledger.css';
+
+interface Props {
+  arrowId: string;
+}
+
+const { arrowId } = Astro.props;
+---
+
+<g class="project-visual__counter-ledger">
+  <g data-layout="full">
+    <text class="project-visual__eyebrow" x="40" y="44">
+      V2 / FIXED-SUBSET EXPERIMENT LEDGER
+    </text>
+    <text class="project-visual__micro" x="920" y="44" text-anchor="end">
+      GROUP BY BINARY
+    </text>
+
+    <rect
+      class="counter-ledger__selection-boundary"
+      x="396"
+      y="68"
+      width="352"
+      height="142"
+      rx="2"
+    />
+    <rect class="counter-ledger__label-cutout" x="408" y="59" width="146" height="20" />
+    <text class="counter-ledger__boundary-label" x="416" y="73">
+      TRAIN / SELECT
+    </text>
+    <path class="counter-ledger__evaluation-rule" d="M 776 84 H 920" />
+    <text
+      class="counter-ledger__boundary-label counter-ledger__evaluation-label"
+      x="848"
+      y="74"
+      text-anchor="middle"
+    >
+      HELD OUT / EVALUATE
+    </text>
+    <path class="counter-ledger__split" d="M 760 84 V 210" />
+
+    {[
+      { x: 40, datum: '01', label: 'PMU TRACES', detail: 'grouped by binary' },
+      { x: 224, datum: '02', label: 'EVENT BUDGET', detail: 'choose 4 of 13' },
+      { x: 408, datum: '03', label: 'SUBSETS', detail: '715 candidates' },
+      { x: 592, datum: '04', label: 'FIXED SET', detail: 'training-picked' },
+      { x: 776, datum: '05', label: 'HELD OUT', detail: 'whole binaries' },
+    ].map((row) => (
+      <g
+        class={`project-visual__ledger-row${
+          row.datum === '03' || row.datum === '04'
+            ? ' counter-ledger__train-step'
+            : row.datum === '05'
+              ? ' counter-ledger__evaluation-step'
+              : ''
+        }`}
+      >
+        <rect
+          class="project-visual__stage-box"
+          x={row.x}
+          y="92"
+          width="144"
+          height="102"
+          rx="2"
+          data-node={`step-${row.datum}`}
+        />
+        <text class="project-visual__datum" x={row.x + 14} y="118">
+          {row.datum}
+        </text>
+        <text class="project-visual__stage-label" x={row.x + 14} y="150">
+          {row.label}
+        </text>
+        <text class="project-visual__micro" x={row.x + 14} y="174">
+          {row.detail}
+        </text>
+      </g>
+    ))}
+
+    <path
+      class="project-visual__connector"
+      d="M 184 143 L 222 143"
+      marker-end={`url(#${arrowId})`}
+      data-connector="traces-budget"
+      data-from="step-01"
+      data-to="step-02"
+    />
+    <path
+      class="project-visual__connector"
+      d="M 368 143 L 406 143"
+      marker-end={`url(#${arrowId})`}
+      data-connector="budget-subsets"
+      data-from="step-02"
+      data-to="step-03"
+    />
+    <path
+      class="project-visual__connector"
+      d="M 552 143 L 590 143"
+      marker-end={`url(#${arrowId})`}
+      data-connector="subsets-fixed"
+      data-from="step-03"
+      data-to="step-04"
+    />
+    <path
+      class="project-visual__connector"
+      d="M 736 143 L 774 143"
+      marker-end={`url(#${arrowId})`}
+      data-connector="fixed-heldout"
+      data-from="step-04"
+      data-to="step-05"
+    />
+
+    <rect
+      class="project-visual__panel"
+      x="40"
+      y="240"
+      width="440"
+      height="126"
+      rx="2"
+      data-node="selection"
+    />
+    <text class="project-visual__eyebrow" x="60" y="270">
+      TRAINING-ONLY SELECTION
+    </text>
+    <text class="project-visual__body" x="60" y="300">
+      inner validation ranks 715 subsets
+    </text>
+    <text class="project-visual__body" x="60" y="330">
+      held-out binaries never choose the set
+    </text>
+    <text class="project-visual__micro" x="60" y="352">
+      NO RUN-LEVEL LEAKAGE
+    </text>
+
+    <path
+      class="project-visual__connector project-visual__connector--dashed counter-ledger__detail-link"
+      d="M 664 196 L 664 224 L 260 224 L 260 238"
+      marker-end={`url(#${arrowId})`}
+      data-connector="fixed-selection"
+      data-from="step-04"
+      data-to="selection"
+    />
+    <path
+      class="project-visual__connector counter-ledger__result-link"
+      d="M 848 194 L 848 238"
+      marker-end={`url(#${arrowId})`}
+      data-connector="heldout-result"
+      data-from="step-05"
+      data-to="negative"
+    />
+
+    <rect
+      class="project-visual__panel project-visual__panel--negative counter-ledger__negative-panel"
+      x="500"
+      y="240"
+      width="420"
+      data-node="negative"
+      height="126"
+      rx="2"
+    />
+    <text class="project-visual__eyebrow" x="520" y="270">
+      PER-BINARY ORACLE GATE
+    </text>
+    <text class="project-visual__stage-label counter-ledger__negative-title" x="520" y="304">
+      NEGATIVE CONDITIONING RESULT
+    </text>
+    <text class="project-visual__body" x="520" y="334">
+      do not add a learned routing layer
+    </text>
+    <text class="project-visual__micro" x="520" y="356">
+      CORPUS-SPECIFIC DECISION
+    </text>
+  </g>
+
+  <g data-layout="compact">
+    <rect
+      class="counter-ledger__compact-train"
+      x="40"
+      y="16"
+      width="560"
+      height="262"
+      rx="2"
+      data-node="train"
+    />
+    <rect
+      class="counter-ledger__compact-evaluate"
+      x="648"
+      y="16"
+      width="272"
+      height="262"
+      rx="2"
+      data-node="evaluate"
+    />
+    <path
+      class="project-visual__connector counter-ledger__compact-flow"
+      d="M 602 245 H 644"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-train-evaluate"
+      data-from="train"
+      data-to="evaluate"
+    />
+
+    <text class="counter-ledger__compact-lane" x="64" y="54">
+      TRAIN / SELECT
+    </text>
+    <text class="counter-ledger__compact-primary" x="64" y="120">
+      PMU → 715 subsets
+    </text>
+    <text class="counter-ledger__compact-primary" x="64" y="184">
+      Training-picked
+    </text>
+    <text class="counter-ledger__compact-primary" x="64" y="248">
+      fixed set
+    </text>
+
+    <text class="counter-ledger__compact-evaluate-label" x="684" y="54">
+      HELD OUT
+    </text>
+    <text class="counter-ledger__compact-evaluate-label" x="684" y="114">
+      EVALUATE
+    </text>
+    <text class="counter-ledger__compact-primary" x="684" y="180">
+      Whole
+    </text>
+    <text class="counter-ledger__compact-primary" x="684" y="244">
+      binaries
+    </text>
+
+    <path
+      class="project-visual__connector counter-ledger__compact-result"
+      d="M 784 280 V 286"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-evaluate-negative"
+      data-from="evaluate"
+      data-to="negative"
+    />
+    <rect
+      class="project-visual__panel project-visual__panel--negative counter-ledger__compact-negative"
+      x="40"
+      y="290"
+      width="880"
+      data-node="negative"
+      height="104"
+      rx="2"
+    />
+    <rect class="counter-ledger__compact-negative-accent" x="40" y="290" width="8" height="104" />
+    <text class="counter-ledger__compact-negative-label" x="68" y="326">
+      NEGATIVE CONDITIONING RESULT
+    </text>
+    <text class="counter-ledger__compact-negative-title" x="68" y="384">
+      No learned routing layer.
+    </text>
+  </g>
+</g>

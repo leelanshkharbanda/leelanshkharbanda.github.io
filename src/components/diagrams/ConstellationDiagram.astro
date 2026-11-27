@@ -1,0 +1,224 @@
+---
+import '../../styles/diagrams/constellation.css';
+import {
+  generateConstellationPoints,
+  projectConstellationPoint,
+  type ConstellationPoint,
+  type SignalStageId,
+} from '../../lib/signal-model';
+
+interface Props {
+  arrowId: string;
+}
+
+const { arrowId } = Astro.props;
+
+const fullPlotSize = 240;
+const compactPlotSize = 236;
+
+const plots: {
+  id: SignalStageId;
+  label: string;
+  detail: string;
+  compactLabel: string;
+  x: number;
+  compactX: number;
+  points: readonly ConstellationPoint[];
+}[] = [
+  {
+    id: 'source',
+    label: '01  SOURCE / QPSK',
+    detail: 'IDEAL SYMBOLS / NO SCATTER',
+    compactLabel: 'SOURCE',
+    x: 40,
+    compactX: 35,
+    points: generateConstellationPoints('source', { count: 32 }),
+  },
+  {
+    id: 'channel',
+    label: '02  CHANNEL / IMPAIRED',
+    detail: 'SCATTER + ROTATION SKETCH',
+    compactLabel: 'CHANNEL',
+    x: 360,
+    compactX: 355,
+    points: generateConstellationPoints('channel', { count: 32 }),
+  },
+  {
+    id: 'receiver',
+    label: '03  RECEIVER / DECISIONS',
+    detail: 'DECISION + PHASE CORRECTION',
+    compactLabel: 'RECEIVER',
+    x: 680,
+    compactX: 675,
+    points: generateConstellationPoints('receiver', { count: 32 }),
+  },
+];
+
+const decisionTargets = (size: number) =>
+  [-1, 1].flatMap((x) => [-1, 1].map((y) => projectConstellationPoint({ x, y }, size)));
+const fullDecisionTargets = decisionTargets(fullPlotSize);
+const compactDecisionTargets = decisionTargets(compactPlotSize);
+---
+
+<g class="project-visual__constellation">
+  <g data-layout="full">
+    <text class="project-visual__body project-visual__constellation-title" x="40" y="24">
+      QPSK / SIGNAL PATH
+    </text>
+    <text
+      class="project-visual__micro project-visual__constellation-seed"
+      x="920"
+      y="24"
+      text-anchor="end"
+    >
+      FIXED SEED / 32 SYMBOLS
+    </text>
+    {plots.map((plot) => (
+      <g
+        class="project-visual__plot"
+        data-stage={plot.id}
+        data-node={plot.id}
+        transform={`translate(${plot.x} 76)`}
+      >
+        <text class="project-visual__eyebrow project-visual__constellation-heading" x="0" y="-34">
+          {plot.label}
+        </text>
+        <rect
+          class="project-visual__plot-frame"
+          x="0"
+          y="0"
+          width={fullPlotSize}
+          height={fullPlotSize}
+          rx="2"
+        />
+        <path class="project-visual__axis" d="M 120 12 L 120 228 M 12 120 L 228 120" />
+        <path
+          class="project-visual__axis-tick"
+          d="M 80 116 L 80 124 M 160 116 L 160 124 M 116 80 L 124 80 M 116 160 L 124 160"
+        />
+        {plot.id === 'receiver' && (
+          <>
+            <path class="project-visual__decision" d="M 120 12 L 120 228 M 12 120 L 228 120" />
+            {fullDecisionTargets.map((target) => (
+              <circle class="project-visual__decision-target" cx={target.x} cy={target.y} r="10" />
+            ))}
+          </>
+        )}
+        <text
+          class="project-visual__micro project-visual__constellation-axis-label"
+          x="228"
+          y="112"
+          text-anchor="end"
+        >
+          I
+        </text>
+        <text class="project-visual__micro project-visual__constellation-axis-label" x="128" y="20">
+          Q
+        </text>
+        {plot.points.map((point) => {
+          const projected = projectConstellationPoint(point, fullPlotSize);
+          return (
+            <circle
+              class={`project-visual__point project-visual__point--${plot.id}`}
+              cx={projected.x}
+              cy={projected.y}
+              r="5"
+            />
+          );
+        })}
+        <text class="project-visual__micro project-visual__constellation-detail" x="0" y="254">
+          {plot.detail}
+        </text>
+      </g>
+    ))}
+    <path
+      class="project-visual__connector"
+      d="M 280 196 L 358 196"
+      marker-end={`url(#${arrowId})`}
+      data-connector="source-channel"
+      data-from="source"
+      data-to="channel"
+    />
+    <path
+      class="project-visual__connector"
+      d="M 600 196 L 678 196"
+      marker-end={`url(#${arrowId})`}
+      data-connector="channel-receiver"
+      data-from="channel"
+      data-to="receiver"
+    />
+  </g>
+  <g data-layout="compact">
+    {plots.map((plot) => (
+      <g
+        class="project-visual__plot project-visual__plot--compact"
+        data-stage={plot.id}
+        data-node={plot.id}
+        transform={`translate(${plot.compactX} 104)`}
+      >
+        <text
+          class="project-visual__eyebrow project-visual__constellation-compact-heading"
+          x="125"
+          y="-32"
+          text-anchor="middle"
+        >
+          <tspan class="project-visual__constellation-stage-name">{plot.compactLabel}</tspan>
+        </text>
+        <rect
+          class="project-visual__plot-frame"
+          x="0"
+          y="0"
+          width="250"
+          height={compactPlotSize}
+          rx="2"
+        />
+        <path class="project-visual__axis" d="M 118 14 L 118 222 M 14 118 L 222 118" />
+        <path
+          class="project-visual__axis-tick"
+          d="M 78 114 L 78 122 M 158 114 L 158 122 M 114 78 L 122 78 M 114 158 L 122 158"
+        />
+        {plot.id === 'receiver' && (
+          <>
+            <path class="project-visual__decision" d="M 118 14 L 118 222 M 14 118 L 222 118" />
+            {compactDecisionTargets.map((target) => (
+              <circle class="project-visual__decision-target" cx={target.x} cy={target.y} r="13" />
+            ))}
+          </>
+        )}
+        {plot.points.map((point) => {
+          const projected = projectConstellationPoint(point, compactPlotSize);
+          return (
+            <circle
+              class={`project-visual__point project-visual__point--${plot.id}`}
+              cx={projected.x}
+              cy={projected.y}
+              r="6.5"
+            />
+          );
+        })}
+      </g>
+    ))}
+    <line
+      class="project-visual__connector"
+      x1="287"
+      y1="222"
+      x2="353"
+      y2="222"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-source-channel"
+      data-from="source"
+      data-to="channel"
+    />
+    <line
+      class="project-visual__connector"
+      x1="607"
+      y1="222"
+      x2="673"
+      y2="222"
+      marker-end={`url(#${arrowId})`}
+      data-connector="compact-channel-receiver"
+      data-from="channel"
+      data-to="receiver"
+    />
+  </g>
+</g>

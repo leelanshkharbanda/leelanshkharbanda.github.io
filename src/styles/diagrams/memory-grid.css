@@ -1,0 +1,268 @@
+.project-visual__memory-grid [data-layout='compact'] {
+  display: none;
+}
+
+.project-visual__memory-grid .memory-grid__header,
+.project-visual__memory-grid .memory-grid__boundary-label,
+.project-visual__memory-grid .memory-grid__stage-title,
+.project-visual__memory-grid .memory-grid__predictor-note,
+.project-visual__memory-grid .memory-grid__section-note,
+.project-visual__memory-grid .memory-grid__path-label,
+.project-visual__memory-grid .memory-grid__link-label,
+.project-visual__memory-grid .memory-grid__legend-label,
+.project-visual__memory-grid .memory-grid__decode-note,
+.project-visual__memory-grid .memory-grid__stall-label,
+.project-visual__memory-grid .memory-grid__compact-note,
+.project-visual__memory-grid .memory-grid__footer {
+  font-family: var(--mono);
+}
+
+.project-visual__memory-grid .memory-grid__header {
+  fill: var(--dark-signal);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 1px;
+}
+
+.project-visual__memory-grid .memory-grid__boundary-label {
+  fill: var(--dark-secondary);
+  font-size: 10px;
+  letter-spacing: 0.8px;
+}
+
+.project-visual__memory-grid .memory-grid__header-rule {
+  fill: none;
+  stroke: var(--dark-secondary);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.project-visual__memory-grid .memory-grid__stage-title {
+  fill: var(--paper);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+.project-visual__memory-grid .memory-grid__predictor-note,
+.project-visual__memory-grid .memory-grid__section-note,
+.project-visual__memory-grid .memory-grid__link-label,
+.project-visual__memory-grid .memory-grid__decode-note,
+.project-visual__memory-grid .memory-grid__footer,
+.project-visual__memory-grid .memory-grid__compact-note {
+  fill: var(--dark-secondary);
+}
+
+.project-visual__memory-grid .memory-grid__predictor-note {
+  font-size: 10px;
+}
+
+.project-visual__memory-grid .memory-grid__section-note {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+.project-visual__memory-grid .memory-grid__stage-boundary {
+  stroke-width: 1.25;
+}
+
+.project-visual__memory-grid .memory-grid__cell[data-state='predicted'],
+.project-visual__memory-grid .memory-grid__legend-swatch[data-state='predicted'] {
+  fill: var(--dark-signal);
+  stroke: var(--dark-signal);
+}
+
+.project-visual__memory-grid .memory-grid__cell[data-state='resident'],
+.project-visual__memory-grid .memory-grid__legend-swatch[data-state='resident'] {
+  fill: var(--dark-trace);
+  stroke: var(--dark-trace);
+}
+
+.project-visual__memory-grid .memory-grid__cell[data-state='free'],
+.project-visual__memory-grid .memory-grid__legend-swatch[data-state='free'],
+.project-visual__memory-grid .memory-grid__cell[data-state='off-chip'] {
+  fill: #2c322c;
+  stroke: var(--rule);
+}
+
+.project-visual__memory-grid .memory-grid__predictor-path {
+  fill: none;
+  stroke: var(--dark-signal);
+  stroke-width: 1.5;
+  stroke-dasharray: 7 5;
+}
+
+.project-visual__memory-grid .memory-grid__prefetch-path {
+  stroke-dasharray: 5 4;
+  stroke-width: 2;
+}
+
+.project-visual__memory-grid .memory-grid__demand-path {
+  stroke-width: 2.5;
+}
+
+.project-visual__memory-grid .memory-grid__demand-rule {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 3;
+}
+
+.project-visual__memory-grid .memory-grid__serve-path {
+  stroke-width: 2;
+}
+
+.project-visual__memory-grid .memory-grid__path-label {
+  fill: var(--dark-secondary);
+  font-size: 9px;
+  letter-spacing: 0.2px;
+}
+
+.project-visual__memory-grid .memory-grid__path-label--predicted {
+  fill: var(--dark-signal);
+}
+
+.project-visual__memory-grid .memory-grid__path-label--demand {
+  fill: var(--paper);
+}
+
+.project-visual__memory-grid .memory-grid__link-label {
+  font-size: 9px;
+  letter-spacing: 0.4px;
+}
+
+.project-visual__memory-grid .memory-grid__legend-label {
+  fill: var(--dark-secondary);
+  font-size: 9px;
+  letter-spacing: 0.3px;
+}
+
+.project-visual__memory-grid .memory-grid__decode-title {
+  font-size: 16px;
+}
+
+.project-visual__memory-grid .memory-grid__decode-note {
+  font-size: 9px;
+  letter-spacing: 0.4px;
+}
+
+.project-visual__memory-grid .memory-grid__stall-line {
+  fill: none;
+  stroke: var(--dark-signal);
+  stroke-width: 3.5;
+}
+
+.project-visual__memory-grid .memory-grid__stall-label {
+  fill: var(--dark-signal);
+  font-size: 9.5px;
+  font-weight: 650;
+  letter-spacing: 0.3px;
+}
+
+.project-visual__memory-grid .memory-grid__footer {
+  font-size: 9.5px;
+  letter-spacing: 0.5px;
+}
+
+.project-visual__memory-grid .memory-grid__compact-panel {
+  fill: #222620;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.project-visual__memory-grid .memory-grid__compact-panel.project-visual__panel--raised {
+  fill: #2c322c;
+  stroke: var(--dark-secondary);
+}
+
+.project-visual__memory-grid .memory-grid__compact-note {
+  font-size: 20px;
+  letter-spacing: 0.4px;
+}
+
+@container project-visual (max-width: 640px) {
+  .project-visual__memory-grid [data-layout='full'] {
+    display: none;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] {
+    display: inline;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] text {
+    font-size: 40px;
+    letter-spacing: 0;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__header {
+    font-size: 44px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__stage-title {
+    font-size: 46px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__predictor-note {
+    fill: var(--dark-signal);
+    font-size: 40px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__path-label,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__path-label--demand {
+    font-size: 40px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__decode-title {
+    font-size: 44px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__stall-label {
+    font-size: 40px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__stall-label--primary {
+    font-size: 46px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__footer,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__compact-note {
+    font-size: 40px;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__header-rule,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__compact-panel,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__cell,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__legend-swatch,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__predictor-path,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__prefetch-path,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__demand-path,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__serve-path,
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__stall-line {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .project-visual__memory-grid [data-layout='compact'] .memory-grid__stall-line {
+    stroke-width: 5;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-visual__memory-grid .memory-grid__cell:hover,
+  .project-visual__memory-grid .memory-grid__legend-item:hover .memory-grid__legend-swatch {
+    stroke: var(--paper);
+    stroke-width: 2;
+  }
+
+  .project-visual__memory-grid .memory-grid__legend-item:hover .memory-grid__legend-label {
+    fill: var(--paper);
+  }
+
+  .project-visual__memory-grid .memory-grid__prefetch-path:hover,
+  .project-visual__memory-grid .memory-grid__demand-path:hover {
+    stroke: var(--paper);
+  }
+}
+
+.project-visual__root:focus-visible .project-visual__memory-grid .memory-grid__legend-swatch {
+  stroke: var(--paper);
+  stroke-width: 2;
+}

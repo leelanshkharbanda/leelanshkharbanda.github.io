@@ -9,54 +9,6 @@ const diagramProjects = [
   'riscv-simulator',
 ];
 
-const diagramLinks: Record<string, [number, number, number, number][]> = {
-  'chronos-dsp': [
-    [107, 120, 294, 120],
-    [107, 126, 294, 126],
-    [107, 132, 294, 132],
-    [430, 102, 518, 102],
-    [126, 180, 126, 268],
-    [346, 180, 346, 268],
-    [566, 180, 566, 268],
-    [786, 180, 786, 268],
-    [212, 322, 258, 322],
-    [432, 322, 478, 322],
-    [652, 322, 698, 322],
-  ],
-  'life-os': [
-    [224, 130, 272, 130],
-    [434, 130, 482, 130],
-    [526, 168, 144, 224],
-    [548, 168, 354, 224],
-    [571, 168, 571, 224],
-    [144, 308, 326, 350],
-    [354, 308, 354, 350],
-    [571, 308, 396, 350],
-    [690, 246, 732, 246],
-  ],
-  'modulation-studio': [
-    [280, 196, 358, 196],
-    [600, 196, 678, 196],
-  ],
-  'hpc-boost': [
-    [184, 127, 222, 127],
-    [368, 127, 406, 127],
-    [552, 127, 590, 127],
-    [736, 127, 774, 127],
-    [664, 178, 250, 220],
-    [848, 178, 848, 220],
-  ],
-  'moe-memory-wall': [
-    [179, 136, 500, 196],
-    [292, 294, 428, 294],
-    [730, 294, 808, 294],
-  ],
-  'riscv-simulator': [
-    [270, 130, 316, 130],
-    [620, 190, 620, 234],
-  ],
-};
-
 test('project diagram labels stay contained and connectors meet their targets', async ({
   page,
 }) => {
@@ -64,102 +16,95 @@ test('project diagram labels stay contained and connectors meet their targets', 
   for (const slug of diagramProjects) {
     await page.goto(`/work/${slug}/`);
     await page.evaluate(() => document.fonts.ready);
-    const defects = await page
-      .locator('.project-visual__root')
-      .evaluate((figure, expectedLinks: [number, number, number, number][]) => {
-        const svg = figure.querySelector('svg')!;
-        const rootMatrix = svg.getScreenCTM()!;
-        const inverse = rootMatrix.inverse();
-        const bounds = (element: SVGGraphicsElement) => {
-          const box = element.getBBox();
-          const matrix = element.getScreenCTM()!;
-          const points = [
-            [box.x, box.y],
-            [box.x + box.width, box.y],
-            [box.x, box.y + box.height],
-            [box.x + box.width, box.y + box.height],
-          ].map(([x, y]) => new DOMPoint(x, y).matrixTransform(matrix).matrixTransform(inverse));
-          return {
-            left: Math.min(...points.map((point) => point.x)),
-            top: Math.min(...points.map((point) => point.y)),
-            right: Math.max(...points.map((point) => point.x)),
-            bottom: Math.max(...points.map((point) => point.y)),
-          };
+    const defects = await page.locator('.project-visual__root').evaluate((figure) => {
+      const svg = figure.querySelector('svg')!;
+      const isVisible = (element: Element) =>
+        element.getClientRects().length > 0 && getComputedStyle(element).display !== 'none';
+      const rootMatrix = svg.getScreenCTM()!;
+      const inverse = rootMatrix.inverse();
+      const bounds = (element: SVGGraphicsElement) => {
+        const box = element.getBBox();
+        const matrix = element.getScreenCTM()!;
+        const points = [
+          [box.x, box.y],
+          [box.x + box.width, box.y],
+          [box.x, box.y + box.height],
+          [box.x + box.width, box.y + box.height],
+        ].map(([x, y]) => new DOMPoint(x, y).matrixTransform(matrix).matrixTransform(inverse));
+        return {
+          left: Math.min(...points.map((point) => point.x)),
+          top: Math.min(...points.map((point) => point.y)),
+          right: Math.max(...points.map((point) => point.x)),
+          bottom: Math.max(...points.map((point) => point.y)),
         };
-        const texts = [...svg.querySelectorAll<SVGTextElement>('text')].map((text) => ({
+      };
+      const texts = [...svg.querySelectorAll<SVGTextElement>('text')]
+        .filter(isVisible)
+        .map((text) => ({
           text: text.textContent?.trim() ?? '',
           ...bounds(text),
         }));
-        const shapes = [
-          ...svg.querySelectorAll<SVGGraphicsElement>(
-            'rect.project-visual__boundary, rect.project-visual__panel, rect.project-visual__stage-box, rect.project-visual__plot-frame, circle.project-visual__node-fill',
-          ),
-        ].map((shape) => bounds(shape));
-        const viewBox = svg.viewBox.baseVal;
-        const outside = texts
+      const shapes = [
+        ...svg.querySelectorAll<SVGGraphicsElement>(
+          'rect.project-visual__boundary, rect.project-visual__panel, rect.project-visual__stage-box, rect.project-visual__plot-frame, circle.project-visual__node-fill',
+        ),
+      ]
+        .filter(isVisible)
+        .map((shape) => bounds(shape));
+      const viewBox = svg.viewBox.baseVal;
+      const outside = texts
+        .filter(
+          (text) =>
+            text.left < viewBox.x - 0.5 ||
+            text.top < viewBox.y - 0.5 ||
+            text.right > viewBox.x + viewBox.width + 0.5 ||
+            text.bottom > viewBox.y + viewBox.height + 0.5,
+        )
+        .map((text) => text.text);
+      const crowded = texts.flatMap((text) => {
+        const centerX = (text.left + text.right) / 2;
+        const centerY = (text.top + text.bottom) / 2;
+        return shapes
           .filter(
-            (text) =>
-              text.left < viewBox.x - 0.5 ||
-              text.top < viewBox.y - 0.5 ||
-              text.right > viewBox.x + viewBox.width + 0.5 ||
-              text.bottom > viewBox.y + viewBox.height + 0.5,
+            (shape) =>
+              centerX >= shape.left &&
+              centerX <= shape.right &&
+              centerY >= shape.top &&
+              centerY <= shape.bottom,
           )
-          .map((text) => text.text);
-        const crowded = texts.flatMap((text) => {
-          const centerX = (text.left + text.right) / 2;
-          const centerY = (text.top + text.bottom) / 2;
-          return shapes
-            .filter(
-              (shape) =>
-                centerX >= shape.left &&
-                centerX <= shape.right &&
-                centerY >= shape.top &&
-                centerY <= shape.bottom,
-            )
-            .filter(
-              (shape) =>
-                text.left < shape.left + 4 ||
-                text.top < shape.top + 4 ||
-                text.right > shape.right - 4 ||
-                text.bottom > shape.bottom - 4,
-            )
-            .map(() => text.text);
-        });
-        const overlaps = texts.flatMap((text, index) =>
-          texts.slice(index + 1).flatMap((other) => {
-            const width = Math.min(text.right, other.right) - Math.max(text.left, other.left);
-            const height = Math.min(text.bottom, other.bottom) - Math.max(text.top, other.top);
-            return width > 1 && height > 1 ? [`${text.text} / ${other.text}`] : [];
-          }),
-        );
-        const links = [...svg.querySelectorAll<SVGPathElement>('path[marker-end]')].map((path) => {
-          const start = path.getPointAtLength(0);
+          .filter(
+            (shape) =>
+              text.left < shape.left + 4 ||
+              text.top < shape.top + 4 ||
+              text.right > shape.right - 4 ||
+              text.bottom > shape.bottom - 4,
+          )
+          .map(() => text.text);
+      });
+      const overlaps = texts.flatMap((text, index) =>
+        texts.slice(index + 1).flatMap((other) => {
+          const width = Math.min(text.right, other.right) - Math.max(text.left, other.left);
+          const height = Math.min(text.bottom, other.bottom) - Math.max(text.top, other.top);
+          return width > 1 && height > 1 ? [`${text.text} / ${other.text}`] : [];
+        }),
+      );
+      const distanceToShape = (point: DOMPoint, shape: (typeof shapes)[number]) => {
+        const nearestX = Math.max(shape.left, Math.min(point.x, shape.right));
+        const nearestY = Math.max(shape.top, Math.min(point.y, shape.bottom));
+        return Math.hypot(point.x - nearestX, point.y - nearestY);
+      };
+      const detached = [...svg.querySelectorAll<SVGPathElement>('path[marker-end]')]
+        .filter(isVisible)
+        .flatMap((path) => {
           const end = path.getPointAtLength(path.getTotalLength());
-          const startPoint = new DOMPoint(start.x, start.y)
-            .matrixTransform(path.getScreenCTM()!)
-            .matrixTransform(inverse);
           const endPoint = new DOMPoint(end.x, end.y)
             .matrixTransform(path.getScreenCTM()!)
             .matrixTransform(inverse);
-          return [startPoint.x, startPoint.y, endPoint.x, endPoint.y] as [
-            number,
-            number,
-            number,
-            number,
-          ];
+          const distance = Math.min(...shapes.map((shape) => distanceToShape(endPoint, shape)));
+          return distance > 3 ? [`${path.getAttribute('d')} → ${distance.toFixed(1)}`] : [];
         });
-        const detached = links.flatMap((link, index) => {
-          const expected = expectedLinks[index];
-          if (!expected) return [link];
-          return link.some((value, coordinate) => Math.abs(value - expected[coordinate]!) > 0.1)
-            ? [link]
-            : [];
-        });
-        if (links.length !== expectedLinks.length) {
-          detached.push([links.length, expectedLinks.length, 0, 0]);
-        }
-        return { outside, crowded: [...new Set(crowded)], overlaps, detached };
-      }, diagramLinks[slug]);
+      return { outside, crowded: [...new Set(crowded)], overlaps, detached };
+    });
     expect(defects, slug).toEqual({ outside: [], crowded: [], overlaps: [], detached: [] });
   }
 });
