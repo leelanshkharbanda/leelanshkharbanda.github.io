@@ -682,7 +682,7 @@ test('interactive control accents match on keyboard focus', async ({ page }, tes
   await expect(reset).toHaveCSS('border-top-color', 'rgb(223, 255, 104)');
   await page.mouse.move(0, 0);
   await expect(reset).toHaveCSS('color', 'rgb(246, 242, 231)');
-  await page.locator('[data-toy-range="receiver"]').focus();
+  await page.locator('[data-toy-range-y="receiver"]').focus();
   await page.keyboard.press(tabKey);
   const pulse = page.getByRole('button', { name: 'Send pulse' });
   await expect(pulse).toBeFocused();
@@ -748,10 +748,10 @@ test('reduced motion keeps the primary pill detent static', async ({ page }) => 
 
 test('signal toy supports keyboard movement and reversible motion', async ({ page }) => {
   await page.goto('/');
-  const transmitter = page.getByRole('slider', { name: 'Transmitter horizontal position' });
-  await transmitter.focus();
+  const transmitterX = page.getByRole('slider', { name: 'Transmitter X' });
+  await transmitterX.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(transmitter).toHaveAttribute('aria-valuenow', '114');
+  await expect(transmitterX).toHaveValue('114');
 
   const toggle = page.getByRole('button', { name: 'Reduce motion' });
   await toggle.click();
@@ -767,11 +767,156 @@ test('signal toy supports keyboard movement and reversible motion', async ({ pag
   await expect(toggle).toHaveCSS('border-bottom-color', 'rgb(199, 201, 188)');
 });
 
+test('signal toy exposes native 2D controls and keeps pointer handles separate', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const transmitter = page.locator('[data-signal-handle="transmitter"]');
+  const transmitterX = page.getByRole('slider', { name: 'Transmitter X' });
+  const transmitterY = page.getByRole('slider', { name: 'Transmitter Y' });
+  const receiverX = page.getByRole('slider', { name: 'Receiver X' });
+  const receiverY = page.getByRole('slider', { name: 'Receiver Y' });
+  const hitArea = transmitter.locator('.signal-toy__hit-area');
+  const reset = page.getByRole('button', { name: /Reset/ });
+
+  await expect(transmitter).toHaveAttribute('aria-hidden', 'true');
+  await expect(transmitter).not.toHaveAttribute('role');
+  await expect(transmitter).not.toHaveAttribute('tabindex');
+  await expect(transmitterX).toHaveAttribute('min', '48');
+  await expect(transmitterX).toHaveAttribute('max', '432');
+  await expect(transmitterY).toHaveAttribute('min', '54');
+  await expect(transmitterY).toHaveAttribute('max', '166');
+
+  await transmitterX.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(transmitterX).toHaveValue('104');
+  await transmitterY.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(transmitterY).toHaveValue('104');
+  await transmitterY.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(transmitterY).toHaveValue('114');
+  await expect(transmitter).toHaveAttribute('data-y', '114');
+  await expect(transmitter).toHaveAttribute('transform', 'translate(104 114)');
+  await page.keyboard.press('ArrowUp');
+  await expect(transmitterY).toHaveValue('104');
+  await transmitterX.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(transmitterX).toHaveValue('114');
+  await expect(transmitter).toHaveAttribute('data-x', '114');
+  await reset.click();
+  await receiverY.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '54';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await receiverX.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '240';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await transmitterX.focus();
+  await page.keyboard.press('Home');
+  await expect(transmitterX).toHaveValue('48');
+  await expect(transmitter).toHaveAttribute('data-y', '104');
+  await page.keyboard.press('End');
+  await expect(transmitterX).toHaveValue('432');
+  await reset.click();
+  await expect(transmitterX).toHaveValue('104');
+  await expect(transmitterY).toHaveValue('104');
+
+  await hitArea.scrollIntoViewIfNeeded();
+  const box = await hitArea.boundingBox();
+  expect(box).not.toBeNull();
+  const grabX = box!.x + box!.width * 0.8;
+  const grabY = box!.y + box!.height * 0.8;
+  await page.mouse.move(grabX, grabY);
+  await page.mouse.down();
+  await expect(transmitter).toHaveAttribute('data-x', '104');
+  await expect(transmitter).toHaveAttribute('data-y', '104');
+  const localDelta = await page.locator('.signal-toy__svg').evaluate(
+    (svg, delta) => {
+      if (!(svg instanceof SVGSVGElement)) return { x: 0, y: 0 };
+      const matrix = svg.getScreenCTM();
+      if (!matrix) return { x: 0, y: 0 };
+      const inverse = matrix.inverse();
+      const start = svg.createSVGPoint();
+      const end = svg.createSVGPoint();
+      end.x = delta.x;
+      end.y = delta.y;
+      const localStart = start.matrixTransform(inverse);
+      const localEnd = end.matrixTransform(inverse);
+      return { x: localEnd.x - localStart.x, y: localEnd.y - localStart.y };
+    },
+    { x: 24, y: -16 },
+  );
+  await page.mouse.move(grabX + 24, grabY - 16, { steps: 6 });
+  await page.mouse.up();
+  await expect(transmitterX).toBeFocused();
+  await expect(transmitter).toHaveAttribute('data-x', String(Math.round(104 + localDelta.x)));
+  await expect(transmitter).toHaveAttribute('data-y', String(Math.round(104 + localDelta.y)));
+  await expect(page.locator('[data-toy-direct]')).not.toHaveText('267 units');
+  await expect(page.locator('[data-toy-echo]')).not.toHaveText('365 units');
+  await expect(page.locator('[data-signal-bounce]')).not.toHaveAttribute('cx', '225.296');
+
+  const yBeforeRange = await transmitter.getAttribute('data-y');
+  await transmitterX.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '120';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(transmitterX).toHaveValue('120');
+  await expect(transmitter).toHaveAttribute('data-y', yBeforeRange!);
+
+  await transmitterY.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '150';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(transmitterY).toHaveValue('150');
+
+  await reset.click();
+  await transmitterY.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '82';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await transmitterX.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '370';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(transmitterX).toHaveValue('104');
+  await transmitterX.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '226';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(transmitterX).toHaveValue('226');
+  await transmitterX.evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '227';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(transmitterX).toHaveValue('226');
+  const separation = await page.locator('[data-signal-toy]').evaluate((element) => {
+    const tx = element.querySelector('[data-signal-handle="transmitter"]')!;
+    const rx = element.querySelector('[data-signal-handle="receiver"]')!;
+    return Math.hypot(
+      Number(tx.getAttribute('data-x')) - Number(rx.getAttribute('data-x')),
+      Number(tx.getAttribute('data-y')) - Number(rx.getAttribute('data-y')),
+    );
+  });
+  expect(separation).toBeGreaterThanOrEqual(144);
+  await reset.click();
+  await expect(transmitter).toHaveAttribute('transform', 'translate(104 104)');
+});
+
 test('signal toy readouts tick after input and respect reduced motion', async ({ page }) => {
   await page.goto('/');
   const direct = page.locator('[data-toy-direct]');
   const echo = page.locator('[data-toy-echo]');
-  const transmitter = page.getByRole('slider', { name: 'Transmitter horizontal position' });
+  const transmitterX = page.getByRole('slider', { name: 'Transmitter X' });
   const activeTicks = () =>
     direct.evaluate(
       (element) =>
@@ -786,14 +931,16 @@ test('signal toy readouts tick after input and respect reduced motion', async ({
     page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
   await expect(direct).not.toHaveClass(/is-ticking/);
 
-  await transmitter.scrollIntoViewIfNeeded();
-  await transmitter.focus();
+  await transmitterX.scrollIntoViewIfNeeded();
+  await transmitterX.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(direct).toHaveText('257 units');
   await expect(direct).toHaveClass(/is-ticking/);
   await expect(direct).toHaveCSS('animation-name', 'signal-readout-tick');
   await expect(direct).toHaveCSS('animation-duration', '0.16s');
   await expect(echo).toHaveClass(/is-ticking/);
+  await expect(direct).toHaveText('257 units');
+  await expect(echo).toHaveText('358 units');
+  await expect(page.locator('[data-signal-bounce]')).toHaveAttribute('cx', '230.736');
   await expect.poll(activeTicks).toBe(0);
   await expect(direct).not.toHaveClass(/is-ticking/);
 
@@ -816,7 +963,7 @@ test('signal toy readouts tick after input and respect reduced motion', async ({
   await expect.poll(activeTicks).toBe(0);
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await transmitter.focus();
+  await transmitterX.focus();
   await page.keyboard.press('ArrowRight');
   await nextFrame();
   await expect(direct).not.toHaveClass(/is-ticking/);
@@ -830,7 +977,7 @@ test('signal toy readouts tick after input and respect reduced motion', async ({
 
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.getByRole('button', { name: 'Reduce motion' }).click();
-  await transmitter.focus();
+  await transmitterX.focus();
   await page.keyboard.press('ArrowRight');
   await nextFrame();
   await expect(direct).not.toHaveClass(/is-ticking/);
@@ -884,11 +1031,11 @@ test('signal toy cancels a pulse when the channel changes', async ({ page }) => 
   await page.goto('/');
   const toy = page.locator('[data-signal-toy]');
   const pulseButton = page.getByRole('button', { name: 'Send pulse' });
-  const transmitter = page.getByRole('slider', { name: 'Transmitter horizontal position' });
+  const transmitterX = page.getByRole('slider', { name: 'Transmitter X' });
 
   await pulseButton.click();
   await expect(toy).toHaveAttribute('data-pulse', 'running');
-  await transmitter.focus();
+  await transmitterX.focus();
   await page.keyboard.press('ArrowRight');
   await expect(toy).toHaveAttribute('data-pulse', 'idle');
   await expect(page.locator('[data-signal-pulse="direct"]')).not.toHaveClass(/is-active/);
@@ -896,7 +1043,7 @@ test('signal toy cancels a pulse when the channel changes', async ({ page }) => 
   await expect(page.locator('[data-toy-pulse-indicator]')).toHaveText('READY');
 
   await page.getByRole('button', { name: /Reset/ }).click();
-  await expect(transmitter).toHaveAttribute('aria-valuenow', '104');
+  await expect(transmitterX).toHaveValue('104');
   await expect(page.locator('[data-toy-pulse-status]')).toHaveText('Channel reset.');
 });
 
@@ -947,20 +1094,25 @@ test('signal toy pulse responds to touch input', async ({ browser }) => {
 
 test('signal toy pulse timing scales down for a short direct path', async ({ page }) => {
   await page.goto('/');
-  for (const [name, value] of [
-    ['transmitter', '432'],
-    ['receiver', '430'],
-  ]) {
-    await page.locator(`[data-toy-range="${name}"]`).evaluate((element, nextValue) => {
-      if (!(element instanceof HTMLInputElement)) return;
-      element.value = nextValue;
-      element.dispatchEvent(new Event('input', { bubbles: true }));
-    }, value);
-  }
-  await expect(page.locator('[data-toy-direct]')).toHaveText('22 units');
+  await page.locator('[data-toy-range-y="receiver"]').evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '166';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.locator('[data-toy-range="receiver"]').evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '302';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.locator('[data-toy-range="transmitter"]').evaluate((element) => {
+    if (!(element instanceof HTMLInputElement)) return;
+    element.value = '432';
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await expect(page.locator('[data-toy-direct]')).toHaveText('144 units');
   await page.getByRole('button', { name: 'Send pulse' }).click();
   await expect(page.locator('[data-toy-pulse-status]')).toContainText('Direct pulse received', {
-    timeout: 500,
+    timeout: 900,
   });
   await page.getByRole('button', { name: /Reset/ }).click();
 });
@@ -1013,15 +1165,17 @@ test('signal toy controls keep touch targets and 200% text within bounds', async
     }
     for (const name of ['transmitter', 'receiver']) {
       const handle = toy.locator(`[data-signal-handle="${name}"]`);
+      const range = toy.locator(`[data-toy-range="${name}"]`);
       const otherName = name === 'transmitter' ? 'receiver' : 'transmitter';
-      const otherHandle = toy.locator(`[data-signal-handle="${otherName}"]`);
+      const otherRange = toy.locator(`[data-toy-range="${otherName}"]`);
       for (const key of ['Home', 'End']) {
-        await otherHandle.scrollIntoViewIfNeeded();
-        await otherHandle.focus();
+        await otherRange.scrollIntoViewIfNeeded();
+        await otherRange.focus();
         await page.keyboard.press(key === 'Home' ? 'End' : 'Home');
-        await handle.scrollIntoViewIfNeeded();
-        await handle.focus();
+        await range.scrollIntoViewIfNeeded();
+        await range.focus();
         await page.keyboard.press(key);
+        await handle.scrollIntoViewIfNeeded();
         const clickableWidth = await handle.evaluate((element) => {
           const hitArea = element.querySelector('.signal-toy__hit-area');
           if (!(hitArea instanceof SVGCircleElement)) return 0;
@@ -1132,7 +1286,8 @@ test('touch drag keeps the toy, range, and reset in sync', async ({ browser, bro
   });
   const page = await context.newPage();
   await page.goto('/');
-  const handle = page.getByRole('slider', { name: 'Transmitter horizontal position' });
+  const handle = page.locator('[data-signal-handle="transmitter"]');
+  const transmitterX = page.getByRole('slider', { name: 'Transmitter X' });
   await handle.scrollIntoViewIfNeeded();
   const box = await handle.boundingBox();
   expect(box).not.toBeNull();
@@ -1150,11 +1305,75 @@ test('touch drag keeps the toy, range, and reset in sync', async ({ browser, bro
     });
   }
   await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  const moved = Number(await handle.getAttribute('aria-valuenow'));
+  const moved = Number(await handle.getAttribute('data-x'));
   expect(moved).toBeGreaterThan(104);
-  await expect(page.locator('[data-toy-range="transmitter"]')).toHaveValue(String(moved));
+  await expect(transmitterX).toHaveValue(String(moved));
+
+  const movedY = Number(await handle.getAttribute('data-y'));
+  const movedBox = await handle.locator('.signal-toy__hit-area').boundingBox();
+  expect(movedBox).not.toBeNull();
+  const movedCenterX = movedBox!.x + movedBox!.width / 2;
+  const movedCenterY = movedBox!.y + movedBox!.height / 2;
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ id: 1, x: movedCenterX, y: movedCenterY }],
+  });
+  for (let step = 1; step <= 6; step += 1) {
+    await client.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ id: 1, x: movedCenterX, y: movedCenterY - step * 5 }],
+    });
+  }
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  expect(Number(await handle.getAttribute('data-y'))).toBeLessThan(movedY);
+
   await page.getByRole('button', { name: /Reset/ }).click();
-  await expect(handle).toHaveAttribute('aria-valuenow', '104');
+  await expect(transmitterX).toHaveValue('104');
+  await expect(handle).toHaveAttribute('data-x', '104');
+  await expect(handle).toHaveAttribute('data-y', '104');
+  await context.close();
+});
+
+test('secondary touch does not move the active signal handle', async ({ browser, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Multi-touch uses Chromium CDP input events.');
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto('/');
+  const handle = page.locator('[data-signal-handle="transmitter"]');
+  const transmitterX = page.getByRole('slider', { name: 'Transmitter X' });
+  await handle.scrollIntoViewIfNeeded();
+  const box = await handle.locator('.signal-toy__hit-area').boundingBox();
+  expect(box).not.toBeNull();
+  const client = await context.newCDPSession(page);
+  const x = box!.x + box!.width / 2;
+  const y = box!.y + box!.height / 2;
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ id: 1, x, y }],
+  });
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [
+      { id: 1, x, y },
+      { id: 2, x: x + 20, y },
+    ],
+  });
+  await client.send('Input.dispatchTouchEvent', {
+    type: 'touchMove',
+    touchPoints: [
+      { id: 1, x: x + 20, y },
+      { id: 2, x: x + 80, y },
+    ],
+  });
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  const finalX = Number(await handle.getAttribute('data-x'));
+  expect(finalX).toBeGreaterThan(104);
+  expect(finalX).toBeLessThan(145);
+  expect(Number(await transmitterX.inputValue())).toBe(finalX);
   await context.close();
 });
 

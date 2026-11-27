@@ -622,6 +622,15 @@ h3 {
   touch-action: pan-y;
 }
 
+.signal-toy__legend {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.signal-toy__legend.is-visible {
+  opacity: 1;
+}
+
 .signal-toy__svg-label,
 .signal-toy__handle-label {
   fill: #d8dbce;
@@ -631,8 +640,11 @@ h3 {
 }
 
 .signal-toy__handle {
-  cursor: grab;
   outline: none;
+}
+
+.has-signal-toy-controls .signal-toy__handle {
+  cursor: grab;
   touch-action: none;
 }
 
@@ -641,14 +653,9 @@ h3 {
   pointer-events: all;
 }
 
-.signal-toy__handle:active,
-.signal-toy__handle.is-dragging {
+.has-signal-toy-controls .signal-toy__handle:active,
+.has-signal-toy-controls .signal-toy__handle.is-dragging {
   cursor: grabbing;
-}
-
-.signal-toy__handle:focus-visible > circle:nth-child(2) {
-  stroke: white;
-  stroke-width: 4;
 }
 
 .signal-toy__readouts {
@@ -705,10 +712,33 @@ h3 {
 
 .signal-toy__controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.75rem;
   align-items: end;
   padding: 0 1rem 1rem;
+}
+
+.signal-toy__axis-controls {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.signal-toy__axis-group {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+  gap: 0.35rem 0.6rem;
+}
+
+.signal-toy__axis-title {
+  grid-column: 1 / -1;
+  color: var(--dark-secondary);
+  font-family: var(--mono);
+  font-size: 0.57rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .signal-toy__controls label {
@@ -1764,6 +1794,10 @@ h3 {
   }
 
   .signal-toy__controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .signal-toy__axis-controls {
     grid-template-columns: minmax(0, 1fr);
   }
 

@@ -2,7 +2,7 @@
   <div class="signal-toy__topline">
     <span>01 / CHANNEL SKETCHPAD</span>
     <span class="signal-toy__drag-label" hidden>
-      DRAG LEFT / RIGHT
+      DRAG IN 2D
     </span>
     <span
       class="signal-toy__pulse-indicator"
@@ -13,6 +13,9 @@
       READY
     </span>
   </div>
+  <p id="signal-toy-keyboard-help" class="sr-only" hidden>
+    Use Left/Right for X and Up/Down for Y. Home and End jump to the minimum and maximum.
+  </p>
 
   <svg
     class="signal-toy__svg"
@@ -44,6 +47,16 @@
 
     <rect width="480" height="270" fill="#20231c" />
     <rect width="480" height="270" fill="url(#signal-toy-grid)" />
+    <g class="signal-toy__legend" aria-hidden="true">
+      <circle cx="18" cy="18" r="4" fill="#dfff68" />
+      <text x="30" y="22" class="signal-toy__svg-label">
+        TX / SOURCE
+      </text>
+      <circle cx="160" cy="18" r="4" fill="#ff785a" />
+      <text x="172" y="22" class="signal-toy__svg-label">
+        RX / RECEIVER
+      </text>
+    </g>
     <path d="M 28 218 L 452 218" stroke="#f5f1e6" stroke-width="8" />
     <path d="M 28 218 L 452 218" stroke="#ff785a" stroke-width="2" stroke-dasharray="5 7" />
     <text x="30" y="244" class="signal-toy__svg-label">
@@ -109,6 +122,7 @@
 
     <g
       class="signal-toy__handle"
+      aria-hidden="true"
       data-signal-handle="transmitter"
       data-x="104"
       data-y="104"
@@ -125,6 +139,7 @@
 
     <g
       class="signal-toy__handle"
+      aria-hidden="true"
       data-signal-handle="receiver"
       data-x="370"
       data-y="82"
@@ -151,7 +166,7 @@
       <strong data-toy-echo>365 units</strong>
     </p>
     <span class="signal-toy__readout-note signal-toy__interactive-note" hidden>
-      Drag TX or RX, or send a pulse through both paths.
+      Drag in 2D, fine-tune with X/Y, or send a pulse through both paths.
     </span>
     <noscript>
       <span class="signal-toy__readout-note">Fixed direct and reflected path lengths.</span>
@@ -159,14 +174,62 @@
   </div>
 
   <div class="signal-toy__controls" id="signal-toy-instructions" hidden>
-    <label>
-      <span>Transmitter</span>
-      <input data-toy-range="transmitter" type="range" min="48" max="432" value="104" />
-    </label>
-    <label>
-      <span>Receiver</span>
-      <input data-toy-range="receiver" type="range" min="48" max="432" value="370" />
-    </label>
+    <div class="signal-toy__axis-controls">
+      <div class="signal-toy__axis-group" role="group" aria-label="Transmitter position controls">
+        <span class="signal-toy__axis-title">Transmitter</span>
+        <label>
+          <span>X</span>
+          <input
+            data-toy-range="transmitter"
+            aria-label="Transmitter X"
+            aria-describedby="signal-toy-keyboard-help"
+            type="range"
+            min="48"
+            max="432"
+            value="104"
+          />
+        </label>
+        <label>
+          <span>Y</span>
+          <input
+            data-toy-range-y="transmitter"
+            aria-label="Transmitter Y"
+            aria-describedby="signal-toy-keyboard-help"
+            type="range"
+            min="54"
+            max="166"
+            value="104"
+          />
+        </label>
+      </div>
+      <div class="signal-toy__axis-group" role="group" aria-label="Receiver position controls">
+        <span class="signal-toy__axis-title">Receiver</span>
+        <label>
+          <span>X</span>
+          <input
+            data-toy-range="receiver"
+            aria-label="Receiver X"
+            aria-describedby="signal-toy-keyboard-help"
+            type="range"
+            min="48"
+            max="432"
+            value="370"
+          />
+        </label>
+        <label>
+          <span>Y</span>
+          <input
+            data-toy-range-y="receiver"
+            aria-label="Receiver Y"
+            aria-describedby="signal-toy-keyboard-help"
+            type="range"
+            min="54"
+            max="166"
+            value="82"
+          />
+        </label>
+      </div>
+    </div>
     <div class="signal-toy__actions">
       <button data-toy-pulse type="button">
         Send pulse

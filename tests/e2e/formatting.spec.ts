@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 const diagramProjects = [
   'chronos-dsp',
@@ -335,40 +335,153 @@ test('shared formatting regressions stay fixed', async ({ page }) => {
 test('signal toy labels stay inside the sketch at both handle limits', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  const svgBounds = (element: Locator) =>
+    element.evaluate((node) => {
+      if (!(node instanceof SVGGraphicsElement)) throw new Error('Expected SVG geometry');
+      const svg = node.ownerSVGElement!;
+      const box = node.getBBox();
+      const matrix = node.getScreenCTM()!;
+      const inverse = svg.getScreenCTM()!.inverse();
+      const points = [
+        [box.x, box.y],
+        [box.x + box.width, box.y],
+        [box.x, box.y + box.height],
+        [box.x + box.width, box.y + box.height],
+      ].map(([x, y]) => new DOMPoint(x, y).matrixTransform(matrix).matrixTransform(inverse));
+      return {
+        left: Math.min(...points.map((point) => point.x)),
+        right: Math.max(...points.map((point) => point.x)),
+        top: Math.min(...points.map((point) => point.y)),
+        bottom: Math.max(...points.map((point) => point.y)),
+      };
+    });
+  const labelBounds = (handle: Locator) => svgBounds(handle.locator('text'));
+  const overlap = (
+    first: Awaited<ReturnType<typeof svgBounds>>,
+    second: Awaited<ReturnType<typeof svgBounds>>,
+  ) =>
+    Math.max(0, Math.min(first.right, second.right) - Math.max(first.left, second.left)) *
+    Math.max(0, Math.min(first.bottom, second.bottom) - Math.max(first.top, second.top));
+  const withGap = (box: Awaited<ReturnType<typeof svgBounds>>) => ({
+    left: box.left - 4,
+    right: box.right + 4,
+    top: box.top - 4,
+    bottom: box.bottom + 4,
+  });
+
   for (const name of ['transmitter', 'receiver']) {
     const handle = page.locator(`[data-signal-handle="${name}"]`);
+    const range = page.locator(`[data-toy-range="${name}"]`);
+    const otherName = name === 'transmitter' ? 'receiver' : 'transmitter';
+    await page.getByRole('button', { name: /Reset/ }).click();
+    await page.locator(`[data-toy-range-y="${otherName}"]`).evaluate((element) => {
+      if (!(element instanceof HTMLInputElement)) return;
+      element.value = '54';
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    const parkingX = name === 'transmitter' ? '260' : '200';
+    await page.locator(`[data-toy-range="${otherName}"]`).evaluate((element, nextValue) => {
+      if (!(element instanceof HTMLInputElement)) return;
+      element.value = nextValue;
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    }, parkingX);
     for (const key of ['Home', 'End']) {
-      await handle.focus();
-      await page.keyboard.press(key);
-      const bounds = await handle.evaluate((element) => {
-        const svg = (element as SVGGElement).ownerSVGElement!;
-        const label = element.querySelector('text')!;
-        const box = label.getBBox();
-        const matrix = label.getScreenCTM()!;
-        const inverse = svg.getScreenCTM()!.inverse();
-        const points = [
-          [box.x, box.y],
-          [box.x + box.width, box.y],
-          [box.x, box.y + box.height],
-          [box.x + box.width, box.y + box.height],
-        ].map(([x, y]) => new DOMPoint(x, y).matrixTransform(matrix).matrixTransform(inverse));
-        return {
-          left: Math.min(...points.map((point) => point.x)),
-          right: Math.max(...points.map((point) => point.x)),
-        };
-      });
+      await range.press(key);
+      await expect(range).toHaveValue(key === 'Home' ? '48' : '432');
+      const bounds = await labelBounds(handle);
       expect(bounds.left, `${name} ${key}`).toBeGreaterThanOrEqual(0);
       expect(bounds.right, `${name} ${key}`).toBeLessThanOrEqual(480);
+      expect(bounds.top, `${name} ${key}`).toBeGreaterThanOrEqual(0);
+      expect(bounds.bottom, `${name} ${key}`).toBeLessThanOrEqual(270);
     }
+
+    await page.locator(`[data-toy-range-y="${name}"]`).evaluate((element) => {
+      if (!(element instanceof HTMLInputElement)) return;
+      element.value = '166';
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect((await labelBounds(handle)).bottom, `${name} lower limit`).toBeLessThanOrEqual(214);
   }
+
+  const nearCases = [
+    { txX: 200, txY: 54, rxX: 296, rxY: 166 },
+    { txX: 200, txY: 100, rxX: 344, rxY: 100 },
+    { txX: 274, txY: 104, rxX: 418, rxY: 104 },
+    { txX: 432, txY: 166, rxX: 288, rxY: 166 },
+  ];
+  const setRange = async (selector: string, value: number) => {
+    await page.locator(selector).evaluate((element, nextValue) => {
+      if (!(element instanceof HTMLInputElement)) return;
+      element.value = String(nextValue);
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+    }, value);
+  };
+  for (const positions of nearCases) {
+    await page.getByRole('button', { name: /Reset/ }).click();
+    await setRange('[data-toy-range-y="transmitter"]', positions.txY);
+    await setRange('[data-toy-range-y="receiver"]', positions.rxY);
+    await setRange('[data-toy-range="receiver"]', positions.rxX);
+    await setRange('[data-toy-range="transmitter"]', positions.txX);
+    const txHandle = page.locator('[data-signal-handle="transmitter"]');
+    const rxHandle = page.locator('[data-signal-handle="receiver"]');
+    const txBounds = await labelBounds(txHandle);
+    const rxBounds = await labelBounds(rxHandle);
+    const txCore = await svgBounds(txHandle.locator('circle:nth-child(2)'));
+    const rxCore = await svgBounds(rxHandle.locator('circle:nth-child(2)'));
+    const txHit = await svgBounds(txHandle.locator('.signal-toy__hit-area'));
+    const rxHit = await svgBounds(rxHandle.locator('.signal-toy__hit-area'));
+    const pathPoints = await page.locator('.signal-toy__svg').evaluate((svg) => {
+      if (!(svg instanceof SVGSVGElement)) return [];
+      return [...svg.querySelectorAll<SVGPathElement>('[data-signal-path]')].flatMap((path) => {
+        const length = path.getTotalLength();
+        const points = [];
+        for (let distance = 24; distance <= length - 24; distance += 6) {
+          const point = path.getPointAtLength(distance);
+          points.push({ x: point.x, y: point.y });
+        }
+        return points;
+      });
+    });
+    const touchesPath = (box: Awaited<ReturnType<typeof svgBounds>>) =>
+      pathPoints.some(
+        (point) =>
+          point.x >= box.left - 4 &&
+          point.x <= box.right + 4 &&
+          point.y >= box.top - 4 &&
+          point.y <= box.bottom + 4,
+      );
+    expect(overlap(txBounds, rxBounds), JSON.stringify(positions)).toBe(0);
+    expect(overlap(withGap(txBounds), withGap(rxBounds)), JSON.stringify(positions)).toBe(0);
+    expect(overlap(txBounds, txCore), JSON.stringify(positions)).toBe(0);
+    expect(overlap(rxBounds, rxCore), JSON.stringify(positions)).toBe(0);
+    expect(overlap(txBounds, rxHit), JSON.stringify(positions)).toBe(0);
+    expect(overlap(rxBounds, txHit), JSON.stringify(positions)).toBe(0);
+    expect(touchesPath(txBounds), JSON.stringify(positions)).toBe(false);
+    expect(touchesPath(rxBounds), JSON.stringify(positions)).toBe(false);
+  }
+
+  await page.getByRole('button', { name: /Reset/ }).click();
+  await setRange('[data-toy-range-y="transmitter"]', 64);
+  await setRange('[data-toy-range-y="receiver"]', 151);
+  await setRange('[data-toy-range="transmitter"]', 225);
+  await setRange('[data-toy-range="receiver"]', 92);
+  await expect(page.locator('.signal-toy__legend')).toHaveClass(/is-visible/);
+  await expect(page.locator('[data-signal-handle="transmitter"] text')).toHaveCSS(
+    'visibility',
+    'hidden',
+  );
+  await expect(page.locator('[data-signal-handle="receiver"] text')).toHaveCSS(
+    'visibility',
+    'hidden',
+  );
 });
 
 test('signal toy labels reclamp after a desktop-to-mobile resize', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  await page.locator('[data-signal-handle="transmitter"]').focus();
+  await page.locator('[data-toy-range="transmitter"]').focus();
   await page.keyboard.press('Home');
-  await page.locator('[data-signal-handle="receiver"]').focus();
+  await page.locator('[data-toy-range="receiver"]').focus();
   await page.keyboard.press('End');
   await page.setViewportSize({ width: 390, height: 844 });
   await expect
@@ -417,6 +530,11 @@ test('signal toy remains positioned without JavaScript and readable on mobile', 
   );
   await expect(page.locator('.signal-toy__drag-label')).toBeHidden();
   await expect(page.locator('.signal-toy__controls')).toBeHidden();
+  await expect(page.locator('#signal-toy-keyboard-help')).toBeHidden();
+  await expect(page.locator('[data-signal-handle="transmitter"]')).toHaveCSS(
+    'touch-action',
+    'auto',
+  );
   await expect(page.locator('[data-toy-pulse]')).toBeHidden();
   await expect(page.locator('[data-signal-pulse="direct"]')).not.toHaveClass(/is-active/);
   await expect(page.locator('[data-signal-pulse="echo"]')).not.toHaveClass(/is-active/);
