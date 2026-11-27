@@ -41,6 +41,12 @@ Date: 2026-11-27
 - Budgets: CSS 14,343 bytes gzip; TraceInspector JavaScript 73,344 bytes gzip; SignalToy JavaScript 3,530 bytes gzip; DiagramInspector JavaScript 1,435 bytes gzip; fonts 43,244 bytes; largest inline script 2,460 bytes gzip; 0 third-party runtime requests.
 - Fresh inline diagram, desktop inspector/fit, mobile inspector, and 320px/200% long-title screenshots were inspected under `screenshots/after/`.
 
+## Release
+
+- Committed as `108b2d1` and pushed to `main`.
+- Pages deployment run `45952724484` completed successfully.
+- Live mobile verification returned HTTP 200, the Life OS title and full team caption, clone-local ARIA references, a Fit viewport with no overflow, restored focus after close, and no page errors.
+
 ## Next candidates
 
 1. Add stage-specific inspector narration only if it improves comprehension without duplicating the existing captions and descriptions.
